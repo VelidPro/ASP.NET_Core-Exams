@@ -1,0 +1,36 @@
+﻿@model List<Ispit_2017_09_11_DotnetCore.ViewModels.OdjeljenjeStavkaVM>
+
+<h4>Odjeljenje stavke:</h4>
+<div class="row pt-2">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Broj u dnevniku</th>
+            <th>Ucenik</th>
+            <th>Broj zakljucnih ocjena (kraj godine)</th>
+            <th>Akcija</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var stavka in Model)
+        {
+            <tr id="@("Stavka_"+stavka.Id.Substring(stavka.Id.Length-6,5))">
+                <td>@stavka.BrojUDnevniku</td>
+                <td>@stavka.Ucenik</td>
+                <td>@stavka.BrojZakljucnihKrajGodine</td>
+                <td>
+                    <a asp-action="Obrisi"
+                       asp-controller="OdjeljenjeStavka"
+                       asp-route-stavkaId="@stavka.Id"
+                       ajax-poziv="da"
+                       ajax-notify="da"
+                       ajax-message="Uspjesno uklonjen ucenik"
+                       remove-element="@("Stavka_"+stavka.Id.Substring(stavka.Id.Length-6,5))">Obrisi</a>
+                    |
+                    <a asp-action="Uredi" asp-controller="OdjeljenjeStavka" asp-route-stavkaId="@stavka.Id">Uredi</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

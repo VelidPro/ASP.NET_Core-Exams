@@ -1,0 +1,117 @@
+﻿@model Ispit_2017_09_11_DotnetCore.ViewModels.OdjeljenjeDetaljiVM
+@{
+    ViewData["Title"] = "Detalji";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-5">Detalji odjeljenja</h2>
+<hr/>
+<div class="row">
+    <div class="col-md-5 col-lg-4 col-sm-12 mt-5">
+        <!--Skolska godina-->
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="SkolskaGodina"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control text-center" asp-for="SkolskaGodina" readonly />
+            </div>
+        </div>
+        <!--/Skolska godina-->
+        <!--Razred-->
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="Razred"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control text-center" asp-for="Razred" readonly />
+            </div>
+        </div>
+        <!--/Razred-->
+        <!--Oznaka-->
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="Oznaka"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control text-center" asp-for="Oznaka" readonly />
+            </div>
+        </div>
+        <!--/Oznaka-->
+        <!--Razrednik-->
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="Razrednik"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control text-center" asp-for="Razrednik" readonly />
+            </div>
+        </div>
+        <!--/Razrednik-->
+        <!--Broj predmeta-->
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="BrojPredmeta"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control text-center" asp-for="BrojPredmeta" readonly />
+            </div>
+        </div>
+        <!--/Broj predmeta-->
+
+        <div class="row mt-5 pt-2">
+            <a class="btn btn-primary" asp-action="RekonstruisiDnevnik" asp-route-odjeljenjeId="@Model.Id"
+               ajax-poziv="da"
+               ajax-rezultat="odjeljenjeStavke">Rekonstruisi brojeve u dnevniku</a>
+        </div>
+
+    </div>
+</div>
+<hr/>
+<div class="row mt-5" id="odjeljenjeStavke">
+    <h4>Odjeljenje stavke:</h4>
+    <div class="row pt-2">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Broj u dnevniku</th>
+                <th>Ucenik</th>
+                <th>Broj zakljucnih ocjena (kraj godine)</th>
+                <th>Akcija</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach(var stavka in Model.Ucenici)
+            {
+                <tr id="@("Stavka_"+stavka.Id.Substring(stavka.Id.Length-6,5))">
+                    <td>@stavka.BrojUDnevniku</td>
+                    <td>@stavka.Ucenik</td>
+                    <td>@stavka.BrojZakljucnihKrajGodine</td>
+                    <td>
+                        <a 
+                            asp-action="Obrisi"
+                            asp-controller="OdjeljenjeStavka" 
+                            asp-route-stavkaId="@stavka.Id"
+                            ajax-poziv="da"
+                            ajax-notify="da"
+                            ajax-message="Uspjesno uklonjen ucenik"
+                            remove-element="@("Stavka_"+stavka.Id.Substring(stavka.Id.Length-6,5))">Obrisi</a>
+                        |
+                        <a asp-action="Uredi" asp-controller="OdjeljenjeStavka" asp-route-stavkaId="@stavka.Id">Uredi</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+        <div class="row">
+            <div class="col-md-2 col-lg-1 col-sm-6">
+                <a class="btn btn-primary" asp-action="Dodaj" asp-controller="OdjeljenjeStavka" asp-route-odjeljenjeId="@Model.Id"
+                   ajax-poziv="da"
+                   ajax-rezultat="dodavanjeUcenikaOdjeljenje">Dodaj</a>
+            </div>
+        </div>
+</div>
+<div class="row" id="dodavanjeUcenikaOdjeljenje">
+
+</div>
