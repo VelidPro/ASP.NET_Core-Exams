@@ -1,0 +1,53 @@
+﻿@model Ispit_2017_09_11_DotnetCore.ViewModels.NovoOdjeljenjeVM
+@{
+
+}
+<h3>Dodavanje novog odjeljenja</h3>
+<form asp-action="Novi" method="post" ajax-poziv="da" ajax-notify="da" ajax-message="Uspjesno dodato odjeljenje">
+    <div class="row mt-5 border-black p-3">
+        <div class="row pt-2">
+            <div class="col-md-6 pt-2">
+                <label asp-for="SkolskaGodina" class="control-label"></label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <input class="form-control col-md-6" asp-for="SkolskaGodina" placeholder="2019/20" />
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-md-6 pt-2">
+                <label asp-for="Razred" class="control-label"></label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <input class="form-control col-md-6" asp-for="Razred" max="4" min="1" />
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-md-6 pt-2">
+                <label asp-for="Oznaka" class="control-label"></label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <input class="form-control col-md-6" asp-for="Oznaka" placeholder="1-c" />
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-md-6 pt-2">
+                <label asp-for="RazrednikId" class="control-label"></label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <select class="form-control col-md-6" asp-for="RazrednikId" asp-items="Model.Razrednici"></select>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-md-6 pt-2">
+                <label asp-for="OdjeljenjeId" class="control-label"></label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <select class="form-control col-md-6" asp-for="OdjeljenjeId" asp-items="Model.Odjeljenja"></select>
+            </div>
+        </div>
+        <hr />
+        <div class="mt-5">
+            <button class="btn btn-primary" type="submit">Snimi</button>
+        </div>
+    </div>
+</form>

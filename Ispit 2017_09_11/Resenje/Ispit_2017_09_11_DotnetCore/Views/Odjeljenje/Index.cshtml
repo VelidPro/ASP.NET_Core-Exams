@@ -1,0 +1,51 @@
+﻿@using Ispit_2017_09_11_DotnetCore.ViewModels
+@model Ispit_2017_09_11_DotnetCore.ViewModels.OdjeljenjaViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Prikaz odeljenja</h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Školska godina</th>
+        <th>Razread (1 do 4)</th>
+        <th>Oznaka</th>
+        <th>Razrednik</th>
+        <th>Prebačeni u više odeljenje (Razred)</th>
+        <th>Prosek ocena</th>
+        <th>Najbolji učenik</th>
+        <th>Ackija</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach(OdjeljenjeViewModel o in Model.Odjeljenja)
+    {
+        <tr id="@("Odjeljenje_"+o.Id.Substring(o.Id.Length-6,5))">
+            <td>@o.SkolskaGodina</td>
+            <td>@o.Razred</td>
+            <td>@o.Oznaka</td>
+            <td>@o.Nastavnik</td>
+            <td class="text-center">@(o.PrebaceniUViseOdjeljenje==false?"NE":"DA")</td>
+            <td>@o.ProsjekOcjena.ToString("##.##")</td>
+            <td>@o.NajboljiUcenik</td>
+            <td>
+                <a asp-action="Detalji" asp-route-Id="@o.Id">Detalji</a> 
+                | 
+                <a asp-action="Obrisi" asp-route-Id="@o.Id" ajax-poziv="da" ajax-notify="da" 
+                   remove-element="@("Odjeljenje_"+o.Id.Substring(o.Id.Length-6,5))"
+                   ajax-message="Uspjesno izbrisano odjeljenje">Obriši</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<div class="row">
+    <a class="btn btn-primary" asp-action="Novi" ajax-poziv="da" ajax-rezultat="novoOdjeljenje">Dodaj</a>
+</div>
+
+<div class="row mt-5" >
+    <div id="novoOdjeljenje" class="col-md-4"></div>
+</div>
+
