@@ -9,7 +9,15 @@
     padding-left: 15px;
     padding-right: 15px;
 }
-
+.text-center-custom {
+    align-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    vertical-align: center !important;
+}
+a {
+    cursor: pointer;
+}
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
@@ -32,4 +40,22 @@
     .carousel-caption {
         display: none;
     }
+}
+
+
+.pt-5 {
+    padding-top: 5px !important;
+}
+
+.mt-5 {
+    margin-top: 5px !important;
+}
+
+.mt-10 {
+    margin-top: 10px !important;
+}
+
+.border-custom {
+    border: 1px solid rgba(82, 117, 195, 0.64);
+    border-radius: 5%;
 }

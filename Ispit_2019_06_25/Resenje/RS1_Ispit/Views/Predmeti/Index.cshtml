@@ -1,0 +1,47 @@
+﻿@using RS1_Ispit_asp.net_core.ViewModels
+@model RS1_Ispit_asp.net_core.ViewModels.PredmetiVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-5">Predmeti po akademskim godinama</h2>
+<hr />
+
+<table class="table table-striped mt-5">
+    <thead>
+        <tr>
+            <th>Naziv predmeta</th>
+            <th>Akademska godina</th>
+            <th>Ime i prezime nastavnika</th>
+            <th>Broj odrzanih casova</th>
+            <th>Broj studenata na predmetu</th>
+            <th>Akcija</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (KeyValuePair<string, List<AngazovanVM>> entry in Model.Predmeti)
+        {
+
+            @foreach (var predmet in entry.Value)
+            {
+                <tr>
+                    @if (predmet == entry.Value.First())
+                    {
+                        <th rowspan="@entry.Value.Count()">@entry.Key</th>
+                    }
+                    <td>@predmet.AkademskaGodina</td>
+                    <td>@predmet.Nastavnik</td>
+                    <td>@predmet.BrojOdrzanihCasova</td>
+                    <td>@predmet.BrojStudenataNaPredmetu</td>
+                    <td>
+                        <a asp-action="GetAll" asp-controller="IspitniTermini"
+                           asp-route-angazmanId="@predmet.Id">Odaberi</a>
+                    </td>
+                </tr>
+
+            }
+
+        }
+    </tbody>
+</table>

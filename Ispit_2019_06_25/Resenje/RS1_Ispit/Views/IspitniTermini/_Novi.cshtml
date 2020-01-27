@@ -1,0 +1,62 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.NoviIspitniTerminVM
+<hr/>
+<div class="row mt-5">
+    <h3>Novi ispitni termin za predmet @Model.Predmet</h3>
+    <hr/>
+</div>
+<div class="row mt-5">
+    <div class="col-md-6 col-lg-5 col-sm-12 mt-5">
+        <form asp-action="Novi" method="post" ajax-poziv="da" ajax-notify="da" ajax-message="Uspjesno dodat ispitni termin">
+            <div class="row pt-5">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Predmet"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="Predmet" readonly class="form-control" />
+                </div>
+            </div>
+
+            <div class="row pt-5">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Nastavnik"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="Nastavnik" readonly class="form-control" />
+                </div>
+            </div>
+
+            <div class="row pt-5">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="SkolskaGodina"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="SkolskaGodina" readonly class="form-control" />
+                </div>
+            </div>
+
+            <div class="row pt-5">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Datum"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="Datum" class="form-control" />
+                </div>
+            </div>
+            <div class="row pt-5">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Napomena"></label>
+                </div>
+                <div class="col-md-6">
+                    <textarea asp-for="Napomena" class="form-control"></textarea>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-3 col-lg-2 col-sm-6">
+                    <button class="btn btn-primary" type="submit">Snimi</button>
+                </div>
+            </div>
+            @Html.HiddenFor(x => x.AngazmanId)
+        </form>
+    </div>
+</div>

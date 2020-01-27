@@ -1,0 +1,85 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.IspitniTerminiVM
+@{
+    ViewData["Title"] = "PredmetIspitniTermini";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row mt-5">
+    <h2>Ispitni termini za predmet @Model.Predmet</h2>
+    <hr />
+</div>
+<div class="row">
+    <div class="col-md-6 col-lg-5 col-sm-12 mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="Predmet"></label>
+            </div>
+            <div class="col-md-6">
+                <input asp-for="Predmet" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="Nastavnik"></label>
+            </div>
+            <div class="col-md-6">
+                <input asp-for="Nastavnik" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="AkademskaGodina"></label>
+            </div>
+            <div class="col-md-6">
+                <input asp-for="AkademskaGodina" class="form-control" readonly />
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+
+<div class="row mt-5">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Datum ispita</th>
+            <th>Broj studenata koji nisu polozili predmet</th>
+            <th>Broj prijavljenih studenata</th>
+            <th>Evidentirani rezultati (zakljucano)</th>
+            <th>Akcija</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var x in Model.IspitniTermini)
+        {
+            <tr id="@(string.Concat("Termin_", x.Id.Substring(x.Id.Length - 6, 5)))">
+
+                <td>@x.DatumIspita.ToString("d")</td>
+                <td>@x.BrojStudenataNepolozeno</td>
+                <td>@x.BrojPrijavljenihStudenata</td>
+                <td>@(x.EvidentiraniRazultati?"DA":"NE")</td>
+                <td>
+                    <a asp-action="Detalji" asp-route-Id="@x.Id">Detalji**</a>
+                    |
+                    <a asp-action="Zakljucaj" asp-route-Id="@x.Id"
+                       ajax-poziv="da"
+                       ajax-notify="da"
+                       ajax-message="Uspjesno zakljucan">Zakljucaj**</a>
+                </td>
+
+
+            </tr>
+        }
+        </tbody>
+    </table>
+    <hr/>
+    <div class="row mt-5">
+        <div class="col-md-3 col-lg-2 col-sm-6">
+            <a class="btn btn-primary" asp-action="Novi" asp-route-angazmanId="@Model.AngazmanId" ajax-poziv="da" ajax-rezultat="noviIspitniTermin">Dodaj</a>
+        </div>
+    </div>
+    
+    <div class="row" id="noviIspitniTermin">
+
+    </div>
+</div>
+
