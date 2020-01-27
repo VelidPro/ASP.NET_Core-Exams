@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Ispit.Data.EntityModels
@@ -9,6 +10,7 @@ namespace Ispit.Data.EntityModels
         public int Id { get; set; }
         public string KorisnickoIme { get; set; }
 
+        public virtual ICollection<AutorizacijskiToken> AutorizacijskiTokeni { get; set; }
 
     }
 }

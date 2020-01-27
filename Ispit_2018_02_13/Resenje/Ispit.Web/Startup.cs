@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Ispit.Data;
+﻿using Ispit.Data;
+using Ispit.Service.Constants;
+using Ispit.Service.Interfaces;
+using Ispit.Service.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +25,12 @@ namespace Ispit.Web
             services.AddDbContext<MyContext>(x=>
                 x.UseSqlServer(Configuration.GetConnectionString("localDB"))
             );
+
+            services.AddSingleton<SecurityConstants>();
+
+            services.AddScoped<IDogadjajService, DogadjajService>();
+
+            services.AddDataProtection();
 
             services.AddMvc();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache

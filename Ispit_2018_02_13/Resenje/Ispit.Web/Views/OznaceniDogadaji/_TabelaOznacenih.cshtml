@@ -1,0 +1,25 @@
+﻿@model List<eUniverzitet.Web.ViewModels.DogadjajVM>
+
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+    <th>Datum</th>
+    <th>Nastavnik</th>
+    <th>Opis</th>
+    <th>Relizovano obaveza RO</th>
+    <th>Akcija</th>
+    </thead>
+    <tbody>
+    @foreach (var x in Model)
+    {
+        <tr>
+            <td>@x.DatumDogadjaja.ToString("d")</td>
+            <td>@x.Nastavnik</td>
+            <td>@x.Opis</td>
+            <td>@(x.RealizovanoObaveza ?? 0)</td>
+            <td><a asp-action="Dodaj">Dodaj</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

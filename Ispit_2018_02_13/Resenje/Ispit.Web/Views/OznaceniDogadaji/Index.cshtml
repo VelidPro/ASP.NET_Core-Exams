@@ -1,4 +1,5 @@
-﻿@{
+﻿@model eUniverzitet.Web.ViewModels.DogadjajiViewModel
+@{
     ViewData["Title"] = "Index";
 }
 
@@ -20,7 +21,23 @@
         </tr>
     </thead>
     <tbody>
-       
+       @foreach(var x in Model.NeoznaceniDogadjaji)
+       {
+           <tr id="@(string.Concat("Dogadjaj_",x.DogadjajId.Substring(x.DogadjajId.Length-6,5)))">
+               <td>@x.DatumDogadjaja.ToString("d")</td>
+               <td>@x.Nastavnik</td>
+               <td>@x.Opis</td>
+               <td>@(x.BrojObaveza??0)</td>
+               <td><a asp-action="Dodaj" asp-route-Id="@x.DogadjajId"
+                      ajax-poziv="da"
+                      ajax-notify="da"
+                      ajax-message="@(string.Concat("Dogadjaj ",x.Opis," dodan"))"
+                      ajax-rezultat="oznaceniDogadjaji"
+                      ajax-remove="da"
+                      ajax-remove-element="@(string.Concat("Dogadjaj_",x.DogadjajId.Substring(x.DogadjajId.Length-6,5)))"
+                      >Dodaj</a></td>
+           </tr>
+       }
     </tbody>
 </table>
 <br />
@@ -28,16 +45,27 @@
 <br />
 
 <h2>Označeni događaji</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Datum</th>
-            <th>Nastavnik</th>
-            <th>Opis</th>
-            <th>Relizovano obaveza RO</th>
-            <th>Akcija</th>
-</thead>
-    <tbody>
-       
-    </tbody>
-</table>
+<div class="row" id="oznaceniDogadjaji">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Nastavnik</th>
+                <th>Opis</th>
+                <th>Relizovano obaveza RO</th>
+                <th>Akcija</th>
+        </thead>
+        <tbody>
+            @foreach (var x in Model.OznaceniDogadjaji)
+            {
+                <tr>
+                    <td>@x.DatumDogadjaja.ToString("d")</td>
+                    <td>@x.Nastavnik</td>
+                    <td>@x.Opis</td>
+                    <td>@(x.RealizovanoObaveza ?? 0)</td>
+                    <td><a asp-action="Detalji">Detalji</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

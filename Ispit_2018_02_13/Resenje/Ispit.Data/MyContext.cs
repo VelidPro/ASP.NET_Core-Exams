@@ -27,6 +27,15 @@ namespace Ispit.Data
                 .WithMany()
                 .HasForeignKey(x => x.OznacenDogadjajID)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Obaveza>()
+                .HasOne(x => x.Dogadjaj)
+                .WithMany(x => x.Obaveze);
+
+            modelBuilder.Entity<OznacenDogadjaj>()
+                .HasOne(x => x.Student)
+                .WithMany(x => x.OznaceniDogadjaji);
+
         }
 
         public DbSet<Dogadjaj> Dogadjaj { get; set; }

@@ -17,8 +17,6 @@ namespace Ispit.Data.EntityModels
         [ForeignKey(nameof(Obaveza))]
         public int ObavezaID { get; set; }
         public Obaveza Obaveza { get; set; }
-      
-
 
 
         [ForeignKey(nameof(OznacenDogadjaj))]

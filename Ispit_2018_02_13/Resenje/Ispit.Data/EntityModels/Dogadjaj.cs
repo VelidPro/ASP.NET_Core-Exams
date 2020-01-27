@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,5 +15,7 @@ namespace Ispit.Data.EntityModels
         [ForeignKey(nameof(Nastavnik))]
         public int? NastavnikID { get; set; }
         public Nastavnik Nastavnik { get; set; }
+
+        public ICollection<Obaveza> Obaveze { get; set; }
     }
 }
