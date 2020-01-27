@@ -66,7 +66,7 @@
             <tr>
                 <th>Student</th>
                 <th>Pristupio ispitu</th>
-                <th>Ocjena</th>
+                <th class="text-center">Ocjena</th>
                 <th>Akcija</th>
             </tr>
             </thead>
@@ -87,8 +87,22 @@
 
                         </a>
                     </td>
-                    <td id="@(string.Concat("Ocjena_", x.Id.Substring(x.Id.Length - 6, 5)))">
-                        @(x.Ocjena == null ? "" : x.Ocjena.ToString())
+                    <td>
+                        <div class="col-md-7" style="margin-left: 20%;">
+                            @if (x.PristupioIspitu)
+                            {
+                                <input id="@(string.Concat("Ocjena_", x.Id.Substring(x.Id.Length - 6, 5)))"
+                                       value="@(x.Ocjena == null ? "" : x.Ocjena.ToString())"
+                                       class="form-control" min="5" max="10" type="number"
+                                       ajax-poziv="da"
+                                       ajax-notify="da"
+                                       ajax-message="Uspjesna izmjena"
+                                       ajax-append-parameter="da"
+                                       ajax-append-parameter-name="ocjena"
+                                       ajax-url="@Url.Action("Ocjena", "PolaganjeIspita", new {polaganjeId = x.Id})"/>
+                            }
+                        </div>
+
                     </td>
                     <td>
                         @if (x.PristupioIspitu && !Model.Zakljucan && DateTime.Now > Model.Datum)

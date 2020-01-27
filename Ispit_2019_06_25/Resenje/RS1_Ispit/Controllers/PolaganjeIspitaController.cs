@@ -96,10 +96,27 @@ namespace RS1_Ispit_asp.net_core.Controllers
                 return Ok(polaganjeFromDb.Ocjena);
 
             }
-
-
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Ocjena(string polaganjeId, int ocjena)
+        {
+            if (string.IsNullOrEmpty(polaganjeId) || ocjena < 5 || ocjena > 10)
+                return BadRequest("Podaci nisu validni.");
+
+            var polaganje = _context.PolaganjaIspita.Find(int.Parse(_protector.Unprotect(polaganjeId)));
+
+            if (polaganje == null)
+                return BadRequest("Polaganje nije pronadjeno.");
+
+            polaganje.Ocjena = ocjena;
+
+            _context.Update(polaganje);
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Uspjesna izmjena ocjene.");
+        }
 
 
         [HttpGet]

@@ -56,6 +56,7 @@ function DodajAjaxEvente() {
         var urlZaPoziv2 = $(this).attr("action");
         var divZaRezultat = $(this).attr("ajax-rezultat");
 
+        var ajaxInputRezultat = $(this).attr("ajax-input-rezultat");
         var urlZaPoziv;
         if (urlZaPoziv1 instanceof String)
             urlZaPoziv = urlZaPoziv1;
@@ -73,7 +74,10 @@ function DodajAjaxEvente() {
             url: urlZaPoziv,
             data: form.serialize(),
             success: function (data) {
-                $("#" + divZaRezultat).html(data);
+                if (ajaxInputRezultat === "da")
+                    $("#" + divZaRezultat).val(data);
+                else
+                    $("#" + divZaRezultat).html(data);
 
                 if (ajaxNotify === "da")
                     alertify.success(ajaxMessage);
@@ -82,6 +86,26 @@ function DodajAjaxEvente() {
                 if (request.responseText.length)
                     alertify.error(request.responseText);
             }
+        });
+    });
+
+    $("input[ajax-poziv='da']").change(function(event) {
+        event.preventDefault();
+
+        var urlZaPoziv1 = $(this).attr("ajax-url");
+
+        var ajaxNotify = $(this).attr("ajax-notify");
+        var ajaxMessage = $(this).attr("ajax-message");
+
+        var appendParameter = $(this).attr("ajax-append-parameter");
+        var appendParameterName = $(this).attr("ajax-append-parameter-name");
+
+        if (appendParameter == "da")
+            urlZaPoziv1 += "&" + appendParameterName + "=" + $(this).val();
+
+        $.get(urlZaPoziv1, function (data, status) {
+            if (ajaxNotify === "da")
+                alertify.success(ajaxMessage);
         });
     });
 }
