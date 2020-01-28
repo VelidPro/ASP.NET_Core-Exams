@@ -11,9 +11,10 @@ using System;
 namespace Ispit.Data.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20200128001815_Added_Field_Procitana_Table_PoslateNotifikacije")]
+    partial class Added_Field_Procitana_Table_PoslateNotifikacije
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

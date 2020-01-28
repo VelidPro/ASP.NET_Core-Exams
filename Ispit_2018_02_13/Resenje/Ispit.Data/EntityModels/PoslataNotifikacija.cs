@@ -14,5 +14,6 @@ namespace Ispit.Data.EntityModels
         public StanjeObaveze StanjeObaveze { get; set; }
 
         public DateTime DatumSlanja { get; set; }
+        public bool Procitana { get; set; }
     }
 }

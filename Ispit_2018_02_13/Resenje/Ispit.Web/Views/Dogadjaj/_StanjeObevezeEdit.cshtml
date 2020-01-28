@@ -1,0 +1,55 @@
+﻿@model eUniverzitet.Web.ViewModels.StanjeObavezeInputVM
+
+<div class="row  col-md-4 pt-5">
+    <h3>Evidentiranje stanja obaveze</h3>
+    <hr/>
+    <div class="row mt-5">
+        <form asp-action="EvidentirajStanjeObaveze" method="post"
+              ajax-poziv="da"
+              ajax-notify="da"
+              ajax-message="Uspjesno evidentirano"
+              ajax-rezultat="@(string.Concat("Procenat_",Model.Id.Substring(Model.Id.Length-6,5)))">
+            <div class="row">
+                <div class="col-md-6">
+                    <label asp-for="Obaveza" class="control-label"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="Obaveza" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label asp-for="ZavrsenoProcentualno" class="control-label"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="ZavrsenoProcentualno" class="form-control" min="0" max="100" type="number" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label asp-for="NotificirajDanaUnaprijed" class="control-label"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="NotificirajDanaUnaprijed" class="form-control" min="0" max="30" type="number" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label asp-for="NotificirajRekurzivno" class="control-label"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="NotificirajRekurzivno" class="form-control" type="checkbox" />
+                </div>
+            </div>
+
+
+            <hr />
+            <div class="row mt-5">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Snimi</button>
+                </div>
+            </div>
+            @Html.HiddenFor(x => x.Id)
+        </form>
+    </div>
+</div>

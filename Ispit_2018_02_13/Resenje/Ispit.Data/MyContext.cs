@@ -36,6 +36,12 @@ namespace Ispit.Data
                 .HasOne(x => x.Student)
                 .WithMany(x => x.OznaceniDogadjaji);
 
+            modelBuilder.Entity<StanjeObaveze>()
+                .HasOne(x => x.OznacenDogadjaj)
+                .WithMany(x => x.StanjaObaveza);
+
+
+
         }
 
         public DbSet<Dogadjaj> Dogadjaj { get; set; }

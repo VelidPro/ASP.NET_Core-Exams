@@ -1,13 +1,29 @@
-﻿@model eUniverzitet.Web.ViewModels.DogadjajiViewModel
+﻿@using eUniverzitet.Web.Helper
+@using Ispit.Service.Interfaces
+@model eUniverzitet.Web.ViewModels.DogadjajiViewModel
+@inject IDogadjajService _dogadjajService
+
 @{
     ViewData["Title"] = "Index";
+
+
+    var notifikacije = await _dogadjajService.ListaDanasnjihNotifikacija(Context.GetLogiraniKorisnik().Id);
+}
+
+@if (notifikacije.Any())
+{
+    <div class="alert alert-warning" role="alert">
+
+        @foreach (var notifikacija in notifikacije)
+        {
+            @Html.Raw(notifikacija)
+
+        }
+    </div>
+
 }
 
 
-<div class="alert alert-warning" role="alert">
-    <strong>Događaj "ISPIT RS1" - 13.02.2018.</strong> <br />
-    Ovo je podsjetnik za obavezu "Pregledati pdf materijale". Označi kao <a href="" class="">pročitanu.</a>
-</div>
 
 <h2>Neoznačeni događaji</h2>
 <table class="table table-striped">
@@ -21,23 +37,24 @@
         </tr>
     </thead>
     <tbody>
-       @foreach(var x in Model.NeoznaceniDogadjaji)
-       {
-           <tr id="@(string.Concat("Dogadjaj_",x.DogadjajId.Substring(x.DogadjajId.Length-6,5)))">
-               <td>@x.DatumDogadjaja.ToString("d")</td>
-               <td>@x.Nastavnik</td>
-               <td>@x.Opis</td>
-               <td>@(x.BrojObaveza??0)</td>
-               <td><a asp-action="Dodaj" asp-route-Id="@x.DogadjajId"
-                      ajax-poziv="da"
-                      ajax-notify="da"
-                      ajax-message="@(string.Concat("Dogadjaj ",x.Opis," dodan"))"
-                      ajax-rezultat="oznaceniDogadjaji"
-                      ajax-remove="da"
-                      ajax-remove-element="@(string.Concat("Dogadjaj_",x.DogadjajId.Substring(x.DogadjajId.Length-6,5)))"
-                      >Dodaj</a></td>
-           </tr>
-       }
+        @foreach (var x in Model.NeoznaceniDogadjaji)
+        {
+            <tr id="@(string.Concat("Dogadjaj_",x.DogadjajId.Substring(x.DogadjajId.Length-6,5)))">
+                <td>@x.DatumDogadjaja.ToString("d")</td>
+                <td>@x.Nastavnik</td>
+                <td>@x.Opis</td>
+                <td>@(x.BrojObaveza ?? 0)</td>
+                <td>
+                    <a asp-action="Dodaj" asp-route-Id="@x.DogadjajId"
+                       ajax-poziv="da"
+                       ajax-notify="da"
+                       ajax-message="@(string.Concat("Dogadjaj ",x.Opis," dodan"))"
+                       ajax-rezultat="oznaceniDogadjaji"
+                       ajax-remove="da"
+                       ajax-remove-element="@(string.Concat("Dogadjaj_",x.DogadjajId.Substring(x.DogadjajId.Length-6,5)))">Dodaj</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <br />
@@ -63,7 +80,7 @@
                     <td>@x.Nastavnik</td>
                     <td>@x.Opis</td>
                     <td>@(x.RealizovanoObaveza ?? 0)</td>
-                    <td><a asp-action="Detalji">Detalji</a></td>
+                    <td><a asp-action="DetaljiOznaceni" asp-controller="Dogadjaj" asp-route-Id="@x.OznaceniDogadjajId">Detalji</a></td>
                 </tr>
             }
         </tbody>

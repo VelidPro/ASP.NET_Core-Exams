@@ -59,6 +59,7 @@ function DodajAjaxEvente() {
         else
             urlZaPoziv = urlZaPoziv2;
 
+
         var form = $(this);
 
         $.ajax({

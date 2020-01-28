@@ -15,5 +15,11 @@ namespace Ispit.Service.Interfaces
         int GetProcenatRealizovanihObaveza(int dogadjajId);
 
         Task<ServiceResult> OznaciDogadjaj(int dogadjajId, int studentId);
+
+        bool IspunjavaUslovNotificiranja(StanjeObaveze stanjeObaveze);
+        Task<List<string>> ListaDanasnjihNotifikacija(int studentId);
+
+        Task<bool> OznaciNotifikacijuProcitanom(int notifikacijaId);
+
     }
 }

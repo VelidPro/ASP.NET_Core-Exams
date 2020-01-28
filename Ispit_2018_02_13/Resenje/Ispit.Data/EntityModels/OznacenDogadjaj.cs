@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,5 +20,7 @@ namespace Ispit.Data.EntityModels
         [ForeignKey(nameof(Dogadjaj))]
         public int DogadjajID { get; set; }
         public Dogadjaj Dogadjaj { get; set; }
+
+        public ICollection<StanjeObaveze> StanjaObaveza { get; set; }
     }
 }

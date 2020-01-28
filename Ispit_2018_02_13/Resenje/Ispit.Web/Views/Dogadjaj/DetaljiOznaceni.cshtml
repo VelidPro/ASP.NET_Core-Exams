@@ -1,0 +1,82 @@
+﻿@model eUniverzitet.Web.ViewModels.DogadjajDetaljiVM
+@{
+    ViewData["Title"] = "Detalji";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-10">
+    <h2>Detalji dogadjaja</h2>
+    <hr/>
+    <div class="row mt-10">
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="DatumDogadjaja" class="control-label"></label>
+            </div>
+            <div class="col-md-6">
+                <input asp-for="DatumDogadjaja" class="form-control" readonly />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="DatumDodavanja" class="control-label"></label>
+            </div>
+            <div class="col-md-6">
+                <input asp-for="DatumDodavanja" class="form-control" readonly/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="Opis" class="control-label"></label>
+            </div>
+            <div class="col-md-6">
+                <input asp-for="Opis" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="Nastavnik" class="control-label"></label>
+            </div>
+            <div class="col-md-6">
+                <input asp-for="Nastavnik" class="form-control" readonly />
+            </div>
+        </div>
+    </div>
+    <hr/>
+</div>
+<div class="row mt-5 mb-5">
+    <h2>Obaveze dogadajaja</h2>
+    <div class="row mt-5">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Naziv</th>
+                <th>Procenat realizacije obaveze</th>
+                <th>Salji notifikaciju x dana unapred</th>
+                <th>Ponavljaj notifikaciju svaki dan do pocetka dogadjaja</th>
+                <th>Akcija</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+            @foreach (var x in Model.Obaveze)
+            {
+                <tr>
+                    <td>@x.Naziv</td>
+                    <td id="@(string.Concat("Procenat_",x.Id.Substring(x.Id.Length-6,5)))">@x.ProcenatRealizacije.ToString("F")</td>
+                    <td>@x.NotificirajDanaUnapred</td>
+                    <td>@(x.RekurzivnaNotifikacija?"DA":"NE")</td>
+                    <td><a asp-action="UrediStanjeObaveze" asp-route-Id="@x.Id"
+                           ajax-poziv="da"
+                           ajax-rezultat="dogadjajEdit">Uredi</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr/>
+<div class="row mt-5" id="dogadjajEdit">
+
+</div>
