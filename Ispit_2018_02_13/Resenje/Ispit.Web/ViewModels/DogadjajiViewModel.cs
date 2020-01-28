@@ -7,6 +7,8 @@ namespace eUniverzitet.Web.ViewModels
     {
         public List<DogadjajVM> OznaceniDogadjaji { get; set; }
         public List<DogadjajVM> NeoznaceniDogadjaji { get; set; }
+
+        public List<string> Notifikacije { get; set; }
     }
 
     public class DogadjajVM

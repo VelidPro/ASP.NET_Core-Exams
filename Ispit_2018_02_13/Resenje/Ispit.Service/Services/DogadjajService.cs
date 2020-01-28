@@ -117,15 +117,18 @@ namespace Ispit.Service.Services
 
             foreach (var x in dogadjaj.Obaveze)
             {
-                await _context.AddAsync(new StanjeObaveze
+                var novoStanjeObaveze = new StanjeObaveze
                 {
                     IzvrsenoProcentualno = 0,
-                    NotifikacijaDanaPrije = 5,
-                    NotifikacijeRekurizivno = false,
+                    NotifikacijaDanaPrije = 30,
+                    NotifikacijeRekurizivno = true,
                     IsZavrseno = false,
                     ObavezaID = x.ID,
                     OznacenDogadjajID = noviOznaceni.ID
-                });
+                };
+
+                await _context.AddAsync(novoStanjeObaveze);
+
             }
 
             await _context.SaveChangesAsync();

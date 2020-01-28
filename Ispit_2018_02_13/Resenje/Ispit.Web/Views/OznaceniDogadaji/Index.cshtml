@@ -1,20 +1,11 @@
-﻿@using eUniverzitet.Web.Helper
-@using Ispit.Service.Interfaces
-@model eUniverzitet.Web.ViewModels.DogadjajiViewModel
-@inject IDogadjajService _dogadjajService
-
-@{
-    ViewData["Title"] = "Index";
+﻿@model eUniverzitet.Web.ViewModels.DogadjajiViewModel
 
 
-    var notifikacije = await _dogadjajService.ListaDanasnjihNotifikacija(Context.GetLogiraniKorisnik().Id);
-}
-
-@if (notifikacije.Any())
+@if (Model?.Notifikacije.Any() ?? false)
 {
     <div class="alert alert-warning" role="alert">
 
-        @foreach (var notifikacija in notifikacije)
+        @foreach (var notifikacija in Model.Notifikacije)
         {
             @Html.Raw(notifikacija)
 

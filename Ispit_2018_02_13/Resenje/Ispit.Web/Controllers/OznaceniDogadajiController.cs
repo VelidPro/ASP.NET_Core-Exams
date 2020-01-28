@@ -119,6 +119,7 @@ namespace Ispit.Web.Controllers
 
             return new DogadjajiViewModel
             {
+                Notifikacije =await _dogadjajService.ListaDanasnjihNotifikacija(HttpContext.GetLogiraniKorisnik()?.Id ?? 0),
                 OznaceniDogadjaji = oznaceniDogadjajiVM.ToList(),
                 NeoznaceniDogadjaji = neoznaceniDogadjaji.ToList()
             };
