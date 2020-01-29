@@ -58,6 +58,35 @@ namespace Ispit_2017_09_11_DotnetCore.Services
             };
         }
 
+        public async Task<string> GetReferentneVrijednosti(int labPretragaId)
+        {
+            var labPretraga = await _context.LabPretraga.FindAsync(labPretragaId);
+
+            if (labPretraga == null)
+                return string.Empty;
+
+            var vrijednosti = string.Empty;
+
+            if (labPretraga.VrstaVr == VrstaVrijednosti.Modalitet)
+            {
+                var modaliteti = _context.Modalitet.Where(x => x.LabPretragaId == labPretragaId);
+
+                if (await modaliteti.AnyAsync())
+                {
+                    vrijednosti = string.Join(", ",  await modaliteti.Where(x => x.IsReferentnaVrijednost).Select(x => x.Opis).ToListAsync());
+                }
+            }
+            else
+            {
+                vrijednosti = string.Concat(labPretraga.ReferentnaVrijednostMin, " - ",
+                    labPretraga.ReferentnaVrijednostMax);
+            }
+
+            return vrijednosti;
+
+
+        }
+
 
         private async Task KreirajNoveRezultatePretraga(int vrstaPretrageId, int uputnicaId)
         {

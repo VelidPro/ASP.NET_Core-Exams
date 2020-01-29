@@ -55,7 +55,9 @@ namespace RS1_Ispit_asp.net_core.Controllers
         {
             int decryptedId = int.Parse(_protector.Unprotect(model.Id));
 
-            var rezultatPretrage = await _context.RezultatPretrage.FindAsync(decryptedId);
+            var rezultatPretrage = await _context.RezultatPretrage
+                .Include(x => x.LabPretraga)
+                .FirstOrDefaultAsync(x=>x.Id==decryptedId);
 
             if (rezultatPretrage == null)
                 return BadRequest("Rezultat pretrage nije pronadjen.");
@@ -72,11 +74,81 @@ namespace RS1_Ispit_asp.net_core.Controllers
             _context.Update(rezultatPretrage);
             await _context.SaveChangesAsync();
 
-            return Ok(model.ModalitetId!=null
-                ? (await _context.FindAsync<Modalitet>(model.ModalitetId))?.Opis??""
-                : rezultatPretrage.NumerickaVrijednost?.ToString()??"");
+            if (model.ModalitetId != null)
+            {
+                var modalitet = await _context.FindAsync<Modalitet>(model.ModalitetId);
+                return Ok(
+                new
+                {
+                    Vrijednost = modalitet?.Opis ?? "",
+                    IsReferentna = modalitet?.IsReferentnaVrijednost ?? false
+                });
+            }
+            return Ok(new
+            {
+                Vrijednost = rezultatPretrage.NumerickaVrijednost?.ToString()??"",
+                IsReferentna = rezultatPretrage.NumerickaVrijednost<=rezultatPretrage.LabPretraga.ReferentnaVrijednostMax
+                               && rezultatPretrage.NumerickaVrijednost>=rezultatPretrage.LabPretraga.ReferentnaVrijednostMin
+
+            });
 
         }
+
+
+
+        public async Task<IActionResult> EvidencijaModalitet(string Id, int modalitetId)
+        {
+            int decryptedId = int.Parse(_protector.Unprotect(Id));
+
+            var rezultatPretrage = await _context.RezultatPretrage
+                .Include(x => x.LabPretraga)
+                .FirstOrDefaultAsync(x => x.Id == decryptedId);
+
+            if (rezultatPretrage == null)
+                return BadRequest("Rezultat pretrage nije pronadjen.");
+
+            if (!await _context.Modalitet.AnyAsync(x => x.Id == modalitetId))
+                return BadRequest("Modalitet ne postoji.");
+
+            rezultatPretrage.ModalitetId = modalitetId;
+            _context.Update(rezultatPretrage);
+            await _context.SaveChangesAsync();
+
+
+            var modalitet = await _context.FindAsync<Modalitet>(modalitetId);
+            return Ok(
+                new
+                {
+                    Vrijednost = modalitet?.Opis ?? "",
+                    IsReferentna = modalitet?.IsReferentnaVrijednost ?? false
+                });
+        }
+
+
+        public async Task<IActionResult> EvidencijaVrijednosti(string Id, double izmjerenaVrijednost)
+        {
+            int decryptedId = int.Parse(_protector.Unprotect(Id));
+
+            var rezultatPretrage = await _context.RezultatPretrage
+                .Include(x => x.LabPretraga)
+                .FirstOrDefaultAsync(x => x.Id == decryptedId);
+
+            if (rezultatPretrage == null)
+                return BadRequest("Rezultat pretrage nije pronadjen.");
+
+            rezultatPretrage.NumerickaVrijednost = izmjerenaVrijednost;
+            _context.Update(rezultatPretrage);
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                Vrijednost = rezultatPretrage.NumerickaVrijednost?.ToString() ?? "",
+                IsReferentna = rezultatPretrage.NumerickaVrijednost <= rezultatPretrage.LabPretraga.ReferentnaVrijednostMax
+                               && rezultatPretrage.NumerickaVrijednost >= rezultatPretrage.LabPretraga.ReferentnaVrijednostMin
+
+            });
+        }
+
 
 
 

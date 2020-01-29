@@ -57,7 +57,11 @@
                            ajax-message="Uspjesno zakljucana"
                            ajax-rezultat="@(string.Concat("DatumRez_",uniquePart))"
                            ajax-remove="da"
-                           ajax-remove-class="UrediRezultat">Zakljucaj</a>
+                           ajax-remove-class="UrediRezultat"
+                           ajax-lock-selects=@(Model.RezultatiPretraga[0].VrstaVrijednosti==VrstaVrijednosti.Modalitet?"da":"ne")
+                           ajax-lock-inputs="@(Model.RezultatiPretraga[0].VrstaVrijednosti==VrstaVrijednosti.Modalitet?"ne":"da")"
+                           ajax-inputs-class="rezultatPretrageInput"
+                           ajax-selects-class="rezultatPretrageSelect">Zakljucaj</a>
                     </div>
                 }
                 else
@@ -78,6 +82,7 @@
                 <tr>
                     <th>Pretraga</th>
                     <th>Izmjerena vrijednost</th>
+                    <th>Referentna vrijednost</th>
                     <th>JMJ</th>
                     <th>Akcija</th>
                 </tr>
@@ -85,9 +90,60 @@
                 <tbody>
                 @foreach (var x in Model.RezultatiPretraga)
                 {
+                   
                     <tr>
                         <td>@x.Pretraga</td>
-                        <td id="@(string.Concat("Izmjereno_",x.Id.Substring(x.Id.Length - 6, 5)))">@(string.IsNullOrEmpty(x.IzmjerenaVrijednost)?"(nije evidentirano)":x.IzmjerenaVrijednost)</td>
+                        <td>
+                            <div class="col-md-5">
+
+                                @if (x.VrstaVrijednosti == VrstaVrijednosti.Modalitet)
+                                {
+                                    @if (!Model.IsZavrsenUnos)
+                                    {
+                                        <select id="@(string.Concat("Izmjereno_", x.Id.Substring(x.Id.Length - 6, 5)))"
+                                                class="form-control rezultatPretrageSelect @(!x.IsReferentnaVrijednost ? "danger-border" : "")"
+                                                ajax-evidencija-rezultata="da"
+                                                ajax-event="da"
+                                                ajax-append-url=@($"?Id={x.Id}&modalitetId=")
+                                                ajax-get-value="da"
+                                                ajax-notify="da"
+                                                ajax-message="Uspjesno evidentirano"
+                                                ajax-rezultat="@(string.Concat("Izmjereno_", x.Id.Substring(x.Id.Length - 6, 5)))"
+                                                href=@Url.Action("EvidencijaModalitet", "LabPretraga")
+                                                asp-items="x.Modaliteti">
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <div class="@(!x.IsReferentnaVrijednost ? "danger-border" : "")">@x.IzmjerenaVrijednost</div>
+                                    }
+                                }
+                                else
+                                {
+                                    @if (!Model.IsZavrsenUnos)
+                                    {
+                                        <input id="@(string.Concat("Izmjereno_", x.Id.Substring(x.Id.Length - 6, 5)))"
+                                               class=" @(!x.IsReferentnaVrijednost ? "danger-border" : "") form-control rezultatPretrageInput"
+                                               ajax-evidencija-rezultata="da"
+                                               ajax-event="da"
+                                               ajax-notify="da"
+                                               ajax-message="Uspjesno evidentirano"
+                                               ajax-get-value="da"
+                                               ajax-rezultat="@(string.Concat("Izmjereno_", x.Id.Substring(x.Id.Length - 6, 5)))"
+                                               ajax-append-url=@($"?Id={x.Id}&izmjerenaVrijednost=")
+                                               href=@Url.Action("EvidencijaVrijednosti", "LabPretraga")
+                                               value="@x.IzmjerenaVrijednost"/>
+                                    }
+                                    else
+                                    {
+                                        <div class="@(!x.IsReferentnaVrijednost ? "danger-border" : "")">@x.IzmjerenaVrijednost</div>
+                                    }
+                                }
+                            </div>
+
+
+                        </td>
+                        <td>@x.ReferentnaVrijednost</td>
                         <td>@x.JMJ</td>
                         <td class="UrediRezultat">
 

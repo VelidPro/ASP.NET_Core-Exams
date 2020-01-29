@@ -172,7 +172,8 @@ namespace RS1_Ispit_asp.net_core.Controllers
                 };
 
              var rezultatiPretraga = _context.RezultatPretrage
-                .Where(x => x.UputnicaId == uputnica.Id);
+                 .Include(x=>x.LabPretraga)
+                 .Where(x => x.UputnicaId == uputnica.Id);
 
 
             if(!await rezultatiPretraga.AnyAsync())
@@ -181,22 +182,50 @@ namespace RS1_Ispit_asp.net_core.Controllers
                     RezultatiPretraga = rezultatiPretragaVM
                 };
 
-            return new DetaljiUputniceVM
+           var model = new DetaljiUputniceVM
             {
                 Id=_protector.Protect(uputnica.Id.ToString()),
                 DatumUputnice = uputnica.DatumUputnice,
                 DatumRezultata = uputnica.DatumRezultata,
                 IsZavrsenUnos = uputnica.IsGotovNalaz,
                 Pacijent = uputnica.Pacijent.Ime,
-                RezultatiPretraga = await rezultatiPretraga.Select(x => new RezultatPretrageVM{
-                    Id=_protector.Protect(x.Id.ToString()),
-                    IzmjerenaVrijednost = x.NumerickaVrijednost == null ? x.Modalitet.Opis: x.NumerickaVrijednost.ToString(),
-                    JMJ = x.ModalitetId==null? x.LabPretraga.MjernaJedinica : string.Empty,
-                    Pretraga = x.LabPretraga.Naziv,
-                    VrstaVrijednosti = x.LabPretraga.VrstaVr
-                }).ToListAsync()
+                RezultatiPretraga = new List<RezultatPretrageVM>()
             };
 
+           foreach (var x in rezultatiPretraga)
+           {
+               if(x.ModalitetId.HasValue)
+                   x.Modalitet=await _context.Modalitet.FindAsync(x.ModalitetId);
+               model.RezultatiPretraga.Add(await BuildRezultatPretrageVM(x));
+           }
+
+
+
+           return model;
+        }
+
+        private async Task<RezultatPretrageVM> BuildRezultatPretrageVM(RezultatPretrage x)
+        {
+            return new RezultatPretrageVM
+            {
+                Id = _protector.Protect(x.Id.ToString()),
+                IzmjerenaVrijednost =
+                    x.NumerickaVrijednost == null ? x.Modalitet?.Opis??"" : x.NumerickaVrijednost?.ToString()??"",
+                JMJ = x.ModalitetId == null ? x.LabPretraga.MjernaJedinica : string.Empty,
+                Pretraga = x.LabPretraga.Naziv,
+                ReferentnaVrijednost = await _uputnicaService.GetReferentneVrijednosti(x.LabPretragaId),
+                VrstaVrijednosti = x.LabPretraga.VrstaVr,
+                IsReferentnaVrijednost = x.ModalitetId.HasValue
+                    ? x.Modalitet?.IsReferentnaVrijednost??true
+                    : !x.NumerickaVrijednost.HasValue || (x.NumerickaVrijednost >= x.LabPretraga.ReferentnaVrijednostMin &&
+                                                          x.NumerickaVrijednost <= x.LabPretraga.ReferentnaVrijednostMax),
+                ModalitetId = x.ModalitetId,
+                Modaliteti = _context.Modalitet
+                                 .Where(z => z.LabPretragaId == x.LabPretragaId)?
+                                 .ToSelectList(z => z.Id.ToString(),
+                                                  z => z.Opis, defaultId: (await _context.Modalitet.FindAsync(x.ModalitetId ?? 0))?.Id ?? 0)
+                                                      ?? new List<SelectListItem>()
+        };
         }
     }
 }
