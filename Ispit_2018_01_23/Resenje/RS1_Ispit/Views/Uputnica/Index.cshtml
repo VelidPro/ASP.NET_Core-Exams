@@ -1,0 +1,47 @@
+﻿@using System.Security.Cryptography.X509Certificates
+@model Ispit_2017_09_11_DotnetCore.ViewModels.UputniceVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-10">
+    <h2>Evidentirane uputnice</h2>
+    <hr/>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Uputio</th>
+                <th>Pacijent</th>
+                <th>Vrsta pretraga</th>
+                <th>Datum evidentiranja rezultata pretrage</th>
+                <th>Akcija</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach(var x in Model.Uputnice){
+                <tr>
+                    <td>@x.DatumUputnice.ToString("d") | @x.UputioLjekar</td>
+                    <td>@x.Pacijent</td>
+                    <td>@x.VrstaPretraga</td>
+                    <td>@(x.DatumEvidentiranjaRezultataPretrage==null?"(nema rezultata)":x.DatumEvidentiranjaRezultataPretrage.Value.ToString("d"))</td>
+                    <td><a asp-action="Detalji" asp-route-Id="@x.Id">Detalji</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <hr/>
+    <div class="row mt-5">
+        <div class="col-md-3 col-lg-2-col-sm-6">
+            <a class="btn btn-primary" asp-action="Dodaj" ajax-poziv="da" ajax-rezultat="novaUputnicaDiv">Dodaj</a>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="row mt-10" id="novaUputnicaDiv">
+
+</div>
+
+

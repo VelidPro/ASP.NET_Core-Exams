@@ -1,0 +1,111 @@
+﻿@using RS1.Ispit.Web.Models
+@model Ispit_2017_09_11_DotnetCore.ViewModels.DetaljiUputniceVM
+@{
+    ViewData["Title"] = "Detalji";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var uniquePart = Model.Id.Substring(Model.Id.Length-6,5);
+}
+
+    <div class="row mt-10">
+        <h2>Detalji</h2>
+    </div>
+<hr/>
+<div class="row">
+    <div class="col-md-5 col-lg-4 col-sm-12">
+        <div class="row pt-2">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="DatumUputnice"></label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-control text-center silver-field">@Model.DatumUputnice.ToString("d")</div>
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="Pacijent"></label>
+            </div>
+            <div class="col-md-6">
+                <div class="form-control text-center silver-field">@Model.Pacijent</div>
+
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="DatumRezultata"></label>
+            </div>
+            <div class="col-md-6">
+                <div id="@(string.Concat("DatumRez_",uniquePart))" class="form-control text-center silver-field">@(Model.DatumRezultata.HasValue?
+                                                                       Model.DatumRezultata.Value.ToString("g"):"")</div>
+
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="IsZavrsenUnos"></label>
+            </div>
+            <div class="col-md-6">
+                @if (!Model.IsZavrsenUnos)
+                {
+                    <div class="text-center">
+                        <a class="text-danger" asp-action="Zakljucaj" asp-route-Id="@Model.Id"
+                           ajax-poziv="da" 
+                           ajax-notify="da" 
+                           ajax-message="Uspjesno zakljucana"
+                           ajax-rezultat="@(string.Concat("DatumRez_",uniquePart))"
+                           ajax-remove="da"
+                           ajax-remove-class="UrediRezultat">Zakljucaj</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center">Zakljucano</div>
+                }
+            </div>
+        </div>
+    </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <h4>Rezultati pretrage</h4>
+        <hr/>
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Pretraga</th>
+                    <th>Izmjerena vrijednost</th>
+                    <th>JMJ</th>
+                    <th>Akcija</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var x in Model.RezultatiPretraga)
+                {
+                    <tr>
+                        <td>@x.Pretraga</td>
+                        <td id="@(string.Concat("Izmjereno_",x.Id.Substring(x.Id.Length - 6, 5)))">@(string.IsNullOrEmpty(x.IzmjerenaVrijednost)?"(nije evidentirano)":x.IzmjerenaVrijednost)</td>
+                        <td>@x.JMJ</td>
+                        <td class="UrediRezultat">
+
+                            @if (!@Model.IsZavrsenUnos)
+                            {
+                                <a asp-action="Evidencija" asp-controller="LabPretraga" asp-route-Id="@x.Id"
+                                   ajax-poziv="da"
+                                   ajax-rezultat="urediRezultatPretrage">Uredi</a>
+                            }
+
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr/>
+    <div class="row" id="urediRezultatPretrage">
+ 
+    </div>

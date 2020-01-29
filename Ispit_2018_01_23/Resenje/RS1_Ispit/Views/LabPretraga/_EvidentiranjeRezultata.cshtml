@@ -1,0 +1,54 @@
+﻿@using RS1.Ispit.Web.Models
+@model Ispit_2017_09_11_DotnetCore.ViewModels.RezultatPretrageInputVM
+@{
+    var uniquePart = Model.Id.Substring(Model.Id.Length - 6, 5);
+}
+    <div class="col-md-5 col-lg-4 col-sm-12">
+        <h3>Evidentiranje rezultata</h3>
+        <hr />
+        <form asp-action="EvidencijaSnimi" method="post"
+              ajax-poziv="da" 
+              ajax-notify="da" 
+              ajax-message="Uspjesno evidentirano."
+              ajax-rezultat="@(string.Concat("Izmjereno_",uniquePart))">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Pretraga"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="Pretraga" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="row pt-2">
+                @if (Model.VrstaVrijednosti == VrstaVrijednosti.Modalitet)
+                {
+
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="ModalitetId"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <select asp-for="ModalitetId" class="form-control" asp-items="Model.Modaliteti"></select>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="IzmjerenaVrijednost"></label>
+                    </div>
+                    <div class="col-md-4">
+                        <input asp-for="IzmjerenaVrijednost" class="form-control" />
+                  
+                    </div>
+                    <div class="col-md-2 text-center">@Model.JMJ</div>
+                }
+            </div>
+            <div class="row pt-2">
+                <div class="col-md-3 col-lg-2 col-sm-6">
+                    <button type="submit" class="btn btn-primary">Snimi</button>
+                </div>
+            </div>
+            @Html.HiddenFor(x => x.Id)
+        </form>
+
+    </div>

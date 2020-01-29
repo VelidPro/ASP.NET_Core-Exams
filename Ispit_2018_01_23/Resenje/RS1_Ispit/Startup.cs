@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ispit_2017_09_11_DotnetCore.Constants;
 using Ispit_2017_09_11_DotnetCore.EF;
+using Ispit_2017_09_11_DotnetCore.Interfaces;
+using Ispit_2017_09_11_DotnetCore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +28,11 @@ namespace Ispit_2017_09_11_DotnetCore
         {
             services.AddDbContext<MojContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("cs1")));
+
+            services.AddDataProtection();
+
+            services.AddScoped<IUputnicaService, UputnicaService>();
+            services.AddSingleton<SecurityConstants>();
 
             services.AddMvc();
         }

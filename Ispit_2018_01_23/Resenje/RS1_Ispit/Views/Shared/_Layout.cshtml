@@ -6,11 +6,13 @@
     <title>@ViewData["Title"] - Ispit DotnetCore</title>
 
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/AlertifyJS/css/alertify.min.css"/>
     <link rel="stylesheet" href="/css/site.css" />
 
 
     <script src="/lib/jquery/dist/jquery.js"></script>
     <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/AlertifyJS/alertify.min.js"></script>
     <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
@@ -47,6 +49,14 @@
             <p>&copy; 2017 - Ispit_DotnetCore</p>
         </footer>
     </div>
+    @if (TempData["error"] != null)
+    {
+        <script>alertify.error(TempData["error"])</script>
+    }
+    else if (TempData["success"] != null)
+    {
+        <script>alertify.error(TempData["success"])</script>
 
+    }
 </body>
 </html>

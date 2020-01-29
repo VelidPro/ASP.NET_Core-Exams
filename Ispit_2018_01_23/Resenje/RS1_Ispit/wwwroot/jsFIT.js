@@ -19,6 +19,10 @@ function DodajAjaxEvente() {
         var urlZaPoziv1 = $(this).attr("ajax-url");
         var urlZaPoziv2 = $(this).attr("href");
         var divZaRezultat = $(this).attr("ajax-rezultat");
+        var ajaxNotify = $(this).attr("ajax-notify");
+        var ajaxMessage = $(this).attr("ajax-message");
+        var removeElement = $(this).attr("ajax-remove");
+        var removeElementClass = $(this).attr("ajax-remove-class");
 
         var urlZaPoziv;
 
@@ -29,6 +33,14 @@ function DodajAjaxEvente() {
 
         $.get(urlZaPoziv, function (data, status) {
             $("#" + divZaRezultat).html(data);
+
+            if (ajaxNotify === "da")
+                alertify.success(ajaxMessage);
+        }).error(function() {
+            alertify.error("Greska.");
+        }).done(function() {
+            if (removeElement === "da")
+                $("." + removeElementClass).remove();
         });
     });
 
@@ -38,6 +50,9 @@ function DodajAjaxEvente() {
         var urlZaPoziv1 = $(this).attr("ajax-url");
         var urlZaPoziv2 = $(this).attr("action");
         var divZaRezultat = $(this).attr("ajax-rezultat");
+
+        var ajaxNotify = $(this).attr("ajax-notify");
+        var ajaxMessage = $(this).attr("ajax-message");
 
         var urlZaPoziv;
         if (urlZaPoziv1 instanceof String)
@@ -53,6 +68,14 @@ function DodajAjaxEvente() {
             data: form.serialize(),
             success: function (data) {
                 $("#" + divZaRezultat).html(data);
+
+                if (ajaxNotify === "da")
+                    alertify.success(ajaxMessage);
+            },
+            error: function(request, status, error) {
+                if (request.responseText.length>0 && request.responseText.length<35) {
+                    alertify.error(request.responseText);
+                }
             }
         });
     });

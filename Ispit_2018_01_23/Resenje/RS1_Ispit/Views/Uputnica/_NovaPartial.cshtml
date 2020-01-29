@@ -1,0 +1,58 @@
+﻿@model Ispit_2017_09_11_DotnetCore.ViewModels.UputnicaInputVM
+
+<div class="row pt-2">
+    <h4>Nova uputnica <i class="glyphicon glyphicon-arrow-down"></i></h4>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-5 col-lg-4 col-sm-12">
+        <form asp-action="Dodaj" method="post"
+              ajax-poziv="da"
+              ajax-notify="da"
+              ajax-message="Upjesno kreirana uputnica">
+
+            <div class="row pt-2">
+                <div class="col-md-5">
+                    <label asp-for="LjekarUputioId" class="control-label"></label>
+                </div>
+                <div class="col-md-7">
+                    <select asp-for="LjekarUputioId" class="form-control" asp-items="Model.Ljekari"></select>
+                </div>
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-md-5">
+                    <label asp-for="DatumUputnice" class="control-label"></label>
+                </div>
+                <div class="col-md-7">
+                    <input asp-for="DatumUputnice" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-md-5">
+                    <label asp-for="PacijentId" class="control-label"></label>
+                </div>
+                <div class="col-md-7">
+                    <select asp-for="PacijentId" class="form-control" asp-items="Model.Pacijenti"></select>
+
+                </div>
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-md-5">
+                    <label asp-for="VrstaPretrageId" class="control-label"></label>
+                </div>
+                <div class="col-md-7">
+                    <select asp-for="VrstaPretrageId" class="form-control" asp-items="Model.VrstePretrage"></select>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-3 col-lg-2 col-sm-6">
+                    <button class="btn btn-primary" type="submit">Snimi</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
