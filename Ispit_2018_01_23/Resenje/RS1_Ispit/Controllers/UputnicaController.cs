@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RS1.Ispit.Web.Models;
+using RS1_Ispit_asp.net_core.ViewComponents;
 using SQLitePCL;
 
 namespace RS1_Ispit_asp.net_core.Controllers
@@ -35,9 +36,7 @@ namespace RS1_Ispit_asp.net_core.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var model = await BuildUputniceViewModel();
-
-            return View(model);
+            return View();
         }
 
         public IActionResult Dodaj() => PartialView("_NovaPartial", BuildUputnicaInputViewModel());
@@ -64,7 +63,7 @@ namespace RS1_Ispit_asp.net_core.Controllers
                 var rezultatKreiranja = await _uputnicaService.DodajAsync(novaUputnica);
 
                 if (rezultatKreiranja.Success)
-                    return Ok(rezultatKreiranja.Message);
+                    return ViewComponent("Uputnica");
 
                 return BadRequest(rezultatKreiranja.Message);
             }
@@ -120,32 +119,6 @@ namespace RS1_Ispit_asp.net_core.Controllers
 
 
         //ViewModel Builders
-        private async Task<UputniceVM> BuildUputniceViewModel()
-        {
-            var uputnice = new List<UputnicaVM>();
-
-            if(!await _context.Uputnica.AnyAsync())
-                return new UputniceVM{Uputnice = uputnice};
-
-            uputnice = await _context.Uputnica
-                .Include(x => x.VrstaPretrage)
-                .Include(x => x.UputioLjekar)
-                .Include(x=>x.Pacijent)
-                .Select(x => new UputnicaVM
-                {
-                    Id=_protector.Protect(x.Id.ToString()),
-                    DatumEvidentiranjaRezultataPretrage = x.DatumRezultata,
-                    DatumUputnice = x.DatumUputnice,
-                    Pacijent = x.Pacijent.Ime,
-                    UputioLjekar = x.UputioLjekar.Ime,
-                    VrstaPretraga = x.VrstaPretrage.Naziv
-                }).ToListAsync();
-
-            return new UputniceVM
-            {
-                Uputnice = uputnice
-            };
-        }
 
         private UputnicaInputVM BuildUputnicaInputViewModel()
         {
@@ -174,7 +147,6 @@ namespace RS1_Ispit_asp.net_core.Controllers
              var rezultatiPretraga = _context.RezultatPretrage
                  .Include(x=>x.LabPretraga)
                  .Where(x => x.UputnicaId == uputnica.Id);
-
 
             if(!await rezultatiPretraga.AnyAsync())
                 return new DetaljiUputniceVM

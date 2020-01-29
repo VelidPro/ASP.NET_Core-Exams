@@ -1,0 +1,26 @@
+﻿@model Ispit_2017_09_11_DotnetCore.ViewModels.UputniceVM
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Uputio</th>
+            <th>Pacijent</th>
+            <th>Vrsta pretraga</th>
+            <th>Datum evidentiranja rezultata pretrage</th>
+            <th>Akcija</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var x in Model.Uputnice)
+        {
+            <tr>
+                <td>@x.DatumUputnice.ToString("d") | @x.UputioLjekar</td>
+                <td>@x.Pacijent</td>
+                <td>@x.VrstaPretraga</td>
+                <td>@(x.DatumEvidentiranjaRezultataPretrage == null ? "(nema rezultata)" : x.DatumEvidentiranjaRezultataPretrage.Value.ToString("d"))</td>
+                <td><a asp-action="Detalji" asp-route-Id="@x.Id">Detalji</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
