@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RS1_Ispit_asp.net_core.EF;
 
 namespace RS1_Ispit_asp.net_core.Migrations
 {
     [DbContext(typeof(MojContext))]
-    partial class MojContextModelSnapshot : ModelSnapshot
+    [Migration("20200201194248_Added_Takmicenje_TakmicenjeUcesnik_Tables")]
+    partial class Added_Takmicenje_TakmicenjeUcesnik_Tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,8 +188,6 @@ namespace RS1_Ispit_asp.net_core.Migrations
                     b.Property<int>("BrojPrijavljenih");
 
                     b.Property<DateTime>("DatumOdrzavanja");
-
-                    b.Property<bool>("IsEvidentiraniRezultati");
 
                     b.Property<int>("PredmetId");
 

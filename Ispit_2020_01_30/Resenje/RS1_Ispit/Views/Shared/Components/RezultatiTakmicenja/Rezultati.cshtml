@@ -1,0 +1,77 @@
+﻿@model  RS1_Ispit_asp.net_core.ViewModels.RezultatiTakmicenjaVM
+    <table class="table table-striped">
+        <thead>
+        <tr  class="text-center">
+            <th  class="text-center">Odjeljenje</th>
+            <th class="text-center">Broj u dnevniku</th>
+            <th class="text-center">Pristupio</th>
+            <th class="text-center">Rezultat bodovi (max 100)</th>
+            <th class="text-center">Akcija</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var x in Model.Rezultati)
+        {
+            <tr id="@string.Concat("Rezultat_",x.Id)"class="text-center">
+                <td>@x.Odjeljenje</td>
+                <td>@x.BrojUDnevniku</td>
+                <td>
+                    @if (!Model.IsEvidentiraniRezultati)
+                    {
+                        @if (x.IsPristupio)
+                        {
+                            <a id="@(string.Concat("Pristupio_", x.Id))" class="text-success uredjivanjeRezultata"
+                               asp-action="UcesnikNijePristupio" asp-route-takmicenjeUcesnikId="@x.Id"
+                               ajax-poziv="da"
+                               ajax-rezultat="@string.Concat("Rezultat_",x.Id)">DA</a>
+                        }
+                        else
+                        {
+                            <a id="@(string.Concat("Pristupio_", x.Id))" class="text-danger uredjivanjeRezultata" asp-action="UcesnikJePristupio" asp-route-takmicenjeUcesnikId="@x.Id"
+                               ajax-poziv="da"
+                               ajax-rezultat="@string.Concat("Rezultat_",x.Id)">NE</a>
+
+                        }
+                    }
+                    else
+                    {
+                        @(x.IsPristupio?Html.Raw("<span class='text-success'>DA</span>"):Html.Raw("<span class='text-danger'>NE</span>"))
+                    }
+                </td>
+                <td class="text-center">
+                    @if (x.IsPristupio)
+                    {
+                        @if (!Model.IsEvidentiraniRezultati)
+                        {
+                            <div class="row col-md-offset-4">
+                                <div class="col-md-4 center-block">
+                                    <form method="post" asp-action="EvidencijaRezultata" ajax-poziv="da">
+                                        <input type="hidden" name="takmicenjeUcesnikId" id="takmicenjeUcesnikId" value="@x.Id"/>
+                                        <input ajax-trigger="da" name="bodovi" value="@x.OsvojeniBodovi" class="form-control text-center" type="number" min="0" max="100"/>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            @x.OsvojeniBodovi
+                        }
+                        }
+                        else
+                        {
+                        <span>X</span>
+                    }
+                </td>
+                <td>
+                    @if (!Model.IsEvidentiraniRezultati && x.IsPristupio)
+                    {
+                        <a asp-action="RezultatEditGet" asp-route-takmicenjeUcesnikId="@x.Id" ajax-poziv="da" ajax-rezultat="rezultatEdit">
+                            Uredi
+                        </a>
+                    }
+
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>

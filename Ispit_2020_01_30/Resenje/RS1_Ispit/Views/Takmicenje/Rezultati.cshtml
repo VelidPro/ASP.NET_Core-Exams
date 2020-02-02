@@ -1,0 +1,92 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.RezultatiTakmicenjaVM
+@{
+    ViewData["Title"] = "Rezultati";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row mt-5">
+    <h2>Rezultati takmicenja</h2>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-6 col-lg-4 col-sm-12">
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="SkolaDomacin"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control" asp-for="SkolaDomacin" readonly/>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="Predmet"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control" asp-for="Predmet" readonly/>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="Razred"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control" asp-for="Razred" readonly/>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="DatumOdrzavanja"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control" asp-for="DatumOdrzavanja" type="date" readonly/>
+            </div>
+        </div>
+        <div class="row mt-5">
+
+            @if (!Model.IsEvidentiraniRezultati)
+            {
+                <div class="col-md-6"></div>
+                <div class="col-md-6" id="zakljucaj">
+                    <div id="lockoutRezultati">
+                        <a class="text-danger"
+                           asp-action="Zakljucaj" asp-route-takmicenjeId="@Model.Id"
+                           ajax-poziv="da"
+                           ajax-rezultat="rezultatiTakmicenja"
+                           ajax-zakljucaj-button="da">Zakljucaj</a>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <div>Zakljucano</div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+<hr/>
+<h4>Rezultati takmicenja</h4>
+<div class="row mt-5" id="rezultatiTakmicenja">
+    @await Component.InvokeAsync("RezultatiTakmicenja",new{takmicenjeId=Model.Id})
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-3 col-lg-2">
+        <a class="btn btn-primary" asp-action="DodajUcesnika" asp-route-takmicenjeId="@Model.Id"
+           ajax-poziv="da" ajax-rezultat="noviUcesnik">Dodaj ucesnika</a>
+    </div>
+</div>
+
+<hr/>
+
+
+<div class="row mt-5" id="rezultatEdit">
+
+</div>
+<div class="row mt-5" id="noviUcesnik">
+
+</div>

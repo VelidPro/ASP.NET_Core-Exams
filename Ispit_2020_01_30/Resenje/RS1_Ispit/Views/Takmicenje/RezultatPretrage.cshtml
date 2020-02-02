@@ -1,0 +1,31 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.TakmicenjaVM
+@{
+    ViewData["Title"] = "Rezultat pretrage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="row mt-5">
+        <h2>Skola domacin: @Model.SkolaDomacin</h2>
+        @if (Model.Razred.HasValue)
+        {
+        <h3>Razred: @Model.Razred</h3>
+        }
+    </div>
+<hr/>
+
+<div class="row mt-5">
+    <div class="row" id="listaTakmicenja">
+        @await Component.InvokeAsync("Takmicenje", new {skolaId = Model.SkolaDomacinId,razred=Model.Razred??0})
+    </div>
+    <hr/>
+    <div class="row mt-5">
+        <div class="col-md-3">
+            <a class="btn btn-primary" asp-action="Dodaj" asp-route-skolaId="@Model.SkolaDomacinId" ajax-poziv="da" ajax-rezultat="novoTakmicenje">Dodaj</a>
+        </div>
+    </div>
+
+    <hr/>
+    <div class="row mt-5" id="novoTakmicenje">
+
+    </div>
+</div>

@@ -1,0 +1,55 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.DodavanjeTakmicenjaVM
+
+
+<div class="row mt-5">
+    <h3>Dodavanje takmicenja</h3>
+</div>
+<hr/>
+<div class="row mt-5">
+    <div class="col-md-5 col-lg-4 col-sm-12">
+        <form method="post" asp-action="Dodaj" ajax-poziv="da" ajax-rezultat="listaTakmicenja">
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="SkolaDomacin"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="SkolaDomacin" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Predmet"></label>
+                </div>
+                <div class="col-md-6">
+                    <select asp-for="Predmet" class="form-control" asp-items="Model.Predmeti"></select>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Razred"></label>
+                </div>
+                <div class="col-md-6">
+                    <select asp-for="Razred" class="form-control" asp-items="Model.Razredi"></select>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="DatumOdrzavanja"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="DatumOdrzavanja" class="form-control" type="date"/>
+                </div>
+            </div>
+            <hr/>
+            <div class="row mt-5">
+                <div class="col-md-3 col-lg-2">
+                    <button class="btn btn-primary" type="submit">Snimi</button>
+                </div>
+            </div>
+            
+            @Html.HiddenFor(x=>x.SkolaDomacinId)
+        </form>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.TakmicenjaVM
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Takmicenje ID</th>
+        <th>Predmet</th>
+        <th>Razred</th>
+        <th>Datum</th>
+        <th>Broj ucesnika koji nisu pristupili</th>
+        <th>Najbolji ucesnik (Skola | Odjeljenje | Ime i prezime)</th>
+        <th>Akcija</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var x in Model.Takmicenja)
+    {
+        <tr>
+            <td>@x.Id</td>
+            <td>@x.Predmet</td>
+            <td>@x.Razred</td>
+            <td>@x.DatumOdrzavanja.ToString("d")</td>
+            <td>@x.BrojUcenikaNisuPristupili</td>
+            <td>@x.NajboljiUcesnik</td>
+            <td><a asp-action="Rezultati"  asp-route-takmicenjeId="@x.Id">Rezultati</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

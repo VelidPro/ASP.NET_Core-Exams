@@ -1,0 +1,31 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.DodavanjeUcesnikaTakmicenjaVM
+
+<div class="row mt-5">
+    <h4>Dodavanje ucesnika</h4>
+    <div class="col-md-6 col-lg-5 col-sm-12">
+        <form asp-action="DodajUcesnika" method="post" ajax-poziv="da" ajax-rezultat="rezultatiTakmicenja">
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <label asp-for="OdjeljenjeStavkaId" class="control-label"></label>
+                </div>
+                <div class="col-md-6">
+                    <select asp-for="OdjeljenjeStavkaId" class="form-control" asp-items="Model.PonudjeniUcesnici"></select>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <label asp-for="OsvojeniBodovi" class="control-label"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="OsvojeniBodovi" class="form-control"/>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-3">
+                    <button class="btn btn-primary" type="submit">Dodaj</button>
+                </div>
+            </div>
+            @Html.HiddenFor(x => x.TakmicenjeId)
+        </form>
+    </div>
+</div>

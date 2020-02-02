@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore;
 using RS1_Ispit_asp.net_core.EntityModels;
 
 namespace RS1_Ispit_asp.net_core.EF
@@ -23,6 +24,12 @@ namespace RS1_Ispit_asp.net_core.EF
             modelBuilder.Entity<PredajePredmet>().HasOne(x => x.Odjeljenje)
                 .WithMany().OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<TakmicenjeUcesnik>()
+                .HasOne(x => x.Takmicenje)
+                .WithMany(x => x.Ucesnici)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
         }
 
 
@@ -36,5 +43,7 @@ namespace RS1_Ispit_asp.net_core.EF
         public DbSet<PredajePredmet> PredajePredmet { get; set; }
         public DbSet<Skola> Skola { get; set; }
         public DbSet<SkolskaGodina> SkolskaGodina { get; set; }
+        public DbSet<Takmicenje> Takmicenja { get; set; }
+        public DbSet<TakmicenjeUcesnik> TakmicenjeUcesnici { get; set; }
     }
 }
