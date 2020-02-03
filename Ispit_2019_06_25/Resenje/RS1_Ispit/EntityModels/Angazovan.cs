@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_Ispit_asp.net_core.EntityModels
 {
@@ -19,6 +17,5 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         [ForeignKey(nameof(PredmetId))]
         public virtual Predmet Predmet { get; set; }
         public int PredmetId { get; set; }
-
     }
 }

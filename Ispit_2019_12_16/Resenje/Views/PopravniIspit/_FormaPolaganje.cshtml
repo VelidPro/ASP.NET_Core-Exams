@@ -1,0 +1,60 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.PopravniIspitStavkaInputVM
+@{
+    var title = (string) TempData["formType"];
+
+}
+<div class="row mt-8">
+    <h3>@title polaganja</h3>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SnimiPolaganje" method="post" ajax-poziv="da" 
+              ajax-rezultat="@(title=="Dodavanje"?"listaPolaganja":string.Concat("Polaganje_",Model.Id))"
+              ajax-rezultat-replace="@(title=="Dodavanje"?"ne":"da")"
+              ajax-append-rezultat="@(title=="Dodavanje"?"da":"ne")">
+            @if (!Model.Id.HasValue)
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="UcenikId"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control" asp-for="UcenikId" asp-items="Model.Ucenici"></select>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="Ucenik"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control" asp-for="Ucenik" readonly />
+                    </div>
+                </div>
+
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x=>x.UcenikId)
+
+            }
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Bodovi"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Bodovi" min="0" max="100" />
+                </div>
+            </div>
+            <hr />
+            <div class="row mt-8">
+                <div class="col-md-3">
+                    <button class="btn btn-primary">Snimi</button>
+                </div>
+            </div>
+            @Html.HiddenFor(x=>x.PopravniIspitId)
+        </form>
+    </div>
+</div>

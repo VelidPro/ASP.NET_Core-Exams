@@ -7,10 +7,5 @@
         public string Prezime { get; set; }
         public string BrojIndeksa { get; set; }
 
-
-        public string GetImePrezime()
-        {
-            return Ime + " " + Prezime;
-        }
     }
 }

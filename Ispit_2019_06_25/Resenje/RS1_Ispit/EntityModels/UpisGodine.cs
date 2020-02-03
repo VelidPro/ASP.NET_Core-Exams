@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_Ispit_asp.net_core.EntityModels
@@ -20,8 +18,5 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         [ForeignKey(nameof(AkademskaGodinaId))]
         public virtual AkademskaGodina AkademskaGodina { get; set; }
         public int AkademskaGodinaId { get; set; }
-
-        public ICollection<IspitPolaganje> Polaganja { get; set; }
-        public ICollection<SlusaPredmet> Predmeti { get; set; }
     }
 }

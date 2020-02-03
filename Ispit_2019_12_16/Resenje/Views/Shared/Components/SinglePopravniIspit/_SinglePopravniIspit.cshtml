@@ -1,0 +1,11 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.PopravniIspitVM
+
+
+<tr id="@string.Concat("Popravni_",Model.Id)"  class="text-center">
+    <td>@Model.Datum.ToString("d")</td>
+    <td>@Model.Komisija</td>
+    <td>@Model.BrojUcenika</td>
+    <td>@Model.BrojKojiNisuPolozili</td>
+
+    <td><a asp-action="Uredi" asp-route-Id="@Model.Id">Uredi</a></td>
+</tr>
