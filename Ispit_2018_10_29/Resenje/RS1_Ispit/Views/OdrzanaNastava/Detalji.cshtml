@@ -1,0 +1,101 @@
+﻿@using System.Security.Cryptography.X509Certificates
+@model RS1_Ispit_asp.net_core.ViewModels.OdrzaniCasDetaljiVM
+@{
+    ViewData["Title"] = "Detalji";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row mt-5">
+    <h2>Editovanje casa</h2>
+</div>
+<hr />
+<div class="row">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="Datum"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control" asp-for="Datum" type="date" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+
+        <div class="col-md-5">
+            <div class="col-md-6">
+                <label class="control-label" asp-for="Odjeljenje"></label>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control" asp-for="Odjeljenje" readonly />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-5">
+            <form asp-action="EditOdrzaniCas" method="post" ajax-poziv="da">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Napomena"></label>
+                </div>
+                <div class="col-md-6">
+                    <textarea class="form-control" name="napomena" >@Model.Napomena</textarea>
+                </div>
+                <hr />
+                <div class="row mt-5">
+                    <div class="col-md-3 col-lg-2">
+                        <button type="submit" class="btn btn-primary">Snimi</button>
+                    </div>
+                </div>
+                <input type="hidden" name="odrzaniCasId" value="@Model.OdrzaniCasId"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">Ucenik</th>
+                    <th class="text-center">Ocjena</th>
+                    <th class="text-center">Prisutan</th>
+                    <th class="text-center">Opravdano odsutan</th>
+                    <th class="text-center">Akcija</th>
+                </tr>
+            </thead>
+            <tbody id="odrzaniCasovi">
+                @foreach (var x in Model.Prisustva)
+                {
+                    <tr id="@string.Concat("Prisustvo_",x.Id)" class="text-center">
+                        <td>@x.Ucenik</td>
+                        <td>@(x.IsPrisutan && x.Ocjena>0 ?x.Ocjena.ToString():"")</td>
+                        <td>
+                            <a ajax-poziv="da"
+                               asp-action="PrisutanToggle"
+                               asp-route-odrzaniCasStavkaId="@x.Id"
+                               ajax-rezultat="@string.Concat("Prisustvo_", x.Id)">
+                                @if (x.IsPrisutan)
+                                {
+                                    <span class="text-green">Prisutan</span>
+                                }
+                                else
+                                {
+                                    <span class="text-red">Odsutan</span>
+                                }
+                            </a>
+                        </td>
+                        <td>@(!x.IsPrisutan?x.OpravdanoOdsutan ? "DA" : "NE":"")</td>
+                        <td><a asp-action="UrediPrisustvo" asp-route-odrzaniCasStavkaId="@x.Id" ajax-poziv="da" ajax-rezultat="uredjivanjePrisustva">Uredi</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr />
+<div class="row mt-5" id="uredjivanjePrisustva"></div>
+
+

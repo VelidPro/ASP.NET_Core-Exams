@@ -1,0 +1,38 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.DodavanjeCasaVM
+    <div class="row">
+        <div class="col-md-6 col-lg-5 col-sm-12">
+            <form asp-action="DodajOdrzaniCas" method="post" ajax-poziv="da" ajax-rezultat-append="da" ajax-rezultat="listaOdrzanihCasova">
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="Nastavnik"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control" asp-for="Nastavnik" readonly/>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="DatumOdrzavanja"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control" asp-for="DatumOdrzavanja" type="date"/>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="PredajePredmetId"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control" asp-for="PredajePredmetId" asp-items="Model.OdjeljenjaPredmeti"></select>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <button class="btn btn-primary" type="submit">Snimi</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

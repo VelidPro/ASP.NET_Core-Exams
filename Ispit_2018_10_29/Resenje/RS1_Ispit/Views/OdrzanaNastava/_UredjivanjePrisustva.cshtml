@@ -1,0 +1,58 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.UredjivanjePrisustvaVM
+
+<div class="row mt-5">
+    <h3>Uredjivanje prisustva</h3>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="UrediPrisustvo" method="post" ajax-poziv="da" ajax-rezultat="@string.Concat("Prisustvo_",Model.OdrzaniCasStavkaId)">
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="UcenikGodina"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="UcenikGodina" readonly />
+                </div>
+            </div>
+
+            @if (Model.IsPrisutan)
+            {
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="Ocjena"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control" asp-for="Ocjena"  />
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="Napomena"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <textarea class="form-control" asp-for="Napomena"></textarea>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="OpravdanoOdsutan"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control" asp-for="OpravdanoOdsutan" type="checkbox" />
+                    </div>
+                </div>
+            }
+            <hr/>
+            <div class="row mt-5">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Snimi</button>
+                </div>
+            </div>
+            @Html.HiddenFor(x=>x.IsPrisutan)
+            @Html.HiddenFor(x=>x.OdrzaniCasStavkaId)
+        </form>
+    </div>
+</div>

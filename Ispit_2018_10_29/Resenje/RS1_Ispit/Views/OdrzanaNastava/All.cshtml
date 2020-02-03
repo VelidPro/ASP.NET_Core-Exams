@@ -1,0 +1,46 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.OdrzaniCasoviVM
+@{
+    ViewData["Title"] = "All";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-5">Odrzani casovi</h2>
+<hr/>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th class="text-center">Datum odrzanog casa</th>
+        <th class="text-center">Skolska godina / Odjeljenje</th>
+        <th class="text-center">Predmet</th>
+        <th class="text-center">Odsutni ucenici</th>
+        <th class="text-center">Akcija</th>
+    </tr>
+    </thead>
+    <tbody id="listaOdrzanihCasova">
+    @foreach (var x in Model.OdrzaniCasovi)
+    {
+        <tr class="text-center" id="@(string.Concat("OdrzaniCas_",x.Id))">
+            <td>@x.Datum.ToString("d")</td>
+            <td>@x.SkGodinaOdjeljenje</td>
+            <td>@x.Predmet</td>
+            <td>@string.Join(", ",x.OdsutniUcenici)</td>
+            <td>
+                <a asp-action="Detalji" asp-route-odrzaniCasId="@x.Id">Edit</a>
+                |
+                <a asp-action="Obrisi" asp-route-odrzaniCasId="@x.Id" ajax-poziv="da" ajax-remove="da" ajax-remove-id="@(string.Concat("OdrzaniCas_",x.Id))">Obrisi</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<hr/>
+<div class="row mt-5">
+    <div class="col-md-3">
+        <a class="btn btn-primary" asp-action="DodajNoviCas" asp-route-nastavnikId="@Model.NastavnikId" ajax-poziv="da" ajax-rezultat="dodavanjeCasa">Dodaj</a>
+    </div>
+</div>
+<hr/>
+<div class="row" id="dodavanjeCasa">
+
+</div>
+

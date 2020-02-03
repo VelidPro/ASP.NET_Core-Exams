@@ -1,0 +1,13 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.OdrzaniCasVM
+
+<tr class="text-center" id=@(string.Concat("OdrzaniCas_",Model.Id))>
+    <td>@Model.Datum.ToString("d")</td>
+    <td>@Model.SkGodinaOdjeljenje</td>
+    <td>@Model.Predmet</td>
+    <td>@string.Join(", ", Model.OdsutniUcenici)</td>
+    <td>
+        <a asp-action="Detalji" asp-route-odrzaniCasId="@Model.Id">Edit</a>
+        |
+        <a asp-action="Obrisi" asp-route-odrzaniCasId="@Model.Id" ajax-poziv="da"  ajax-remove="da" ajax-remove-id="@(string.Concat("OdrzaniCas_",Model.Id))">Obrisi</a>
+    </td>
+</tr>

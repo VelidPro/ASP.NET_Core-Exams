@@ -1,0 +1,21 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.OdrzaniCasStavkaVM
+
+<td>@Model.Ucenik</td>
+<td>@(Model.IsPrisutan && Model.Ocjena>0 ? Model.Ocjena.ToString() : "")</td>
+<td>
+    <a ajax-poziv="da"
+       asp-action="PrisutanToggle"
+       asp-route-odrzaniCasStavkaId="@Model.Id"
+       ajax-rezultat="@string.Concat("Prisustvo_", Model.Id)">
+        @if (Model.IsPrisutan)
+        {
+            <span class="text-green">Prisutan</span>
+        }
+        else
+        {
+            <span class="text-red">Odsutan</span>
+        }
+    </a>
+</td>
+<td>@(!Model.IsPrisutan ? Model.OpravdanoOdsutan ? "DA" : "NE" : "")</td>
+<td><a asp-action="UrediPrisustvo" asp-route-odrzaniCasStavkaId="@Model.Id" ajax-poziv="da" ajax-rezultat="uredjivanjePrisustva">Uredi</a></td>
