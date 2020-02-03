@@ -162,16 +162,16 @@ namespace RS1_Ispit_asp.net_core.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     IsPrisutupio = table.Column<bool>(nullable: false),
-                    MaturskiIspitId = table.Column<int>(nullable: false),
                     OsvojeniBodovi = table.Column<int>(nullable: false),
+                    PopravniIspitId = table.Column<int>(nullable: false),
                     UcenikId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MaturskiIspitStavke", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MaturskiIspitStavke_MaturskiIspiti_MaturskiIspitId",
-                        column: x => x.MaturskiIspitId,
+                        name: "FK_MaturskiIspitStavke_MaturskiIspiti_PopravniIspitId",
+                        column: x => x.PopravniIspitId,
                         principalTable: "MaturskiIspiti",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -301,9 +301,9 @@ namespace RS1_Ispit_asp.net_core.Migrations
                 column: "SkolskaGodinaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MaturskiIspitStavke_MaturskiIspitId",
+                name: "IX_MaturskiIspitStavke_PopravniIspitId",
                 table: "MaturskiIspitStavke",
-                column: "MaturskiIspitId");
+                column: "PopravniIspitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MaturskiIspitStavke_UcenikId",

@@ -11,9 +11,10 @@ using System;
 namespace RS1_Ispit_asp.net_core.Migrations
 {
     [DbContext(typeof(MojContext))]
-    partial class MojContextModelSnapshot : ModelSnapshot
+    [Migration("20200203174404_InitDB")]
+    partial class InitDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,6 +112,8 @@ namespace RS1_Ispit_asp.net_core.Migrations
 
                     b.Property<string>("Napomena");
 
+                    b.Property<int>("NastavnikId");
+
                     b.Property<int>("PredmetId");
 
                     b.Property<int>("SkolaId");
@@ -119,31 +122,15 @@ namespace RS1_Ispit_asp.net_core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("NastavnikId");
+
                     b.HasIndex("PredmetId");
 
                     b.HasIndex("SkolaId");
 
                     b.HasIndex("SkolskaGodinaId");
 
-                    b.ToTable("PopravniIspiti");
-                });
-
-            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PopravniIspitKomisija", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("NastavnikId");
-
-                    b.Property<int>("PopravniIspitId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NastavnikId");
-
-                    b.HasIndex("PopravniIspitId");
-
-                    b.ToTable("PopravniIspitKomisija");
+                    b.ToTable("MaturskiIspiti");
                 });
 
             modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PopravniIspitStavka", b =>
@@ -151,11 +138,9 @@ namespace RS1_Ispit_asp.net_core.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("ImaPravoNaIzlazask");
-
                     b.Property<bool>("IsPrisutupio");
 
-                    b.Property<int?>("OsvojeniBodovi");
+                    b.Property<int>("OsvojeniBodovi");
 
                     b.Property<int>("PopravniIspitId");
 
@@ -167,7 +152,7 @@ namespace RS1_Ispit_asp.net_core.Migrations
 
                     b.HasIndex("UcenikId");
 
-                    b.ToTable("PopravniIspitStavke");
+                    b.ToTable("MaturskiIspitStavke");
                 });
 
             modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PredajePredmet", b =>
@@ -290,6 +275,11 @@ namespace RS1_Ispit_asp.net_core.Migrations
 
             modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PopravniIspit", b =>
                 {
+                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Nastavnik", "Nastavnik")
+                        .WithMany()
+                        .HasForeignKey("NastavnikId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Predmet", "Predmet")
                         .WithMany()
                         .HasForeignKey("PredmetId")
@@ -303,19 +293,6 @@ namespace RS1_Ispit_asp.net_core.Migrations
                     b.HasOne("RS1_Ispit_asp.net_core.EntityModels.SkolskaGodina", "SkolskaGodina")
                         .WithMany()
                         .HasForeignKey("SkolskaGodinaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PopravniIspitKomisija", b =>
-                {
-                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Nastavnik", "Nastavnik")
-                        .WithMany()
-                        .HasForeignKey("NastavnikId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.PopravniIspit", "PopravniIspit")
-                        .WithMany()
-                        .HasForeignKey("PopravniIspitId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -23,7 +23,7 @@ namespace RS1_Ispit_asp.net_core
         {
             services.AddDbContext<MojContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("cs1")));
-            services.AddScoped<IMaturskiIspitService, MaturskiIspitService>();
+            services.AddScoped<IPopravniIspitService, PopravniIspitService>();
 
             services.AddMvc();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache

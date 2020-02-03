@@ -23,8 +23,8 @@ namespace RS1_Ispit_asp.net_core.EF
             modelBuilder.Entity<PredajePredmet>().HasOne(x => x.Odjeljenje)
                 .WithMany().OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<MaturskiIspitStavka>()
-                .HasOne(x => x.MaturskiIspit)
+            modelBuilder.Entity<PopravniIspitStavka>()
+                .HasOne(x => x.PopravniIspit)
                 .WithMany(x => x.Ucenici)
                 .OnDelete(DeleteBehavior.Restrict);
         }
@@ -40,7 +40,8 @@ namespace RS1_Ispit_asp.net_core.EF
         public DbSet<PredajePredmet> PredajePredmet { get; set; }
         public DbSet<Skola> Skola { get; set; }
         public DbSet<SkolskaGodina> SkolskaGodina { get; set; }
-        public DbSet<MaturskiIspit> MaturskiIspiti { get; set; }
-        public DbSet<MaturskiIspitStavka> MaturskiIspitStavke { get; set; }
+        public DbSet<PopravniIspit> PopravniIspiti { get; set; }
+        public DbSet<PopravniIspitStavka> PopravniIspitStavke { get; set; }
+        public DbSet<PopravniIspitKomisija> PopravniIspitKomisija { get; set; }
     }
 }

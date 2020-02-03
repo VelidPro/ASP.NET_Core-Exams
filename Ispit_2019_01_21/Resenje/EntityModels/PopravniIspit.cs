@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_Ispit_asp.net_core.EntityModels
 {
-    public class MaturskiIspit
+    public class PopravniIspit
     {
         public int Id { get; set; }
         public DateTime DatumOdrzavanja { get; set; }
@@ -15,10 +15,6 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         [ForeignKey(nameof(SkolaId))] 
         public Skola Skola { get; set; }
 
-        public int NastavnikId { get; set; }
-        [ForeignKey(nameof(NastavnikId))]
-        public Nastavnik Nastavnik { get; set; }
-
         public int PredmetId { get; set; }
         [ForeignKey(nameof(PredmetId))]
         public Predmet Predmet { get; set; }
@@ -27,6 +23,6 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         [ForeignKey(nameof(SkolskaGodinaId))]
         public SkolskaGodina SkolskaGodina { get; set; }
 
-        public ICollection<MaturskiIspitStavka> Ucenici { get; set; }
+        public ICollection<PopravniIspitStavka> Ucenici { get; set; }
     }
 }

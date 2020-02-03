@@ -1,0 +1,65 @@
+﻿@model RS1_Ispit_asp.net_core.ViewComponents.PopravniIspitStavkaVM
+
+<tr id="@string.Concat("Polaganje_",Model.Id)" class="text-center">
+    <td>@Model.Ucenik</td>
+    <td>@Model.Odjeljenje</td>
+    <td>@Model.BrojUDnevniku</td>
+    <td>
+        @if (!Model.ImaPravoIzlaska)
+        {
+            <span class="text-danger">Nema pravo na popravni</span>
+        }
+        else
+        {
+            if (Model.IsPristupio)
+            {
+                <a asp-action="PolaganjePristupioToggle" asp-route-Id="@Model.Id"
+                   ajax-poziv="da"
+                   ajax-rezultat-replace="da"
+                   ajax-rezultat="@string.Concat("Polaganje_",Model.Id)"
+                   >DA</a>
+
+            }
+            else
+            {
+                <a asp-action="PolaganjePristupioToggle"  asp-route-Id="@Model.Id" 
+                   ajax-poziv="da"
+                   ajax-rezultat="@string.Concat("Polaganje_",Model.Id)"
+                   ajax-rezultat-replace="da"
+                   class="text-danger">NE</a>
+
+            }
+        }
+    </td>
+    <td>
+        @if (!Model.ImaPravoIzlaska)
+        {
+            <span>0</span>
+        }
+        else if (Model.IsPristupio)
+        {
+    <div class="row text-center">
+        <div class="col-md-offset-4">
+
+            <div class="col-md-7">
+                <form asp-action="EvidencijaBodova" method="post" ajax-poziv="da">
+                    <input type="hidden" value="@Model.Id" name="popravniIspitStavkaId" />
+                    <input ajax-change-trigger="da" value="@Model.OsvojenoBodova" class="form-control text-center" name="bodovi" min="0" max="100" type="number" />
+                </form>
+            </div>
+        </div>
+    </div>
+        }
+        else
+        {
+            <span>X</span>
+        }
+    </td>
+    <td>
+    @if (Model.IsPristupio)
+    {
+        <a asp-action="UrediPolaganje" asp-route-popravniIspitStavkaId="@Model.Id"
+           ajax-poziv="da" ajax-rezultat="polaganjeForm">Uredi</a>
+    }
+        </td>
+</tr>

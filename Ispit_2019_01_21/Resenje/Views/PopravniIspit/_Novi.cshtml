@@ -1,0 +1,81 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.DodavanjePopravnogIspitaVM
+
+<div class="row mt-8">
+    <div class="col-md-5 col-lg-4">
+        <form asp-action="Dodaj" method="post" ajax-poziv="da" ajax-rezultat="listaPopravnih" ajax-append-rezultat="da">
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label">1. Clan komisije</label>
+                </div>
+                <div class="col-md-6">
+                    <select asp-for="ClanoviKomisijaIds[0]" asp-items="Model.ClanoviKomisije" class="form-control"></select>
+                </div>
+            </div>
+
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label">2. Clan komisije</label>
+                </div>
+                <div class="col-md-6">
+                    <select asp-for="ClanoviKomisijaIds[1]" class="form-control" asp-items="Model.ClanoviKomisije"></select>
+                </div>
+            </div>
+
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label">3. Clan komisije</label>
+                </div>
+                <div class="col-md-6">
+                    <select asp-for="ClanoviKomisijaIds[2]" class="form-control" asp-items="Model.ClanoviKomisije"></select>
+                </div>
+            </div>
+
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="DatumIspita"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="DatumIspita" type="date" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Skola"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="Skola" class="form-control" readonly />
+                </div>
+            </div>
+
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="SkolskaGodina"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="SkolskaGodina" class="form-control" readonly />
+                </div>
+            </div>
+
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Predmet"></label>
+                </div>
+                <div class="col-md-6">
+                    <input asp-for="Predmet" class="form-control" readonly />
+                </div>
+            </div>
+            <hr />
+            <div class="row mt-8">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Snimi</button>
+                </div>
+            </div>
+            @Html.HiddenFor(x => x.PredmetId)
+            @Html.HiddenFor(x => x.SkolaId)
+            @Html.HiddenFor(x => x.SkolskaGodinaId)
+
+
+        </form>
+    </div>
+</div>

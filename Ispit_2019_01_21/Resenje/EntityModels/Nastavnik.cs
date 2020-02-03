@@ -8,6 +8,11 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         public string Ime { get; set; }
         public string Prezime { get; set; }
 
-    
+
+
+        public string ImePrezime()
+        {
+            return Ime + " " + Prezime;
+        }
     }
 }

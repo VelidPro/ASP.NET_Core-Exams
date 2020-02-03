@@ -11,9 +11,10 @@ using System;
 namespace RS1_Ispit_asp.net_core.Migrations
 {
     [DbContext(typeof(MojContext))]
-    partial class MojContextModelSnapshot : ModelSnapshot
+    [Migration("20200203191858_Added_column_ImaPravoNaIzlazak")]
+    partial class Added_column_ImaPravoNaIzlazak
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
