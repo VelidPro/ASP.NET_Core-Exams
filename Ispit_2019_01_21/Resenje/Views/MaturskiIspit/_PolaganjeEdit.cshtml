@@ -1,0 +1,35 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.MaturskiIspitStavkaInputVM
+
+
+<div class="row mt-8">
+    <h3>Uredjivanje polaganja</h3>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="UrediPolaganje" ajax-poziv="da" ajax-rezultat="@string.Concat("Stavka_", Model.Id)"
+              ajax-replace-rezultat="da">
+            @Html.HiddenFor(x=>x.Id)
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Ucenik"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Ucenik" readonly/>
+                </div>
+            </div>
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Bodovi"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Bodovi" type="number" min="0" max="100"/>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <button class="btn btn-primary" type="submit">Snimi</button>
+            </div>
+        </form>
+    </div>
+</div>

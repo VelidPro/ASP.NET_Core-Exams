@@ -78,7 +78,7 @@ namespace RS1_Ispit_asp.net_core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MaturskiIspiti",
+                name: "MaturskiIspit",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -87,36 +87,29 @@ namespace RS1_Ispit_asp.net_core.Migrations
                     Napomena = table.Column<string>(nullable: true),
                     NastavnikId = table.Column<int>(nullable: false),
                     PredmetId = table.Column<int>(nullable: false),
-                    SkolaId = table.Column<int>(nullable: false),
-                    SkolskaGodinaId = table.Column<int>(nullable: false)
+                    SkolaId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MaturskiIspiti", x => x.Id);
+                    table.PrimaryKey("PK_MaturskiIspit", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MaturskiIspiti_Nastavnik_NastavnikId",
+                        name: "FK_MaturskiIspit_Nastavnik_NastavnikId",
                         column: x => x.NastavnikId,
                         principalTable: "Nastavnik",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_MaturskiIspiti_Predmet_PredmetId",
+                        name: "FK_MaturskiIspit_Predmet_PredmetId",
                         column: x => x.PredmetId,
                         principalTable: "Predmet",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_MaturskiIspiti_Skola_SkolaId",
+                        name: "FK_MaturskiIspit_Skola_SkolaId",
                         column: x => x.SkolaId,
                         principalTable: "Skola",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MaturskiIspiti_SkolskaGodina_SkolskaGodinaId",
-                        column: x => x.SkolskaGodinaId,
-                        principalTable: "SkolskaGodina",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -140,7 +133,7 @@ namespace RS1_Ispit_asp.net_core.Migrations
                         column: x => x.RazrednikID,
                         principalTable: "Nastavnik",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Odjeljenje_Skola_SkolaID",
                         column: x => x.SkolaID,
@@ -156,31 +149,31 @@ namespace RS1_Ispit_asp.net_core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MaturskiIspitStavke",
+                name: "MaturskiIspitStavka",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IsPrisutupio = table.Column<bool>(nullable: false),
+                    IsPristupio = table.Column<bool>(nullable: false),
+                    MaturskiIspitId = table.Column<int>(nullable: false),
                     OsvojeniBodovi = table.Column<int>(nullable: false),
-                    PopravniIspitId = table.Column<int>(nullable: false),
                     UcenikId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MaturskiIspitStavke", x => x.Id);
+                    table.PrimaryKey("PK_MaturskiIspitStavka", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MaturskiIspitStavke_MaturskiIspiti_PopravniIspitId",
-                        column: x => x.PopravniIspitId,
-                        principalTable: "MaturskiIspiti",
+                        name: "FK_MaturskiIspitStavka_MaturskiIspit_MaturskiIspitId",
+                        column: x => x.MaturskiIspitId,
+                        principalTable: "MaturskiIspit",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_MaturskiIspitStavke_Ucenik_UcenikId",
+                        name: "FK_MaturskiIspitStavka_Ucenik_UcenikId",
                         column: x => x.UcenikId,
                         principalTable: "Ucenik",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -201,13 +194,13 @@ namespace RS1_Ispit_asp.net_core.Migrations
                         column: x => x.OdjeljenjeId,
                         principalTable: "Odjeljenje",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_OdjeljenjeStavka_Ucenik_UcenikId",
                         column: x => x.UcenikId,
                         principalTable: "Ucenik",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -228,7 +221,7 @@ namespace RS1_Ispit_asp.net_core.Migrations
                         column: x => x.NastavnikID,
                         principalTable: "Nastavnik",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_PredajePredmet_Odjeljenje_OdjeljenjeID",
                         column: x => x.OdjeljenjeID,
@@ -240,7 +233,7 @@ namespace RS1_Ispit_asp.net_core.Migrations
                         column: x => x.PredmetID,
                         principalTable: "Predmet",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -261,13 +254,13 @@ namespace RS1_Ispit_asp.net_core.Migrations
                         column: x => x.OdjeljenjeStavkaId,
                         principalTable: "OdjeljenjeStavka",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_DodjeljenPredmet_Predmet_PredmetId",
                         column: x => x.PredmetId,
                         principalTable: "Predmet",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -281,33 +274,28 @@ namespace RS1_Ispit_asp.net_core.Migrations
                 column: "PredmetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MaturskiIspiti_NastavnikId",
-                table: "MaturskiIspiti",
+                name: "IX_MaturskiIspit_NastavnikId",
+                table: "MaturskiIspit",
                 column: "NastavnikId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MaturskiIspiti_PredmetId",
-                table: "MaturskiIspiti",
+                name: "IX_MaturskiIspit_PredmetId",
+                table: "MaturskiIspit",
                 column: "PredmetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MaturskiIspiti_SkolaId",
-                table: "MaturskiIspiti",
+                name: "IX_MaturskiIspit_SkolaId",
+                table: "MaturskiIspit",
                 column: "SkolaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MaturskiIspiti_SkolskaGodinaId",
-                table: "MaturskiIspiti",
-                column: "SkolskaGodinaId");
+                name: "IX_MaturskiIspitStavka_MaturskiIspitId",
+                table: "MaturskiIspitStavka",
+                column: "MaturskiIspitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MaturskiIspitStavke_PopravniIspitId",
-                table: "MaturskiIspitStavke",
-                column: "PopravniIspitId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MaturskiIspitStavke_UcenikId",
-                table: "MaturskiIspitStavke",
+                name: "IX_MaturskiIspitStavka_UcenikId",
+                table: "MaturskiIspitStavka",
                 column: "UcenikId");
 
             migrationBuilder.CreateIndex(
@@ -357,7 +345,7 @@ namespace RS1_Ispit_asp.net_core.Migrations
                 name: "DodjeljenPredmet");
 
             migrationBuilder.DropTable(
-                name: "MaturskiIspitStavke");
+                name: "MaturskiIspitStavka");
 
             migrationBuilder.DropTable(
                 name: "PredajePredmet");
@@ -366,7 +354,7 @@ namespace RS1_Ispit_asp.net_core.Migrations
                 name: "OdjeljenjeStavka");
 
             migrationBuilder.DropTable(
-                name: "MaturskiIspiti");
+                name: "MaturskiIspit");
 
             migrationBuilder.DropTable(
                 name: "Odjeljenje");

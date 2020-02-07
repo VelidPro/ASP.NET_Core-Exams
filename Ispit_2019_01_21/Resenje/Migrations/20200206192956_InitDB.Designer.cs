@@ -11,8 +11,8 @@ using System;
 namespace RS1_Ispit_asp.net_core.Migrations
 {
     [DbContext(typeof(MojContext))]
-    [Migration("20200203191858_Added_column_ImaPravoNaIzlazak")]
-    partial class Added_column_ImaPravoNaIzlazak
+    [Migration("20200206192956_InitDB")]
+    partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,54 @@ namespace RS1_Ispit_asp.net_core.Migrations
                     b.HasIndex("PredmetId");
 
                     b.ToTable("DodjeljenPredmet");
+                });
+
+            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.MaturskiIspit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DatumOdrzavanja");
+
+                    b.Property<string>("Napomena");
+
+                    b.Property<int>("NastavnikId");
+
+                    b.Property<int>("PredmetId");
+
+                    b.Property<int>("SkolaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NastavnikId");
+
+                    b.HasIndex("PredmetId");
+
+                    b.HasIndex("SkolaId");
+
+                    b.ToTable("MaturskiIspit");
+                });
+
+            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.MaturskiIspitStavka", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsPristupio");
+
+                    b.Property<int>("MaturskiIspitId");
+
+                    b.Property<int>("OsvojeniBodovi");
+
+                    b.Property<int>("UcenikId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaturskiIspitId");
+
+                    b.HasIndex("UcenikId");
+
+                    b.ToTable("MaturskiIspitStavka");
                 });
 
             modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.Nastavnik", b =>
@@ -101,74 +149,6 @@ namespace RS1_Ispit_asp.net_core.Migrations
                     b.HasIndex("UcenikId");
 
                     b.ToTable("OdjeljenjeStavka");
-                });
-
-            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PopravniIspit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DatumOdrzavanja");
-
-                    b.Property<string>("Napomena");
-
-                    b.Property<int>("PredmetId");
-
-                    b.Property<int>("SkolaId");
-
-                    b.Property<int>("SkolskaGodinaId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PredmetId");
-
-                    b.HasIndex("SkolaId");
-
-                    b.HasIndex("SkolskaGodinaId");
-
-                    b.ToTable("PopravniIspiti");
-                });
-
-            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PopravniIspitKomisija", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("NastavnikId");
-
-                    b.Property<int>("PopravniIspitId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NastavnikId");
-
-                    b.HasIndex("PopravniIspitId");
-
-                    b.ToTable("PopravniIspitKomisija");
-                });
-
-            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PopravniIspitStavka", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("ImaPravoNaIzlazask");
-
-                    b.Property<bool>("IsPrisutupio");
-
-                    b.Property<int?>("OsvojeniBodovi");
-
-                    b.Property<int>("PopravniIspitId");
-
-                    b.Property<int>("UcenikId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PopravniIspitId");
-
-                    b.HasIndex("UcenikId");
-
-                    b.ToTable("PopravniIspitStavke");
                 });
 
             modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PredajePredmet", b =>
@@ -258,6 +238,37 @@ namespace RS1_Ispit_asp.net_core.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.MaturskiIspit", b =>
+                {
+                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Nastavnik", "Nastavnik")
+                        .WithMany()
+                        .HasForeignKey("NastavnikId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Predmet", "Predmet")
+                        .WithMany()
+                        .HasForeignKey("PredmetId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Skola", "Skola")
+                        .WithMany()
+                        .HasForeignKey("SkolaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.MaturskiIspitStavka", b =>
+                {
+                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.MaturskiIspit", "MaturskiIspit")
+                        .WithMany("PrijavljeniUcenici")
+                        .HasForeignKey("MaturskiIspitId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Ucenik", "Ucenik")
+                        .WithMany()
+                        .HasForeignKey("UcenikId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.Odjeljenje", b =>
                 {
                     b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Nastavnik", "Razrednik")
@@ -282,50 +293,6 @@ namespace RS1_Ispit_asp.net_core.Migrations
                         .WithMany()
                         .HasForeignKey("OdjeljenjeId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Ucenik", "Ucenik")
-                        .WithMany()
-                        .HasForeignKey("UcenikId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PopravniIspit", b =>
-                {
-                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Predmet", "Predmet")
-                        .WithMany()
-                        .HasForeignKey("PredmetId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Skola", "Skola")
-                        .WithMany()
-                        .HasForeignKey("SkolaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.SkolskaGodina", "SkolskaGodina")
-                        .WithMany()
-                        .HasForeignKey("SkolskaGodinaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PopravniIspitKomisija", b =>
-                {
-                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Nastavnik", "Nastavnik")
-                        .WithMany()
-                        .HasForeignKey("NastavnikId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.PopravniIspit", "PopravniIspit")
-                        .WithMany()
-                        .HasForeignKey("PopravniIspitId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.PopravniIspitStavka", b =>
-                {
-                    b.HasOne("RS1_Ispit_asp.net_core.EntityModels.PopravniIspit", "PopravniIspit")
-                        .WithMany("Ucenici")
-                        .HasForeignKey("PopravniIspitId")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Ucenik", "Ucenik")
                         .WithMany()

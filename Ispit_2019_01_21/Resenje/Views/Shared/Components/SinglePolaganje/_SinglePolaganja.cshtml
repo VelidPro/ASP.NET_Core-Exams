@@ -1,0 +1,53 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.MaturskiIspitStavkaVM
+@{
+    var rowNumber = (int) ViewData["rowNumber"];
+}
+
+<tr id="@string.Concat("Stavka_",Model.Id)" class="text-center">
+    <td><span class="rowNumber">0</span> @Model.Ucenik</td>
+    <td>@Model.ProsjekOcjena.ToString("F1")</td>
+    <td>
+        <a asp-action="PrisustvoToggler" asp-route-maturskiIspitStavkaId="@Model.Id"
+           ajax-poziv="da" ajax-replace-rezultat="da" ajax-rezultat="@string.Concat("Stavka_",Model.Id)">
+            @if (!Model.IsPristupio)
+            {
+                <span class="text-danger">NE</span>
+            }
+            else
+            {
+                <span class="text-success">DA</span>
+
+            }
+        </a>
+    </td>
+    <td>
+        @if (Model.IsPristupio && Model.OsvojioBodova.HasValue)
+        {
+            <div class="row text-center">
+                <div class="col-md-offset-4">
+                    <div class="col-md-6">
+                        <form method="post" asp-action="EvidencijaBodova" ajax-poziv="da">
+                            <input type="hidden" name="maturskiIspitStavkaId" value="@Model.Id" />
+                            <input ajax-submit-trigger="da"
+                                   type="number"
+                                   name="brojBodova"
+                                   value="@Model.OsvojioBodova" min="0" max="100"
+                                   class="form-control text-center" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <span>X</span>
+        }
+    </td>
+    <td>
+        @if (Model.IsPristupio)
+        {
+            <a asp-action="UrediPolaganje" asp-route-maturskiIspitStavkaId="@Model.Id"
+               ajax-poziv="da" ajax-rezultat="uredjivanjePolaganja">Uredi</a>
+        }
+    </td>
+</tr>

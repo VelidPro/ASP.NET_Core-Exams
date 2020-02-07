@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace RS1_Ispit_asp.net_core.EntityModels
+﻿namespace RS1_Ispit_asp.net_core.EntityModels
 {
     public class Nastavnik
     {
@@ -9,10 +7,7 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         public string Prezime { get; set; }
 
 
+        public string ImePrezime() => Ime + " " + Prezime;
 
-        public string ImePrezime()
-        {
-            return Ime + " " + Prezime;
-        }
     }
 }

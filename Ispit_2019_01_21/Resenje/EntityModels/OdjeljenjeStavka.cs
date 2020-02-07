@@ -2,7 +2,7 @@
 
 namespace RS1_Ispit_asp.net_core.EntityModels
 {
-   
+
     public class OdjeljenjeStavka
     {
         public int Id { get; set; }

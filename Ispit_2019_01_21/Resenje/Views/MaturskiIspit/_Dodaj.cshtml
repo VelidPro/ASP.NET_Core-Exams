@@ -1,0 +1,64 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.MaturskiIspitInputVM
+
+<div class="row mt-5">
+    <h3>Dodavanje maturskog ispita</h3>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Dodaj" method="post" ajax-poziv="da">
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="SkolaId"></label>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control" asp-for="SkolaId" asp-items="Model.Skole"></select>
+                </div>
+            </div>
+
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Nastavnik"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Nastavnik" readonly />
+                </div>
+                @Html.HiddenFor(x => x.NastavnikId)
+            </div>
+
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="SkolskaGodina"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="SkolskaGodina" readonly/>
+                </div>
+                @Html.HiddenFor(x=>x.SkolskaGodinaId)
+            </div>
+
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="DatumIspita"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="DatumIspita" type="date"/>
+                </div>
+            </div>
+
+            <div class="row mt-8">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="PredmetId"></label>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control" asp-for="PredmetId" asp-items="Model.Predmeti"></select>
+                </div>
+            </div>
+            <hr />
+            <div class="row mt-8">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Snimi</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

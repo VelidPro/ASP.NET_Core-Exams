@@ -1,0 +1,33 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.NastavniciVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-8">
+    <h2>Lista nastavnika</h2>
+</div>
+
+<hr/>
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Skola</th>
+            <th>Ime i prezime nastavnika</th>
+            <th>Akcija</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach(var x in Model.Nastavnici)
+        {
+            <tr>
+                <td>@x.Skola</td>
+                <td>@x.ImePrezime</td>
+                <td><a asp-action="GetTakmicenja" asp-route-nastavnikId="@x.Id">Odaberi</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
