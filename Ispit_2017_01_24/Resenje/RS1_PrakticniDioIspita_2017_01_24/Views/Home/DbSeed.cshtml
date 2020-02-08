@@ -1,0 +1,21 @@
+﻿@using RS1_PrakticniDioIspita_2017_01_24.EF
+@inject MojContext _context
+@{
+    ViewData["Title"] = "DbSeed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Seeding data</h2>
+
+<hr />
+<h4>Ucenik: @_context.Ucenici.Count()</h4>
+<h4>Predmet: @_context.Predmeti.Count()</h4>
+<h4>Nastavnik: @_context.Nastavnici.Count()</h4>
+<h4>Odjeljenje: @_context.Odjeljenja.Count()</h4>
+<h4>Angazovani: @_context.Angazovani.Count()</h4>
+<h4>OdrzaniCas: @_context.OdrzaniCasovi.Count()</h4>
+<h4>OdrzaniCasDetalji: @_context.OdrzaniCasDetalji.Count()</h4>
+<h4>UpisUOdjeljenje: @_context.UpisiUOdjeljenja.Count()</h4>
+
+
+
