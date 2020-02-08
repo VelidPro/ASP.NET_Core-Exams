@@ -10,21 +10,6 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Nastavnici",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Ime = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    Username = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Nastavnici", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Predmeti",
                 columns: table => new
                 {
@@ -48,6 +33,62 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ucenici", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Password = table.Column<string>(nullable: true),
+                    Username = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AuthorizationToken",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    IpAddress = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
+                    Value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuthorizationToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AuthorizationToken_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Nastavnici",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Ime = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Nastavnici", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Nastavnici_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,6 +237,16 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
                 column: "PredmetId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AuthorizationToken_UserId",
+                table: "AuthorizationToken",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Nastavnici_UserId",
+                table: "Nastavnici",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Odjeljenja_NastavnikId",
                 table: "Odjeljenja",
                 column: "NastavnikId");
@@ -229,6 +280,9 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AuthorizationToken");
+
+            migrationBuilder.DropTable(
                 name: "OdrzaniCasDetalji");
 
             migrationBuilder.DropTable(
@@ -251,6 +305,9 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
 
             migrationBuilder.DropTable(
                 name: "Nastavnici");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

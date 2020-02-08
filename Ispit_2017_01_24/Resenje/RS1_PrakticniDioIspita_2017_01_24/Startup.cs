@@ -25,6 +25,7 @@ namespace RS1_PrakticniDioIspita_2017_01_24
         {
             string connectionString = Configuration.GetConnectionString("Januar");
             services.AddDbContext<MojContext>(o => o.UseSqlServer(connectionString));
+            services.AddSession();
             services.AddMvc();
         }
 
@@ -43,6 +44,7 @@ namespace RS1_PrakticniDioIspita_2017_01_24
 
             app.UseStaticFiles();
 
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

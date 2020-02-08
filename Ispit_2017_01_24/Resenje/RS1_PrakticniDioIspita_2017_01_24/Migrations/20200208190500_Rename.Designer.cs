@@ -11,8 +11,8 @@ using System;
 namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
 {
     [DbContext(typeof(MojContext))]
-    [Migration("20200207213745_InitDB")]
-    partial class InitDB
+    [Migration("20200208190500_Rename")]
+    partial class Rename
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,26 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
                     b.ToTable("Angazovani");
                 });
 
+            modelBuilder.Entity("RS1_PrakticniDioIspita_2017_01_24.Models.AuthorizationToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<string>("IpAddress");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AuthorizationTokens");
+                });
+
             modelBuilder.Entity("RS1_PrakticniDioIspita_2017_01_24.Models.Nastavnik", b =>
                 {
                     b.Property<int>("Id")
@@ -50,11 +70,11 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
 
                     b.Property<string>("Ime");
 
-                    b.Property<string>("Password");
-
-                    b.Property<string>("Username");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Nastavnici");
                 });
@@ -161,6 +181,20 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
                     b.ToTable("UpisiUOdjeljenja");
                 });
 
+            modelBuilder.Entity("RS1_PrakticniDioIspita_2017_01_24.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Password");
+
+                    b.Property<string>("Username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("RS1_PrakticniDioIspita_2017_01_24.Models.Angazovan", b =>
                 {
                     b.HasOne("RS1_PrakticniDioIspita_2017_01_24.Models.Nastavnik", "Nastavnik")
@@ -176,6 +210,22 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
                     b.HasOne("RS1_PrakticniDioIspita_2017_01_24.Models.Predmet", "Predmet")
                         .WithMany()
                         .HasForeignKey("PredmetId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("RS1_PrakticniDioIspita_2017_01_24.Models.AuthorizationToken", b =>
+                {
+                    b.HasOne("RS1_PrakticniDioIspita_2017_01_24.Models.User", "User")
+                        .WithMany("AuthTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("RS1_PrakticniDioIspita_2017_01_24.Models.Nastavnik", b =>
+                {
+                    b.HasOne("RS1_PrakticniDioIspita_2017_01_24.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

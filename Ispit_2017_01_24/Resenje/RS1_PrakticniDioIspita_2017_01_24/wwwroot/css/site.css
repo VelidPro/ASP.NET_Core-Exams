@@ -1,8 +1,24 @@
-﻿body {
+﻿html {
+    box-sizing: border-box;
+}
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
-
+.text-light {
+    color: rgba(255, 255, 255, 0.75);
+}
+.mt-10 {
+    margin-top: 10px !important;
+}
+.login-body {
+    background: rgba(53, 53, 170, 0.85);
+}
+.simple-login-container {
+    width: 300px;
+    max-width: 100%;
+    margin: 50px auto;
+}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {

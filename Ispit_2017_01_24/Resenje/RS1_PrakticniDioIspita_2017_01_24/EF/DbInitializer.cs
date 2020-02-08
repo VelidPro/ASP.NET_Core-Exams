@@ -11,6 +11,7 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
     {
         public static async Task SeedData(MojContext _context)
         {
+            var users = new List<User>();
             var nastavnici = new List<Nastavnik>();
             var predmeti = new List<Predmet>();
             var ucenici = new List<Ucenik>();
@@ -19,6 +20,27 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
             var odrzaniCasDetalji = new List<OdrzaniCasDetalj>();
             var angazovani = new List<Angazovan>();
             var upisiUOdjeljenje = new List<UpisUOdjeljenje>();
+
+            if (!await _context.Users.AnyAsync())
+            {
+                for (int i = 0; i < 40; i++)
+                {
+                    var tempGuid = Guid.NewGuid().ToString();
+
+                    users.Add(new User
+                    {
+                        Username="Nastavnik"+(i+1),
+                        Password = "1234"
+                    });
+                }
+
+                await _context.AddRangeAsync(users);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                users = await _context.Users.ToListAsync();
+            }
 
             if (!await _context.Nastavnici.AnyAsync())
             {
@@ -29,8 +51,7 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
                     nastavnici.Add(new Nastavnik
                     {
                         Ime = tempGuid.Substring(tempGuid.Length - 5, 4),
-                        Username = "Nastavnik" + i,
-                        Password = "1234"
+                        UserId=users[i].Id
                     });
                 }
 
@@ -114,7 +135,7 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
                    
                     if (i != 0 && i % 10 == 0)
                         odjeljenjeCounter++;
-                    if (odjeljenjeCounter <= 8)
+                    if (odjeljenjeCounter>= 8)
                         break;
                     if (brojDnevnik > 10)
                         brojDnevnik = 1;

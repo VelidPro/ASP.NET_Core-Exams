@@ -11,9 +11,10 @@ using System;
 namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
 {
     [DbContext(typeof(MojContext))]
-    partial class MojContextModelSnapshot : ModelSnapshot
+    [Migration("20200208190137_InitDB")]
+    partial class InitDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +60,7 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AuthorizationTokens");
+                    b.ToTable("AuthorizationToken");
                 });
 
             modelBuilder.Entity("RS1_PrakticniDioIspita_2017_01_24.Models.Nastavnik", b =>
@@ -191,7 +192,7 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("RS1_PrakticniDioIspita_2017_01_24.Models.Angazovan", b =>

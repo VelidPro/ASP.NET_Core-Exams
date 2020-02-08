@@ -55,11 +55,24 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
                 .HasOne(x => x.UpisUOdjeljenje)
                 .WithMany().OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<AuthorizationToken>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.AuthTokens)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Nastavnik>()
+                .HasOne(x => x.User)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             base.OnModelCreating(modelBuilder);
 
 
         }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<AuthorizationToken> AuthorizationTokens { get; set; }
 
         public DbSet<Nastavnik> Nastavnici { get; set; }
         public DbSet<OdrzaniCasDetalj> OdrzaniCasDetalji { get; set; }
