@@ -5,6 +5,9 @@ body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
+.text-danger {
+    color: red !important;
+}
 .text-light {
     color: rgba(255, 255, 255, 0.75);
 }

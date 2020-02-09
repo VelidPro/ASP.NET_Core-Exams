@@ -1,0 +1,47 @@
+﻿@model RS1_PrakticniDioIspita_2017_01_24.ViewModels.OdrzaniCasInputVM
+
+@{
+
+    var formType = (string) ViewData["formType"];
+}
+
+
+@if (formType == "dodavanje")
+{
+    <h4>Novi cas za nastavnika @Model.Nastavnik</h4>
+}
+else
+{
+    <h4>Editovanje casa</h4>
+}
+<hr/>
+<div class="row mt-10">
+    <div class="col-md-5">
+        <form asp-action="Snimi" method="post" ajax-poziv="da">
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="DatumOdrzanogCasa"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="DatumOdrzanogCasa" type="date" />
+                </div>
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="AngazovanId"></label>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control" asp-for="AngazovanId" asp-items="Model.OdjeljenjaPredmeti"></select>
+                </div>
+            </div>
+            <hr/>
+            <div class="row mt-10">
+                <button class="btn btn-primary btn-block" type="submit">Snimi</button>
+            </div>
+            @Html.HiddenFor(x=>x.Id)
+        </form>
+    </div>
+</div>
+
+
+

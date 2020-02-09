@@ -1,0 +1,34 @@
+﻿@model RS1_PrakticniDioIspita_2017_01_24.ViewModels.OdrzaniCasDetaljEditVM
+
+<tr id="@(string.Concat("Prisustvo_",Model.Id))">
+    <td>@Model.Ucenik</td>
+    <td>
+        @if (!Model.Odsutan)
+        {
+            @(Model.Ocjena ?? 0)
+        }
+    </td>
+    <td>
+        <a asp-action="PrisustvoToggler" asp-route-Id="@Model.Id" asp-controller="OdrzaniCasDetalji"
+           ajax-poziv="da" ajax-rezultat="@(string.Concat("Prisustvo_", Model.Id))" ajax-rezultat-replace="da">
+            @if (Model.Odsutan)
+            {
+                <span class="text-danger">NE</span>
+            }
+            else
+            {
+                <span class="text-green">DA</span>
+            }
+        </a>
+    </td>
+    <td>
+        @if (Model.Odsutan)
+        {
+            @(Model.OpravdanoOdsutan.HasValue && Model.OpravdanoOdsutan.Value ? "DA" : "NE")
+        }
+    </td>
+    <td>
+            <a asp-action="Edit" asp-controller="OdrzaniCasDetalji" asp-route-Id="@Model.Id"
+               ajax-poziv="da" ajax-rezultat="editPrisustvo">Uredi</a>
+    </td>
+</tr>

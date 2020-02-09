@@ -1,0 +1,93 @@
+﻿@model RS1_PrakticniDioIspita_2017_01_24.ViewModels.OdrzaniCasEditVM
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <h3>Editovanje casa</h3>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="EditAll" ajax-poziv="da" method="post">
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="DatumOdrzavanja"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="DatumOdrzavanja" type="date" />
+                </div>
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="AngazovanId"></label>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control" asp-for="AngazovanId" asp-items="Model.OdjeljenjaPredmeti"></select>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <button class="btn btn-primary" typer="submit">Snimi</button>
+            </div>
+            @Html.HiddenFor(x=>x.Id)
+        </form>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <h4>Lista ucenika koji su prisustvovali</h4>
+</div>
+<hr/>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Ucenik</th>
+        <th>Ocjena</th>
+        <th>Prisutan</th>
+        <th>Opravdano odsustvo</th>
+        <th>Akcija</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var x in Model.Prisustva)
+    {
+        <tr id="@(string.Concat("Prisustvo_",x.Id))">
+            <td>@x.Ucenik</td>
+            <td>
+                @if (!x.Odsutan)
+                {
+                    @(x.Ocjena ?? 0)
+                }
+            </td>
+            <td>
+                <a asp-action="PrisustvoToggler" asp-route-Id="@x.Id" asp-controller="OdrzaniCasDetalji"
+                   ajax-poziv="da" ajax-rezultat="@(string.Concat("Prisustvo_", x.Id))" ajax-rezultat-replace="da">
+                    @if (x.Odsutan)
+                    {
+                        <span class="text-danger">NE</span>
+                    }
+                    else
+                    {
+                        <span class="text-green">DA</span>
+                    }
+                </a>
+            </td>
+            <td>
+                @if(x.Odsutan)
+                {
+                    @(x.OpravdanoOdsutan.HasValue && x.OpravdanoOdsutan.Value?"DA":"NE")
+                }
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-controller="OdrzaniCasDetalji" asp-route-Id="@x.Id" 
+                       ajax-poziv="da" ajax-rezultat="editPrisustvo">Uredi</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<hr/>
+<div class="row" id="editPrisustvo"></div>
+

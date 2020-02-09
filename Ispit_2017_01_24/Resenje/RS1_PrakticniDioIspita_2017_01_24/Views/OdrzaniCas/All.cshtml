@@ -1,0 +1,39 @@
+﻿@model RS1_PrakticniDioIspita_2017_01_24.ViewModels.OdrzaniCasoviVM
+@{
+    ViewData["Title"] = "All";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <h3>Odrzani casovi nastavnika @Model.Nastavnik</h3>
+</div>
+<hr/>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Datum odrzanog casa</th>
+        <th>Odjeljenje</th>
+        <th>Predmet</th>
+        <th>Akcija</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var x in Model.OdrzaniCasovi)
+    {
+        <tr>
+            <td>@x.Datum.ToString("d")</td>
+            <td>@x.Odjeljenje</td>
+            <td>@x.Predmet</td>
+            <td><a asp-action="Edit" asp-route-Id="@x.Id" ajax-poziv="da" ajax-rezultat="odrzaniCasForm">Edit</a></td>
+        </tr>
+    }
+    </tbody>
+</table>
+<hr/>
+<div class="row">
+    <a class="btn btn-primary" role="button" ajax-poziv="da" ajax-rezultat="odrzaniCasForm"
+       asp-action="Dodaj" asp-route-nastavnikId="@Model.NastavnikId">Dodaj</a>
+</div>
+<hr/>
+<div class="row" id="odrzaniCasForm"></div>
+

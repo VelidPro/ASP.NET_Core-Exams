@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using RS1_PrakticniDioIspita_2017_01_24.Helpers
 @{
+    var user = await Context.GetLoggedInUser();
 }
 <!DOCTYPE html>
 <html>
@@ -33,8 +34,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Casovi" asp-action="Index">Casovi</a></li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="Logout">@((await Context.GetLoggedInUser())?.Username??"") Logout</a></li>
+                    <li><a asp-area="" asp-controller="OdrzaniCas" asp-action="All">Casovi</a></li>
+                    <li><a asp-area="" asp-controller="OdrzaniCas" asp-action="Detalji">Detalji casova</a></li>
+                    @if (user != null)
+                    {
+                        <li><a asp-area="" asp-controller="Login" asp-action="Logout">@(user.Username ?? "") Logout</a></li>
+
+                    }
                 </ul>
             </div>
         </div>

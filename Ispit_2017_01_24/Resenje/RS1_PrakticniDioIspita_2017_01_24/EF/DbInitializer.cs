@@ -158,15 +158,19 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
                 upisiUOdjeljenje = await _context.UpisiUOdjeljenja.ToListAsync();
             }
 
+
             if (!await _context.Angazovani.AnyAsync())
             {
                 for (int i = 0; i < 2; i++)
                 {
+
                     for (int j = 0; j < 10; j++)
                     {
+                        var rand = new Random();
+
                         angazovani.Add(new Angazovan
                         {
-                            NastavnikId = nastavnici[j].Id,
+                            NastavnikId = nastavnici[rand.Next(0, nastavnici.Count)].Id,
                             OdjeljenjeId = odjeljenja[i].Id,
                             PredmetId = predmeti[j].Id
                         });
@@ -175,11 +179,14 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
 
                 for (int i = 2; i < 4; i++)
                 {
+
                     for (int j = 10; j < 20; j++)
                     {
+                        var rand = new Random();
+
                         angazovani.Add(new Angazovan
                         {
-                            NastavnikId = nastavnici[j].Id,
+                            NastavnikId = nastavnici[rand.Next(0,nastavnici.Count)].Id,
                             OdjeljenjeId = odjeljenja[i].Id,
                             PredmetId = predmeti[j].Id
                         });
@@ -190,9 +197,11 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
                 {
                     for (int j = 20; j < 30; j++)
                     {
+                        var rand = new Random();
+
                         angazovani.Add(new Angazovan
                         {
-                            NastavnikId = nastavnici[j].Id,
+                            NastavnikId = nastavnici[rand.Next(0, nastavnici.Count)].Id,
                             OdjeljenjeId = odjeljenja[i].Id,
                             PredmetId = predmeti[j].Id
                         });
@@ -203,9 +212,11 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
                 {
                     for (int j = 30; j < 40; j++)
                     {
+                        var rand = new Random();
+
                         angazovani.Add(new Angazovan
                         {
-                            NastavnikId = nastavnici[j].Id,
+                            NastavnikId = nastavnici[rand.Next(0, nastavnici.Count)].Id,
                             OdjeljenjeId = odjeljenja[i].Id,
                             PredmetId = predmeti[j].Id
                         });
@@ -216,9 +227,11 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
                 {
                     for (int j = 40; j < 43; j++)
                     {
+                        var rand = new Random();
+
                         angazovani.Add(new Angazovan
                         {
-                            NastavnikId = nastavnici[i].Id,
+                            NastavnikId = nastavnici[rand.Next(0, nastavnici.Count)].Id,
                             OdjeljenjeId = odjeljenja[i].Id,
                             PredmetId = predmeti[j].Id
                         });
@@ -227,11 +240,14 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
 
                 for (int i = 4; i < 6; i++)
                 {
+
                     for (int j = 43; j < 47; j++)
                     {
+                        var rand = new Random();
+
                         angazovani.Add(new Angazovan
                         {
-                            NastavnikId = nastavnici[i].Id,
+                            NastavnikId = nastavnici[rand.Next(0, nastavnici.Count)].Id,
                             OdjeljenjeId = odjeljenja[i].Id,
                             PredmetId = predmeti[j].Id
                         });

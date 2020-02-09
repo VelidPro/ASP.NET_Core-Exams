@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RS1_PrakticniDioIspita_2017_01_24.EF;
+using RS1_PrakticniDioIspita_2017_01_24.Interfaces;
+using RS1_PrakticniDioIspita_2017_01_24.Services;
 
 namespace RS1_PrakticniDioIspita_2017_01_24
 {
@@ -25,6 +27,9 @@ namespace RS1_PrakticniDioIspita_2017_01_24
         {
             string connectionString = Configuration.GetConnectionString("Januar");
             services.AddDbContext<MojContext>(o => o.UseSqlServer(connectionString));
+
+            services.AddScoped<IOdrzaniCasService, OdrzaniCasService>();
+
             services.AddSession();
             services.AddMvc();
         }

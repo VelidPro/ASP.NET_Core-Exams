@@ -1,0 +1,42 @@
+﻿@model RS1_PrakticniDioIspita_2017_01_24.ViewModels.PrisustvoInputVM
+
+<div class="row">
+    <h4>Evidencija prisustva</h4>
+    <hr/>
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" ajax-poziv="da" ajax-rezultat="@(string.Concat("Prisustvo_", Model.Id))"
+              ajax-rezultat-replace="da">
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Ucenik"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Ucenik" readonly/>
+                </div>
+            </div>
+            <div class="row mt-10">
+                @if (Model.Odsutan)
+                {
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="OpravdanoOdsutan"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control" asp-for="OpravdanoOdsutan" type="checkbox"/>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="Ocjena"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control" asp-for="Ocjena" min="1" max="5"/>
+                    </div>
+                }
+            </div>
+            <div class="row mt-10">
+                <button class="btn btn-primary" type="submit">Snimi</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+﻿@model RS1_PrakticniDioIspita_2017_01_24.ViewModels.OdrzaniCasoviDetaljiVM
+@{
+    ViewData["Title"] = "All";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <h3>Detalji o odrzanim casovima za nastavnika @Model.Nastavnik</h3>
+</div>
+<hr/>
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Datum odrzanog casa</th>
+            <th>Odjeljenje</th>
+            <th>Broj prisutnih</th>
+            <th>Predmet</th>
+            <th>Najbolji ucenik na predmeti</th>
+            <th>Akcija</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var x in Model.OdrzaniCasoviDetalji)
+        {
+            <tr>
+                <td>@x.Datum.ToString("d")</td>
+                <td>@x.Odjeljenje</td>
+                <td>@x.BrojPrisutnih</td>
+                <td>@x.Predmet</td>
+                <td>@x.NajboljiUcenik</td>
+                <td><a asp-action="EditAll" asp-route-odrzaniCasId="@x.Id">Edit</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

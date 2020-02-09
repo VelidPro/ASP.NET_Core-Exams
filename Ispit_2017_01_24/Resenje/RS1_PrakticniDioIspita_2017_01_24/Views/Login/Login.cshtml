@@ -29,24 +29,23 @@
                 <div class="col-md-12 form-group">
                     <input type="text" class="form-control" placeholder="Username" asp-for="Username">
                 </div>
+                <div class="col-md-12"><span class="text-danger" asp-validation-for="Username"></span></div>
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
                     <input type="password" placeholder="Enter your Password" asp-for="Password" class="form-control">
                 </div>
-                <div class="col-md-12"><span class="text-danger" asp-validation-for="Username"></span></div>
+                <div class="col-md-12"><span class="text-danger" asp-validation-for="Password"></span></div>
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
                     <input type="submit" class="btn btn-primary btn-block">
                 </div>
-                <div class="col-md-12"><span class="text-danger" asp-validation-for="Password"></span></div>
             </div>
-            <div asp-validation-summary="All"></div>
             <div class="row">
                 <div class="col-md-12 form-group">
                     <label class="control-label text-light" asp-for="RememberMe"></label>
-                    <input type="checkbox" value="false" asp-for="RememberMe">
+                    <input type="checkbox" asp-for="RememberMe">
                 </div>
             </div>
         </form>

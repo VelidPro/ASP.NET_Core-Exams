@@ -15,6 +15,13 @@ namespace RS1_PrakticniDioIspita_2017_01_24.EF
 
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

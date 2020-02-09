@@ -32,11 +32,6 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Controllers
         {
             if (!ModelState.IsValid)
             {
-                foreach (var error in ModelState.Values.SelectMany(x => x.Errors))
-                {
-                    ModelState.AddModelError(string.Empty,error.ErrorMessage);
-                }
-
                 return View(model);
             }
 
@@ -45,13 +40,13 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Controllers
 
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty,"Pogresan username ili password.");
+                ModelState.AddModelError("Password","Pogresan username ili password.");
                 return View(model);
             }
 
             await HttpContext.SetLoggedInUser(user, model.RememberMe);
 
-            return RedirectToAction("Index", "Nastavnik");
+            return RedirectToAction("All", "OdrzaniCas");
         }
 
 
