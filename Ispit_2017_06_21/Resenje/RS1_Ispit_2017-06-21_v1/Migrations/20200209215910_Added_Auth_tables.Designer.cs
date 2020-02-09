@@ -11,9 +11,10 @@ using System;
 namespace RS1_Ispit_20170621_v1.Migrations
 {
     [DbContext(typeof(MojContext))]
-    partial class MojContextModelSnapshot : ModelSnapshot
+    [Migration("20200209215910_Added_Auth_tables")]
+    partial class Added_Auth_tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,11 +90,9 @@ namespace RS1_Ispit_20170621_v1.Migrations
 
                     b.Property<string>("ImePrezime");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("Username");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Nastavnik");
                 });
@@ -195,14 +194,6 @@ namespace RS1_Ispit_20170621_v1.Migrations
                     b.HasOne("RS1_Ispit_2017_06_21_v1.Models.UpisUOdjeljenje", "UpisUOdjeljenje")
                         .WithMany()
                         .HasForeignKey("UpisUOdjeljenjeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RS1_Ispit_2017_06_21_v1.Models.Nastavnik", b =>
-                {
-                    b.HasOne("RS1_Ispit_2017_06_21_v1.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

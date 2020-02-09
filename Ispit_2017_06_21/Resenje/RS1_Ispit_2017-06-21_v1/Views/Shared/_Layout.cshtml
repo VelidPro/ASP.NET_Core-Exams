@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using RS1_Ispit_2017_06_21_v1.Helpers
+@{
+    var currentUser = await Context.GetLoggedInUser();
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -29,9 +33,14 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Odjeljenje" asp-action="Index">Odjeljenje</a></li>
+                    <li><a asp-area="" asp-controller="MaturskiIspit" asp-action="Index">Ispiti</a></li>
+                    @if (currentUser != null)
+                    {
+                        <li><a asp-area="" asp-controller="Authentication" asp-action="Logout">@currentUser.Username Logout</a></li>
+                    }
                 </ul>
             </div>
+            
         </div>
     </nav>
     <div class="container body-content">

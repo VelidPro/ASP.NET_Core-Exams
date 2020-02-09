@@ -10,8 +10,11 @@ namespace RS1_Ispit_2017_06_21_v1.EF
     {
         public static void Seed(MojContext context)
         {
-            var nastavnik1 = new Nastavnik { ImePrezime = "Denis Mušić", Username = "denis" };
-            var nastavnik2 = new Nastavnik { ImePrezime = "Jasmin Azemović", Username = "jasmin" };
+            var user1 = new User {Username = "Nastavnik1", Password = "1234"};
+            var user2 = new User { Username = "Nastavnik2", Password = "1234" };
+
+            var nastavnik1 = new Nastavnik { ImePrezime = "Denis Mušić", User = user1};
+            var nastavnik2 = new Nastavnik { ImePrezime = "Jasmin Azemović", User=user2 };
 
             int odjeljenje = 10;
             DodajOdjeljenja(context, odjeljenje, nastavnik1);
@@ -24,7 +27,7 @@ namespace RS1_Ispit_2017_06_21_v1.EF
         {
             for (int i = 0; i < odjeljenje; i++)
             {
-                var x = new Odjeljenje { Nastavnik = nastavnik1, Naziv = "IV-" + nastavnik1.Username[0] + "-" + (i + 1) };
+                var x = new Odjeljenje { Nastavnik = nastavnik1, Naziv = "IV-" + nastavnik1.User.Username[0] + "-" + (i + 1) };
                 context.Odjeljenje.Add(x);
                 DodajUpis(context, x);
             }
