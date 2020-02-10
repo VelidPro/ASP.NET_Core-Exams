@@ -1,8 +1,43 @@
-﻿
+﻿@model RS1_Ispit_2017_06_21_v1.ViewModels.ListaMaturskihIspitaVM
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="row mt-10">
+    <h3>Prikaz evidentiranih maturskih ispita</h3>
+</div>
+<hr />
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Odjeljenje</th>
+            <th>Ispitivac</th>
+            <th>Prosjeci bodovi</th>
+            <th>Akcija</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var x in Model.MaturskiIspiti)
+        {
+            <tr>
+                <td>@x.Datum.ToString("d")</td>
+                <td>@x.Odjeljenje</td>
+                <td>@x.Ispitivac</td>
+                <td>@x.ProsjecniBodovi.ToString("F")</td>
+                <td><a asp-action="Detalji" asp-route-Id="@x.Id">Detalji</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <hr/>
+    <div class="col-md-4">
+        <a  class="btn btn-primary" role="button" asp-action="Dodaj" ajax-poziv="da" ajax-rezultat="dodavanjeIspita">Dodaj</a>
+    </div>
+</div>
+<hr/>
+<div class="row" id="dodavanjeIspita">
 
+</div>

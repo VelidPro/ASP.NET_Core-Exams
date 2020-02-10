@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RS1_Ispit_2017_06_21_v1.EF;
+using RS1_Ispit_2017_06_21_v1.Interfaces;
+using RS1_Ispit_2017_06_21_v1.Services;
 
 namespace RS1_Ispit_2017_06_21_v1
 {
@@ -25,6 +27,7 @@ namespace RS1_Ispit_2017_06_21_v1
         {
             string connectionString = Configuration.GetConnectionString("Juni");
             services.AddDbContext<MojContext>(o => o.UseSqlServer(connectionString));
+            services.AddScoped<IMaturskiIspitService, MaturskiIspitService>();
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();

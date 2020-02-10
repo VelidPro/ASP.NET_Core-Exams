@@ -31,6 +31,8 @@ namespace RS1_Ispit_2017_06_21_v1.EF
         public DbSet<Nastavnik> Nastavnik { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<AuthorizationToken> AuthorizationTokens { get; set; }
+        public DbSet<MaturskiIspit> MaturskiIspiti { get; set; }
+        public DbSet<MaturskiIspitStavka> MaturskiIspitStavke { get; set; }
 
 
     }

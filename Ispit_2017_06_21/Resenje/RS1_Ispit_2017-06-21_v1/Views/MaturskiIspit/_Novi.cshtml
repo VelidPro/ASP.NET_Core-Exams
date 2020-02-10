@@ -1,0 +1,37 @@
+﻿@model RS1_Ispit_2017_06_21_v1.ViewModels.MaturskiIspitInputVM
+
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="Dodaj" method="post">
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Ispitivac"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Ispitivac" readonly />
+                </div>
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Datum"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Datum" type="date" />
+                </div>
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="OdjeljenjeId"></label>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control" asp-for="OdjeljenjeId" asp-items="Model.Odjeljenja"></select>
+                </div>
+            </div>
+            <hr />
+            <div class="row mt-10">
+                <button class="btn btn-primary" type="submit">Snimi</button>
+            </div>
+        </form>
+
+    </div>
+</div>

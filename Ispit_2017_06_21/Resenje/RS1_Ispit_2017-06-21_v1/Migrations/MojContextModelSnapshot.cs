@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using RS1_Ispit_2017_06_21_v1.EF;
 using System;
 
-namespace RS1_Ispit_20170621_v1.Migrations
+namespace RS1_Ispit_2017_06_21_v1.Migrations
 {
     [DbContext(typeof(MojContext))]
     partial class MojContextModelSnapshot : ModelSnapshot
@@ -57,7 +57,7 @@ namespace RS1_Ispit_20170621_v1.Migrations
 
                     b.HasIndex("OdjeljenjeId");
 
-                    b.ToTable("MaturskiIspit");
+                    b.ToTable("MaturskiIspiti");
                 });
 
             modelBuilder.Entity("RS1_Ispit_2017_06_21_v1.Models.MaturskiIspitStavka", b =>
@@ -79,7 +79,7 @@ namespace RS1_Ispit_20170621_v1.Migrations
 
                     b.HasIndex("UpisUOdjeljenjeId");
 
-                    b.ToTable("MaturskiIspitStavka");
+                    b.ToTable("MaturskiIspitStavke");
                 });
 
             modelBuilder.Entity("RS1_Ispit_2017_06_21_v1.Models.Nastavnik", b =>
