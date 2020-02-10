@@ -15,13 +15,13 @@ namespace RS1_Ispit_asp.net_core.EntityModels
 
         public float Rezultat { get; set; }
 
-        [ForeignKey(nameof(MaturskiIspitID))]
         public MaturskiIspit MaturskiIspit { get; set; }
+        [ForeignKey(nameof(MaturskiIspit))]
         public int MaturskiIspitID { get; set; }
 
 
-        [ForeignKey(nameof(OdjeljenjeStavkaID))]
         public OdjeljenjeStavka OdjeljenjeStavka { get; set; }
+        [ForeignKey(nameof(OdjeljenjeStavka))]
         public int OdjeljenjeStavkaID { get; set; }
     }
 }

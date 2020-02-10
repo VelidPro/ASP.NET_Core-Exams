@@ -24,6 +24,16 @@ namespace RS1_Ispit_asp.net_core.EF
             modelBuilder.Entity<PredajePredmet>().HasOne(x => x.Odjeljenje)
                 .WithMany().OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<DodjeljenPredmet>()
+                .HasOne(x => x.OdjeljenjeStavka)
+                .WithMany(x => x.DodjeljeniPredmeti)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OdjeljenjeStavka>()
+                .HasOne(x => x.Odjeljenje)
+                .WithMany(x => x.OdjeljenjeStavke)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<TakmicenjeUcesnik>()
                 .HasOne(x => x.Takmicenje)
                 .WithMany(x => x.Ucesnici)

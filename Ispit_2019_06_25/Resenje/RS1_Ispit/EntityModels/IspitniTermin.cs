@@ -13,8 +13,8 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         public bool EvidentiraniRezultati { get; set; }
         public string Napomena { get; set; }
 
+        [ForeignKey(nameof(Angazovan))]
         public int AngazovanId { get; set; }
-        [ForeignKey(nameof(AngazovanId))] 
         public Angazovan Angazovan { get; set; }
 
         public ICollection<IspitPolaganje> Polaganja { get; set; }

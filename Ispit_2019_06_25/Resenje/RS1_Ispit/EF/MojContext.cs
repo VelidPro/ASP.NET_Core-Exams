@@ -12,13 +12,18 @@ namespace RS1_Ispit_asp.net_core.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<SlusaPredmet>().HasOne(x => x.UpisGodine)
                 .WithMany().OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<OdrzaniCasDetalji>().HasOne(x => x.SlusaPredmete)
                 .WithMany().OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<IspitPolaganje>()
+                .HasOne(x => x.IspitniTermin)
+                .WithMany(x => x.Polaganja)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(modelBuilder);
 
         }
 
@@ -32,5 +37,7 @@ namespace RS1_Ispit_asp.net_core.EF
 
         public DbSet<OdrzaniCas> OdrzaniCas { get; set; }
         public DbSet<OdrzaniCasDetalji> OdrzaniCasDetalji { get; set; }
+        public DbSet<IspitniTermin> IspitniTermini { get; set; }
+        public DbSet<IspitPolaganje> PolaganjaIspita { get; set; }
     }
 }

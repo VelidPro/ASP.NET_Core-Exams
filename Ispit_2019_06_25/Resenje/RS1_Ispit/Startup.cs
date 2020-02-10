@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RS1_Ispit_asp.net_core.Constants;
 using RS1_Ispit_asp.net_core.EF;
+using RS1_Ispit_asp.net_core.Interfaces;
+using RS1_Ispit_asp.net_core.Services;
 
 namespace RS1_Ispit_asp.net_core
 {
@@ -21,6 +24,11 @@ namespace RS1_Ispit_asp.net_core
         {
             services.AddDbContext<MojContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("cs1")));
+
+            services.AddDataProtection();
+            services.AddSingleton<SecurityConstants>();
+
+            services.AddScoped<IPredmetService, PredmetService>();
 
             services.AddMvc();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache

@@ -21,12 +21,12 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         public bool OpravdanoOdsustvo { get; set; }
         public string Napomena { get; set; }
 
+        [ForeignKey(nameof(OdrzaniCas))]
         public int OdrzaniCasId { get; set; }
-        [ForeignKey(nameof(OdrzaniCasId))]
         public OdrzaniCas OdrzaniCas { get; set; }
 
+        [ForeignKey(nameof(OdjeljenjeStavka))]
         public int OdjeljenjeStavkaId { get; set; }
-        [ForeignKey(nameof(OdjeljenjeStavkaId))]
         public OdjeljenjeStavka OdjeljenjeStavka { get; set; }
     }
 }

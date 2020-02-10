@@ -176,7 +176,7 @@ namespace RS1_Ispit_asp.net_core.Controllers
                 model = new IspitPolaganjeVM{
                     IspitniTerminId = _protector.Protect(ispitniTerminId.ToString()),
                     Studenti =  upisi.ToSelectList(x => _protector.Protect(x.Id.ToString()),
-                        x =>x.Student.GetImePrezime(),"Odaberite studenta")
+                        x =>x.Student.ImePrezime(),"Odaberite studenta")
 
                 };
             }

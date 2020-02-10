@@ -1,4 +1,6 @@
-﻿namespace RS1.Ispit.Web.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RS1.Ispit.Web.Models
 {
     public enum VrstaVrijednosti
     {
@@ -15,6 +17,7 @@
         public VrstaVrijednosti VrstaVr { get; set; }
 
         public VrstaPretrage VrstaPretrage { get; set; }
+        [ForeignKey(nameof(VrstaPretrage))]
         public int VrstaPretrageId { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RS1_Ispit_2017_06_21_v1.Helpers;
 
 namespace RS1_Ispit_2017_06_21_v1.ViewModels
 {
@@ -9,6 +10,7 @@ namespace RS1_Ispit_2017_06_21_v1.ViewModels
     {
         public string Ispitivac { get; set; }
         [Required]
+        [FutureDateTime]
         public DateTime Datum { get; set; }
         [Required]
         public int OdjeljenjeId { get; set; }

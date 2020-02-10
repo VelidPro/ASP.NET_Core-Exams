@@ -7,8 +7,9 @@ namespace RS1_Ispit_asp.net_core.EntityModels
     {
         public int Id { get; set; }
         public DateTime Datum { get; set; }
-        [ForeignKey(nameof(AngazovaniId))]
+
         public Angazovan Angazovani { get; set; }
+        [ForeignKey(nameof(Angazovani))]
         public int AngazovaniId { get; set; }
 
 

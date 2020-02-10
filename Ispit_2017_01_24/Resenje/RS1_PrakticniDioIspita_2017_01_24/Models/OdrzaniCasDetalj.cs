@@ -13,12 +13,12 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Models
         public int? Ocjena { get; set; }
         public bool? OpravdanoOdsutan { get; set; }
 
+        [ForeignKey(nameof(OdrzaniCas))]
         public int OdrzaniCasId { get; set; }
-        [ForeignKey(nameof(OdrzaniCasId))]
         public OdrzaniCas OdrzaniCas { get; set; }
 
+        [ForeignKey(nameof(UpisUOdjeljenje))]
         public int UpisUOdjeljenjeId { get; set; }
-        [ForeignKey(nameof(UpisUOdjeljenjeId))]
         public UpisUOdjeljenje UpisUOdjeljenje { get; set; }
     }
 }

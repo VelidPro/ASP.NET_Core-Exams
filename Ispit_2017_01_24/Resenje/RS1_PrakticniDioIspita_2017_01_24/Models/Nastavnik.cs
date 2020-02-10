@@ -11,8 +11,8 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Models
         public int Id { get; set; }
         public string Ime { get; set; }
 
+        [ForeignKey(nameof(User))]
         public int UserId{ get; set; }
-        [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
 

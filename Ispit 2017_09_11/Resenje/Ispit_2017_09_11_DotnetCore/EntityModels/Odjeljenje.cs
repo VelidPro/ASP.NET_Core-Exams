@@ -11,9 +11,9 @@ namespace Ispit_2017_09_11_DotnetCore.EntityModels
         public string Oznaka { get; set; }
         public bool IsPrebacenuViseOdjeljenje { get; set; }
 
+        [ForeignKey(nameof(Nastavnik))]
         public int? NastavnikID { get; set; }
 
-        [ForeignKey(nameof(NastavnikID))]
         public Nastavnik Nastavnik { get; set; }
     }
 }

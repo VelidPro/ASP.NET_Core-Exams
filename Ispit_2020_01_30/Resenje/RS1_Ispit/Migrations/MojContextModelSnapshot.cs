@@ -243,9 +243,9 @@ namespace RS1_Ispit_asp.net_core.Migrations
             modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.DodjeljenPredmet", b =>
                 {
                     b.HasOne("RS1_Ispit_asp.net_core.EntityModels.OdjeljenjeStavka", "OdjeljenjeStavka")
-                        .WithMany("DodjeljenPredmets")
+                        .WithMany("DodjeljeniPredmeti")
                         .HasForeignKey("OdjeljenjeStavkaId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Predmet", "Predmet")
                         .WithMany()
@@ -282,9 +282,9 @@ namespace RS1_Ispit_asp.net_core.Migrations
             modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.OdjeljenjeStavka", b =>
                 {
                     b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Odjeljenje", "Odjeljenje")
-                        .WithMany("OdjeljenjeStavkas")
+                        .WithMany("OdjeljenjeStavke")
                         .HasForeignKey("OdjeljenjeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("RS1_Ispit_asp.net_core.EntityModels.Ucenik", "Ucenik")
                         .WithMany()

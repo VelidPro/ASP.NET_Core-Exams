@@ -11,16 +11,16 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         public DateTime DatumOdrzavanja { get; set; }
         public string Napomena { get; set; }
 
+        [ForeignKey(nameof(Skola))]
         public int SkolaId { get; set; }
-        [ForeignKey(nameof(SkolaId))] 
         public Skola Skola { get; set; }
 
+        [ForeignKey(nameof(Predmet))]
         public int PredmetId { get; set; }
-        [ForeignKey(nameof(PredmetId))]
         public Predmet Predmet { get; set; }
 
+        [ForeignKey(nameof(SkolskaGodina))]
         public int SkolskaGodinaId { get; set; }
-        [ForeignKey(nameof(SkolskaGodinaId))]
         public SkolskaGodina SkolskaGodina { get; set; }
 
         public ICollection<PopravniIspitStavka> Ucenici { get; set; }

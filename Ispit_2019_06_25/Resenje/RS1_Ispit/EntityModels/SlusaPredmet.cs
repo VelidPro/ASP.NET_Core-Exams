@@ -10,12 +10,12 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         public int? Ocjena { get; set; }
 
 
-        [ForeignKey(nameof(AngazovanId))]
         public virtual Angazovan Angazovan { get; set; }
+        [ForeignKey(nameof(Angazovan))]
         public int AngazovanId { get; set; }
 
-        [ForeignKey(nameof(UpisGodineId))]
         public virtual UpisGodine UpisGodine { get; set; }
+        [ForeignKey(nameof(UpisGodine))]
         public int UpisGodineId { get; set; }
     }
 }

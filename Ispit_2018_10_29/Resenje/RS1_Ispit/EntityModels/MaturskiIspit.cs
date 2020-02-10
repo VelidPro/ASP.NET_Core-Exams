@@ -12,17 +12,17 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         public DateTime Datum { get; set; }
 
 
-        [ForeignKey(nameof(PredmetID))]
         public Predmet Predmet { get; set; }
+        [ForeignKey(nameof(Predmet))]
         public int PredmetID { get; set; }
 
 
-        [ForeignKey(nameof(OdjeljenjeID))]
         public Odjeljenje Odjeljenje { get; set; }
+        [ForeignKey(nameof(Odjeljenje))]
         public int OdjeljenjeID { get; set; }
 
-        [ForeignKey(nameof(NastavnikID))]
         public Nastavnik Nastavnik { get; set; }
+        [ForeignKey(nameof(Nastavnik))]
         public int NastavnikID { get; set; }
 
     }

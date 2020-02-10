@@ -270,9 +270,9 @@ namespace RS1_Ispit_asp.net_core.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("RS1_Ispit_asp.net_core.EntityModels.UpisGodine", "UpisGodine")
-                        .WithMany("Polaganja")
+                        .WithMany()
                         .HasForeignKey("UpisGodineId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("RS1_Ispit_asp.net_core.EntityModels.OdrzaniCas", b =>
@@ -304,7 +304,7 @@ namespace RS1_Ispit_asp.net_core.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("RS1_Ispit_asp.net_core.EntityModels.UpisGodine", "UpisGodine")
-                        .WithMany("Predmeti")
+                        .WithMany()
                         .HasForeignKey("UpisGodineId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

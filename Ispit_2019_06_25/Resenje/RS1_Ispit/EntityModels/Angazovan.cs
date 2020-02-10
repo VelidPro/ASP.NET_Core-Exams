@@ -6,16 +6,16 @@ namespace RS1_Ispit_asp.net_core.EntityModels
     {
         public int Id { get; set; }
 
-        [ForeignKey(nameof(NastavnikId))]
         public virtual Nastavnik Nastavnik { get; set; }
+        [ForeignKey(nameof(Nastavnik))]
         public int NastavnikId { get; set; }
 
-        [ForeignKey(nameof(AkademskaGodinaId))]
         public virtual AkademskaGodina AkademskaGodina{ get; set; }
+        [ForeignKey(nameof(AkademskaGodina))]
         public int AkademskaGodinaId { get; set; }
 
-        [ForeignKey(nameof(PredmetId))]
         public virtual Predmet Predmet { get; set; }
+        [ForeignKey(nameof(Predmet))]
         public int PredmetId { get; set; }
     }
 }

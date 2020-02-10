@@ -12,8 +12,8 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Models
         public string Oznaka { get; set; }
         public int Razred { get; set; }
 
+        [ForeignKey(nameof(Nastavnik))]
         public int NastavnikId { get; set; }
-        [ForeignKey(nameof(NastavnikId))]
         public Nastavnik Nastavnik { get; set; }
 
     }

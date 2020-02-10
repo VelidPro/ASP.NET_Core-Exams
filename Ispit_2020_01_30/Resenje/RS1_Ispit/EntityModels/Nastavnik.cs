@@ -8,8 +8,8 @@ namespace RS1_Ispit_asp.net_core.EntityModels
         public string Ime { get; set; }
         public string Prezime { get; set; }
 
-        [ForeignKey(nameof(SkolaID))]
         public virtual Skola Skola { get; set; }
+        [ForeignKey(nameof(Skola))]
         public int SkolaID { get; set; }
     }
 }

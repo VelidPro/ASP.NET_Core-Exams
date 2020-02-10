@@ -11,12 +11,13 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Models
         public int Id { get; set; }
         public int BrojUDnevniku { get; set; }
 
+
+        [ForeignKey(nameof(Ucenik))]
         public int UcenikId { get; set; }
-        [ForeignKey(nameof(UcenikId))]
         public Ucenik Ucenik { get; set; }
 
+        [ForeignKey(nameof(Odjeljenje))]
         public int OdjeljenjeId { get; set; }
-        [ForeignKey(nameof(OdjeljenjeId))]
         public Odjeljenje Odjeljenje { get; set; }
 
     }

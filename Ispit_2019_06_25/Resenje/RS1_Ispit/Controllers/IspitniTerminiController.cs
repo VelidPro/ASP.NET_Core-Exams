@@ -198,7 +198,7 @@ namespace RS1_Ispit_asp.net_core.Controllers
                          .Where(u => u.Id == x.UpisGodineId)
                         .Select(u => u .Student)
                         .FirstOrDefault()
-                        ?.GetImePrezime() ?? "",
+                        ?.ImePrezime() ?? "",
                     PristupioIspitu = x.PristupioIspitu,
                     Ocjena = x.Ocjena
 

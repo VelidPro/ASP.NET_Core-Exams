@@ -7,18 +7,16 @@ namespace RS1_Ispit_asp.net_core.EntityModels
     {
         public int Id { get; set; }
 
-        [ForeignKey(nameof(PredmetID))]
         public virtual Predmet Predmet { get; set; }
+        [ForeignKey(nameof(Predmet))]
         public int PredmetID { get; set; }
 
-
-        [ForeignKey(nameof(OdjeljenjeID))]
         public virtual Odjeljenje Odjeljenje { get; set; }
+        [ForeignKey(nameof(Odjeljenje))]
         public int OdjeljenjeID { get; set; }
 
-
-        [ForeignKey(nameof(NastavnikID))]
         public virtual Nastavnik Nastavnik { get; set; }
+        [ForeignKey(nameof(Nastavnik))]
         public int NastavnikID { get; set; }
 
     }

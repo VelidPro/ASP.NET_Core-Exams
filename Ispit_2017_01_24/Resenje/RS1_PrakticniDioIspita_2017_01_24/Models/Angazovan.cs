@@ -10,16 +10,16 @@ namespace RS1_PrakticniDioIspita_2017_01_24.Models
     {
         public int Id { get; set; }
 
+        [ForeignKey(nameof(Nastavnik))]
         public int NastavnikId { get; set; }
-        [ForeignKey(nameof(NastavnikId))]
         public Nastavnik Nastavnik { get; set; }
 
+        [ForeignKey(nameof(Predmet))]
         public int PredmetId { get; set; }
-        [ForeignKey(nameof(PredmetId))]
         public Predmet Predmet { get; set; }
 
+        [ForeignKey(nameof(Odjeljenje))]
         public int OdjeljenjeId { get; set; }
-        [ForeignKey(nameof(OdjeljenjeId))]
         public Odjeljenje Odjeljenje { get; set; }
 
         public ICollection<OdrzaniCas> OdrzaniCasovi { get; set; }
