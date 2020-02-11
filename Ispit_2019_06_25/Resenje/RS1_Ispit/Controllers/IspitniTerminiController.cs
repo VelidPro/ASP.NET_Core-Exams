@@ -45,8 +45,7 @@ namespace RS1_Ispit_asp.net_core.Controllers
             if (model == null)
                 return Redirect("/");
 
-            return PartialView("_Novi", model);
-
+            return View("Novi", model);
         }
 
 
@@ -56,7 +55,16 @@ namespace RS1_Ispit_asp.net_core.Controllers
         public async Task<IActionResult> Novi(NoviIspitniTerminVM model)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Podaci nisu validni.");
+            {
+                var datumError = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .FirstOrDefault(x => x.ErrorMessage.Contains("Datum"));
+
+                if (datumError != null)
+                    ModelState.AddModelError(string.Empty, datumError.ErrorMessage);
+
+                return View(model);
+            }
 
             int decryptedAngazmanId = int.Parse(_protector.Unprotect(model.AngazmanId));
 
@@ -78,7 +86,7 @@ namespace RS1_Ispit_asp.net_core.Controllers
             await _context.AddAsync(noviTermin);
             await _context.SaveChangesAsync();
 
-            return Ok("Uspjesno dodat ispitni termin");
+            return RedirectToAction(nameof(GetAll),routeValues:new{angazmanId=model.AngazmanId});
 
         }
 
@@ -103,7 +111,48 @@ namespace RS1_Ispit_asp.net_core.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Zakljucaj(string Id)
+        {
+            var ispitniTerminId = int.Parse(_protector.Unprotect(Id));
 
+            var ispitniTermin = await _context.IspitniTermini.FindAsync(ispitniTerminId);
+
+            if (ispitniTermin == null)
+                return NotFound("Ispitni termin nije pronadjen.");
+
+            ispitniTermin.EvidentiraniRezultati = true;
+            _context.Update(ispitniTermin);
+            await _context.SaveChangesAsync();
+
+            return PartialView("_IspitTerminRow",await BuildSingleIspitniTerminVM(ispitniTerminId));
+        }
+
+
+        private async Task<IspitniTerminVM> BuildSingleIspitniTerminVM(int ispitniTerminId)
+        {
+            var ispitniTermin = await _context.IspitniTermini.FindAsync(ispitniTerminId);
+
+            if(ispitniTermin==null)
+                return new IspitniTerminVM();
+
+            return new IspitniTerminVM
+            {
+                Id=_protector.Protect(ispitniTermin.Id.ToString()),
+                DatumIspita = ispitniTermin.DatumIspita,
+                BrojStudenataNepolozeno = ispitniTermin.BrojNepolozenih,
+                BrojPrijavljenihStudenata = ispitniTermin.BrojPrijavljenihStudenata,
+                EvidentiraniRazultati = ispitniTermin.EvidentiraniRezultati
+            };
+
+            //new IspitniTerminVM
+            //{
+            //    Id = _protector.Protect(t.Id.ToString()),
+            //    DatumIspita = t.DatumIspita,
+            //    BrojStudenataNepolozeno = t.BrojNepolozenih,
+            //    BrojPrijavljenihStudenata = t.BrojPrijavljenihStudenata,
+            //    EvidentiraniRazultati = t.EvidentiraniRezultati
+            //}
+        }
         private async Task<IspitniTerminiVM> BuildIspitniTerminiViewModel(int angazmanId)
         {
             var angazman = await _context.Angazovan

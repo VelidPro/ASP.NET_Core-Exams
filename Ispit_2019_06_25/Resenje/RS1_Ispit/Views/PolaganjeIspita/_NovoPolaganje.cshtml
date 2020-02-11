@@ -1,7 +1,7 @@
 ﻿@using RS1_Ispit_asp.net_core.EntityModels
 @model RS1_Ispit_asp.net_core.ViewModels.IspitPolaganjeVM
 @{
-    var Title = ViewData["Title"];
+    var Title = (string)ViewData["Title"];
 }
 
 <div class="row mt-5">
@@ -14,8 +14,9 @@
               ajax-poziv="da"
               ajax-notify="da"
               ajax-message="Uspjesno"
-              ajax-input-rezultat="da"
-              ajax-rezultat="@(string.Concat("Ocjena_", Model.Id?.Substring(Model.Id.Length - 6, 5)??""))">
+              ajax-rezultat="@(Title.Contains("Izmjena")?string.Concat("Polaganje_", Model.Id.Substring(Model.Id.Length - 6, 5)):"listaPolaganja")"
+              ajax-append-rezultat="@(Title.Contains("Izmjena")?"ne":"da")"
+              ajax-replace-rezultat="@(Title.Contains("Izmjena")?"da":"ne")">
 
             <div class="row">
                 <div class="col-md-6">

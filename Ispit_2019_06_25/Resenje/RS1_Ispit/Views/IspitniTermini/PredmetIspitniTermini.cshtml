@@ -41,17 +41,17 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Datum ispita</th>
-            <th>Broj studenata koji nisu polozili predmet</th>
-            <th>Broj prijavljenih studenata</th>
-            <th>Evidentirani rezultati (zakljucano)</th>
-            <th>Akcija</th>
+            <th class="text-center">Datum ispita</th>
+            <th class="text-center">Broj studenata koji nisu polozili predmet</th>
+            <th class="text-center">Broj prijavljenih studenata</th>
+            <th class="text-center">Evidentirani rezultati (zakljucano)</th>
+            <th class="text-center">Akcija</th>
         </tr>
         </thead>
         <tbody>
         @foreach (var x in Model.IspitniTermini)
         {
-            <tr id="@(string.Concat("Termin_", x.Id.Substring(x.Id.Length - 6, 5)))">
+            <tr  class="text-center" id="@(string.Concat("Termin_", x.Id.Substring(x.Id.Length - 6, 5)))">
 
                 <td>@x.DatumIspita.ToString("d")</td>
                 <td>@x.BrojStudenataNepolozeno</td>
@@ -59,11 +59,16 @@
                 <td>@(x.EvidentiraniRazultati?"DA":"NE")</td>
                 <td>
                     <a asp-action="Detalji" asp-route-Id="@x.Id">Detalji**</a>
-                    |
-                    <a asp-action="Zakljucaj" asp-route-Id="@x.Id"
-                       ajax-poziv="da"
-                       ajax-notify="da"
-                       ajax-message="Uspjesno zakljucan">Zakljucaj**</a>
+                    @if (!x.EvidentiraniRazultati)
+                    {
+                       @("|")
+                        <a asp-action="Zakljucaj" asp-route-Id="@x.Id"
+                           ajax-poziv="da"
+                           ajax-rezultat="@(string.Concat("Termin_", x.Id.Substring(x.Id.Length - 6, 5)))"
+                           ajax-replace-rezultat="da"
+                           ajax-notify="da"
+                        ajax-message="Uspjesno zakljucan">Zakljucaj**</a>
+                    }
                 </td>
 
 
@@ -74,12 +79,8 @@
     <hr/>
     <div class="row mt-5">
         <div class="col-md-3 col-lg-2 col-sm-6">
-            <a class="btn btn-primary" asp-action="Novi" asp-route-angazmanId="@Model.AngazmanId" ajax-poziv="da" ajax-rezultat="noviIspitniTermin">Dodaj</a>
+            <a class="btn btn-primary" asp-action="Novi" asp-route-angazmanId="@Model.AngazmanId">Dodaj</a>
         </div>
-    </div>
-    
-    <div class="row" id="noviIspitniTermin">
-
     </div>
 </div>
 

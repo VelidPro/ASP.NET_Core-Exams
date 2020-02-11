@@ -1,6 +1,13 @@
 ﻿
 
 function DodajAjaxEvente() {
+    $("input[ajax-change-trigger]").change(function(event) {
+        event.preventDefault();
+
+        $(this).parent().submit();
+    });
+
+
     $("button[ajax-poziv='da']").click(function (event) {
         $(this).attr("ajax-poziv", "dodan");
 
@@ -14,11 +21,17 @@ function DodajAjaxEvente() {
     });
 
     $("a[ajax-poziv='da']").click(function (event) {
-        $(this).attr("ajax-poziv", "dodan");
+
+        if ($(this).data("requestValidator"))
+            return;
+
+        $(this).data("requestValidator", true);
+
         event.preventDefault();
         var urlZaPoziv1 = $(this).attr("ajax-url");
         var urlZaPoziv2 = $(this).attr("href");
         var divZaRezultat = $(this).attr("ajax-rezultat");
+        var ajaxReplace = $(this).attr("ajax-replace-rezultat");
 
         var urlZaPoziv;
 
@@ -28,16 +41,29 @@ function DodajAjaxEvente() {
             urlZaPoziv = urlZaPoziv2;
 
         $.get(urlZaPoziv, function (data, status) {
-            $("#" + divZaRezultat).html(data);
+            if (ajaxReplace === "da") {
+                $("#" + divZaRezultat).replaceWith(data);
+            } else {
+                $("#" + divZaRezultat).html(data);
+            }
+        }).done(function() {
+            $(this).data("requestValidator", false);
         });
     });
 
     $("form[ajax-poziv='da']").submit(function (event) {
-        $(this).attr("ajax-poziv", "dodan");
+
+        if ($(this).data("requestValidator"))
+            return;
+
+        $(this).data("requestValidator", true);
+
         event.preventDefault();
         var urlZaPoziv1 = $(this).attr("ajax-url");
         var urlZaPoziv2 = $(this).attr("action");
         var divZaRezultat = $(this).attr("ajax-rezultat");
+        var ajaxReplace = $(this).attr("ajax-replace-rezultat");
+        var ajaxAppend = $(this).attr("ajax-append-rezultat");
 
         var urlZaPoziv;
         if (urlZaPoziv1 instanceof String)
@@ -52,8 +78,16 @@ function DodajAjaxEvente() {
             url: urlZaPoziv,
             data: form.serialize(),
             success: function (data) {
-                $("#" + divZaRezultat).html(data);
+                if (ajaxAppend === "da") {
+                    $("#" + divZaRezultat).append(data);
+                }else if (ajaxReplace === "da") {
+                    $("#" + divZaRezultat).replaceWith(data);
+                }else {
+                    $("#" + divZaRezultat).html(data);
+                }
             }
+        }).complete(function() {
+            $(this).data("requestValidator", false);
         });
     });
 }

@@ -65,8 +65,14 @@ namespace RS1_Ispit_asp.net_core.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Podaci nisu validni.");
 
-            if (string.IsNullOrEmpty(model.Id))
+            if (!model.Ocjena.HasValue)
             {
+                var ispitTerminDecryptedId = int.Parse(_protector.Unprotect(model.IspitniTerminId));
+                var ispitniTermin = await _context.IspitniTermini.FindAsync(ispitTerminDecryptedId);
+
+                if (ispitniTermin == null)
+                    return NotFound("Ispitni termin nije pronadjne.");
+
                 var novoPolaganje = new IspitPolaganje
                 {
                     IspitniTerminId = int.Parse(_protector.Unprotect(model.IspitniTerminId)),
@@ -77,45 +83,54 @@ namespace RS1_Ispit_asp.net_core.Controllers
                 await _context.AddAsync(novoPolaganje);
                 await _context.SaveChangesAsync();
 
-                return Ok(novoPolaganje.Ocjena);
+                ViewData["evidentiraniRezultati"] = ispitniTermin.EvidentiraniRezultati;
+                ViewData["datumIspita"] = ispitniTermin.DatumIspita;
+
+
+                return PartialView("_PolaganjeIspitaRow", await BuildPolaganjeIspitaVM(novoPolaganje));
 
             }
-            else
-            {
-                var polaganjeFromDb = _context.PolaganjaIspita.Find(int.Parse(_protector.Unprotect(model.Id)));
 
-                if (polaganjeFromDb == null)
-                    return BadRequest("Polaganje ne postoji.");
+            var polaganjeFromDb = await _context.PolaganjaIspita
+                .Include(x=>x.IspitniTermin)
+                .FirstOrDefaultAsync(x=>x.Id==int.Parse(_protector.Unprotect(model.Id)));
 
-                polaganjeFromDb.Ocjena = model.Ocjena;
-                polaganjeFromDb.PristupioIspitu = true;
+            if (polaganjeFromDb == null)
+                return BadRequest("Polaganje ne postoji.");
 
-                _context.Update(polaganjeFromDb);
-                await _context.SaveChangesAsync();
+            polaganjeFromDb.Ocjena = model.Ocjena;
+            polaganjeFromDb.PristupioIspitu = true;
 
-                return Ok(polaganjeFromDb.Ocjena);
-
-            }
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Ocjena(string polaganjeId, int ocjena)
-        {
-            if (string.IsNullOrEmpty(polaganjeId) || ocjena < 5 || ocjena > 10)
-                return BadRequest("Podaci nisu validni.");
-
-            var polaganje = _context.PolaganjaIspita.Find(int.Parse(_protector.Unprotect(polaganjeId)));
-
-            if (polaganje == null)
-                return BadRequest("Polaganje nije pronadjeno.");
-
-            polaganje.Ocjena = ocjena;
-
-            _context.Update(polaganje);
-
+            _context.Update(polaganjeFromDb);
             await _context.SaveChangesAsync();
 
-            return Ok("Uspjesna izmjena ocjene.");
+            ViewData["evidentiraniRezultati"] = polaganjeFromDb.IspitniTermin.EvidentiraniRezultati;
+            ViewData["datumIspita"] = polaganjeFromDb.IspitniTermin.DatumIspita;
+
+            return PartialView("_PolaganjeIspitaRow", await BuildPolaganjeIspitaVM(polaganjeFromDb));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EvidencijaOcjene([FromForm]int ocjena, [FromForm]string Id)
+        {
+            if (string.IsNullOrEmpty(Id))
+                return BadRequest("Id polaganja nije validan.");
+
+            if (ocjena < 5 || ocjena > 10)
+                return BadRequest("Ocjena mora biti izmedju 5 i 10");
+
+            int decryptedId = int.Parse(_protector.Unprotect(Id));
+            var polaganje = await _context.PolaganjaIspita.FindAsync(decryptedId);
+
+            if (polaganje == null)
+                return NotFound($"Polaganje sa ID-em {Id} nije pronadjeno");
+
+            polaganje.Ocjena = ocjena;
+            _context.Update(polaganje);
+            await _context.SaveChangesAsync();
+
+            return Ok("Uspjesno evidentirana ocjena.");
         }
 
 
@@ -124,7 +139,9 @@ namespace RS1_Ispit_asp.net_core.Controllers
         {
             int decryptedId = int.Parse(_protector.Unprotect(Id));
 
-            var polaganje = _context.PolaganjaIspita.Find(decryptedId);
+            var polaganje = await _context.PolaganjaIspita
+                .Include(x=>x.IspitniTermin)
+                .FirstOrDefaultAsync(x=>x.Id==decryptedId);
 
             if (polaganje == null)
                 return BadRequest("Polaganje nije pronadjeno.");
@@ -135,7 +152,12 @@ namespace RS1_Ispit_asp.net_core.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(polaganje.PristupioIspitu.ToString());
+
+            ViewData["evidentiraniRezultati"] = polaganje.IspitniTermin.EvidentiraniRezultati;
+            ViewData["datumIspita"] = polaganje.IspitniTermin.DatumIspita;
+
+
+            return PartialView("_PolaganjeIspitaRow", await BuildPolaganjeIspitaVM(polaganje));
         }
 
 
@@ -200,6 +222,22 @@ namespace RS1_Ispit_asp.net_core.Controllers
 
             return model;
 
+        }
+
+        private async Task<PolaganjeIspitaVM> BuildPolaganjeIspitaVM(IspitPolaganje polaganje)
+        {
+            return new PolaganjeIspitaVM
+            {
+                Id = _protector.Protect(polaganje.Id.ToString()),
+                Student = _context.UpisGodine
+                              .Where(u => u.Id == polaganje.UpisGodineId)
+                              .Select(u => u.Student)
+                              .FirstOrDefault()
+                              ?.ImePrezime() ?? "",
+                PristupioIspitu = polaganje.PristupioIspitu,
+                Ocjena = polaganje.Ocjena
+
+            };
         }
     }
 }

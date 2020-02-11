@@ -1,0 +1,21 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.IspitniTerminVM
+<tr class="text-center" id="@(string.Concat("Termin_", Model.Id.Substring(Model.Id.Length - 6, 5)))">
+
+    <td>@Model.DatumIspita.ToString("d")</td>
+    <td>@Model.BrojStudenataNepolozeno</td>
+    <td>@Model.BrojPrijavljenihStudenata</td>
+    <td>@(Model.EvidentiraniRazultati ? "DA" : "NE")</td>
+    <td>
+        <a asp-action="Detalji" asp-route-Id="@Model.Id">Detalji**</a>
+        @if (!Model.EvidentiraniRazultati)
+        {
+            @("|")
+            <a asp-action="Zakljucaj" asp-route-Id="@Model.Id"
+               ajax-poziv="da"
+               ajax-rezultat="@(string.Concat("Termin_", Model.Id.Substring(Model.Id.Length - 6, 5)))"
+               ajax-replace-rezultat="da"
+               ajax-notify="da"
+               ajax-message="Uspjesno zakljucan">Zakljucaj**</a>
+        }
+    </td>
+</tr>

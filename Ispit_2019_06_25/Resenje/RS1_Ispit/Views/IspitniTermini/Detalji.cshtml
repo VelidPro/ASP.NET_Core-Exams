@@ -10,7 +10,7 @@
 </div>
 <div class="row">
     <div class="col-md-6">
-        <div class="row pt-5">
+        <div class="row mt-10">
             <div class="col-md-6">
                 <label class="control-label" asp-for="Predmet"></label>
             </div>
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="row pt-5">
+        <div class="row mt-10">
             <div class="col-md-6">
                 <label class="control-label" asp-for="Nastavnik"></label>
             </div>
@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="row pt-5">
+        <div class="row mt-10">
             <div class="col-md-6">
                 <label class="control-label" asp-for="SkolskaGodina"></label>
             </div>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div class="row pt-5">
+        <div class="row mt-10">
             <div class="col-md-6">
                 <label class="control-label" asp-for="Datum"></label>
             </div>
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class="row pt-5">
+        <div class="row mt-10">
             <div class="col-md-6">
                 <label class="control-label" asp-for="Napomena"></label>
             </div>
@@ -64,45 +64,54 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Student</th>
-                <th>Pristupio ispitu</th>
-                <th class="text-center">Ocjena</th>
-                <th>Akcija</th>
+                <th class="text-center">Student</th>
+                <th class="text-center">Pristupio ispitu</th>
+                <th class="text-center" class="text-center">Ocjena</th>
+                <th class="text-center">Akcija</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="listaPolaganja">
             @foreach (var x in Model.Polaganja)
             {
-                <tr>
+                <tr id="@(string.Concat("Polaganje_", x.Id.Substring(x.Id.Length - 6, 5)))"  class="text-center">
                     <td>@x.Student</td>
                     <td>
-                        <a id="@(string.Concat("Termin_", x.Id.Substring(x.Id.Length - 6, 5)))"
-                           asp-action="TogglePristupioIspitu"
-                           asp-controller="PolaganjeIspita"
-                           asp-route-Id="@x.Id"
-                           ajax-poziv="da"
-                           ajax-toggler="da"
-                           ajax-toggle-rezultat="@(string.Concat("Termin_", x.Id.Substring(x.Id.Length - 6, 5)))">
+                        @if (Model.Zakljucan)
+                        {
                             @(x.PristupioIspitu ? "Pristupio" : "Nije pristupio")
+                        }
+                        else
+                        {
+                            <a id="@(string.Concat("Termin_", x.Id.Substring(x.Id.Length - 6, 5)))"
+                               asp-action="TogglePristupioIspitu"
+                               asp-controller="PolaganjeIspita"
+                               asp-route-Id="@x.Id"
+                               ajax-poziv="da"
+                               ajax-replace-rezultat="da"
+                               ajax-rezultat="@(string.Concat("Polaganje_", x.Id.Substring(x.Id.Length - 6, 5)))">
+                                @(x.PristupioIspitu ? "Pristupio" : "Nije pristupio")
 
-                        </a>
+                            </a>
+                        }
+
                     </td>
                     <td>
-                        <div class="col-md-7" style="margin-left: 20%;">
-                            @if (x.PristupioIspitu)
-                            {
-                                <input id="@(string.Concat("Ocjena_", x.Id.Substring(x.Id.Length - 6, 5)))"
-                                       value="@(x.Ocjena == null ? "" : x.Ocjena.ToString())"
-                                       class="form-control" min="5" max="10" type="number"
-                                       ajax-poziv="da"
-                                       ajax-notify="da"
-                                       ajax-message="Uspjesna izmjena"
-                                       ajax-append-parameter="da"
-                                       ajax-append-parameter-name="ocjena"
-                                       ajax-url="@Url.Action("Ocjena", "PolaganjeIspita", new {polaganjeId = x.Id})"/>
-                            }
-                        </div>
-
+                        @if (Model.Zakljucan)
+                        {
+                            @(x.Ocjena == null ? "" : x.Ocjena.ToString())
+                        }
+                        else
+                        {
+                            <div class="col-md-7" style="margin-left: 20%;">
+                                @if (x.PristupioIspitu)
+                                {
+                                    <form ajax-poziv="da" asp-action="EvidencijaOcjene" asp-controller="PolaganjeIspita" method="post">
+                                        <input type="hidden" name="Id" value="@x.Id"/>
+                                        <input ajax-change-trigger="da" class="form-control" min="5" max="10" value="@x.Ocjena" name="ocjena"/>
+                                    </form>
+                                }
+                            </div>
+                        }
                     </td>
                     <td>
                         @if (x.PristupioIspitu && !Model.Zakljucan && DateTime.Now > Model.Datum)
@@ -111,7 +120,7 @@
                                asp-controller="PolaganjeIspita"
                                asp-route-Id="@x.Id"
                                ajax-poziv="da"
-                               ajax-rezultat="polaganjeEdit">Uredi</a>
+                               ajax-rezultat="polaganjeForm">Uredi</a>
                         }
                     </td>
                 </tr>
@@ -128,15 +137,12 @@
            asp-route-ispitniTerminId="@Model.Id"
            asp-controller="PolaganjeIspita"
            ajax-poziv="da"
-           ajax-rezultat="novoPolaganje">Dodaj</a>
+           ajax-rezultat="polaganjeForm">Dodaj</a>
 
     </div>
 </div>
 <hr/>
 <div class="row mt-10">
-    <div class="col-md-4" id="polaganjeEdit"></div>
-</div>
-<div class="row mt-10">
-    <div class="col-md-4" id="novoPolaganje"></div>
+    <div class="col-md-4" id="polaganjeForm"></div>
 </div>
 

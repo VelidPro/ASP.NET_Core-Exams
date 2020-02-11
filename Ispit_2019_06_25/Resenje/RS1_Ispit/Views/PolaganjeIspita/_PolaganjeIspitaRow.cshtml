@@ -1,0 +1,56 @@
+﻿@model RS1_Ispit_asp.net_core.ViewModels.PolaganjeIspitaVM
+@{
+    bool isLockedOut = (bool)ViewData["evidentiraniRezultati"];
+    DateTime datumIspita = (DateTime)ViewData["datumIspita"];
+}
+<tr id="@(string.Concat("Polaganje_", Model.Id.Substring(Model.Id.Length - 6, 5)))" class="text-center">
+    <td>@Model.Student</td>
+    <td>
+        @if (isLockedOut)
+        {
+            @(Model.PristupioIspitu ? "Pristupio" : "Nije pristupio")
+        }
+        else
+        {
+            <a id="@(string.Concat("Termin_", Model.Id.Substring(Model.Id.Length - 6, 5)))"
+               asp-action="TogglePristupioIspitu"
+               asp-controller="PolaganjeIspita"
+               asp-route-Id="@Model.Id"
+               ajax-poziv="da"
+               ajax-replace-rezultat="da"
+               ajax-rezultat="@(string.Concat("Polaganje_", Model.Id.Substring(Model.Id.Length - 6, 5)))">
+                @(Model.PristupioIspitu ? "Pristupio" : "Nije pristupio")
+
+            </a>
+        }
+
+    </td>
+    <td>
+        @if (isLockedOut)
+        {
+            @(Model.Ocjena == null ? "" : Model.Ocjena.ToString())
+        }
+        else
+        {
+        <div class="col-md-7" style="margin-left: 20%;">
+            @if (Model.PristupioIspitu)
+            {
+                <form ajax-poziv="da" asp-action="EvidencijaOcjene" asp-controller="PolaganjeIspita" method="post">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <input ajax-change-trigger="da" class="form-control" min="5" max="10" value="@Model.Ocjena" name="ocjena" />
+                </form>
+            }
+        </div>
+        }
+    </td>
+    <td>
+        @if (Model.PristupioIspitu && !isLockedOut && DateTime.Now > datumIspita)
+        {
+            <a asp-action="Uredi"
+               asp-controller="PolaganjeIspita"
+               asp-route-Id="@Model.Id"
+               ajax-poziv="da"
+               ajax-rezultat="polaganjeForm">Uredi</a>
+        }
+    </td>
+</tr>
