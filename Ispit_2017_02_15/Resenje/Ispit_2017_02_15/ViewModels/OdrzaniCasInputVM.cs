@@ -14,6 +14,7 @@ namespace Ispit_2017_02_15.ViewModels
         public DateTime Datum { get; set; }
         [Display(Name="Skolska godina / Predmet")]
         public int? AngazujeId { get; set; }
+        [Display(Name = "Skolska godina / Predmet")]
         public string Angazman { get; set; }
 
         public List<SelectListItem> AkademskeGodinePredmeti { get; set; }

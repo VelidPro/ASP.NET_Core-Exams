@@ -28,7 +28,7 @@
                         <td>@x.Datum.ToString("d")</td>
                         <td>@x.AkademskaGodina</td>
                         <td>@x.Predmet</td>
-                        <td><a asp-action="Edit">Edit</a></td>
+                        <td><a asp-action="Edit" asp-route-Id="@x.Id">Edit</a></td>
                     </tr>
                 }
             </tbody>

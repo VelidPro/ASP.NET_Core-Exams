@@ -49,7 +49,28 @@ namespace Ispit_2017_02_15.Controllers
         }
 
 
+        public async Task<IActionResult> Edit(int Id)
+        {
+            var currentUser = await HttpContext.GetLoggedInUser();
+            var nastavnik = await _dbContext.Nastavnik.FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
 
+            if (nastavnik == null)
+                return NotFound();
+
+            var odrzaniCas = await _dbContext.OdrzaniCasovi
+                .Include(x=>x.Angazovan)
+                .ThenInclude(x=>x.AkademskaGodina)
+                .Include(x=>x.Angazovan)
+                .ThenInclude(x=>x.Predmet)
+                .FirstOrDefaultAsync(x=>x.Id==Id);
+
+            if (odrzaniCas == null)
+                return NotFound();
+
+            var vModel = await BuildOdrzaniCasInputVM(nastavnik, odrzaniCas);
+
+            return View("OdrzaniCasForm", vModel);
+        }
 
 
         [HttpPost]
@@ -76,7 +97,7 @@ namespace Ispit_2017_02_15.Controllers
                 return View("OdrzaniCasForm", model);
             }
 
-            if (!await _dbContext.Angazovan.AnyAsync(x => x.NastavnikId == nastavnik.Id && model.AngazujeId == x.Id))
+            if (!model.Id.HasValue && !await _dbContext.Angazovan.AnyAsync(x => x.NastavnikId == nastavnik.Id && model.AngazujeId == x.Id))
             {
                 return Unauthorized();
             }
@@ -159,10 +180,10 @@ namespace Ispit_2017_02_15.Controllers
 
             return new OdrzaniCasInputVM
             {
-                Id=odrzaniCas.Id,
+                Id = odrzaniCas.Id,
                 Nastavnik = nastavnik.ImePrezime(),
                 Datum = DateTime.Now.AddDays(1),
-                Angazman = odrzaniCas.Angazovan?.AkademskaGodina.Opis ?? NOT_FOUND + " / " + odrzaniCas.Angazovan?.Predmet.Naziv ?? NOT_FOUND
+                Angazman = (odrzaniCas.Angazovan?.AkademskaGodina?.Opis ?? NOT_FOUND) + " / " + (odrzaniCas.Angazovan?.Predmet?.Naziv ?? NOT_FOUND)
             };
         }
 
