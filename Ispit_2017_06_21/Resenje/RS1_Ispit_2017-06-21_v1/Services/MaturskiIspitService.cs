@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using RS1_Ispit_2017_06_21_v1.EF;
 using RS1_Ispit_2017_06_21_v1.Helpers;
 using RS1_Ispit_2017_06_21_v1.HelpModels;
@@ -41,13 +42,16 @@ namespace RS1_Ispit_2017_06_21_v1.Services
 
                 foreach (var x in uceniciZaDodavanje)
                 {
-                    await _dbContext.AddAsync(new MaturskiIspitStavka
+                    if (!await IsVecPolozio(x.Id))
                     {
-                        Bodovi = null,
-                        MaturskiIspitId = ispit.Id,
-                        Oslobodjen = x.OpciUspjeh == 5,
-                        UpisUOdjeljenjeId = x.Id
-                    });
+                        await _dbContext.AddAsync(new MaturskiIspitStavka
+                        {
+                            Bodovi = null,
+                            MaturskiIspitId = ispit.Id,
+                            Oslobodjen = x.OpciUspjeh == 5,
+                            UpisUOdjeljenjeId = x.Id
+                        });
+                    }
                 }
 
                 await _dbContext.SaveChangesAsync();
@@ -66,6 +70,16 @@ namespace RS1_Ispit_2017_06_21_v1.Services
                     Success = false
                 };
             }
+        }
+
+        private async Task<bool> IsVecPolozio(int upisUOdjeljenjeId)
+        {
+            var polaganjaUcenika = _dbContext.MaturskiIspitStavke.Where(x => x.UpisUOdjeljenjeId == upisUOdjeljenjeId);
+
+            if (!await polaganjaUcenika.AnyAsync())
+                return false;
+
+            return (polaganjaUcenika.Last()?.Bodovi ?? 0) > 50;
         }
 
     }

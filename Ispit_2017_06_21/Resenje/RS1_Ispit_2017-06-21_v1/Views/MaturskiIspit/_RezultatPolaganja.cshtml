@@ -1,0 +1,33 @@
+﻿@model RS1_Ispit_2017_06_21_v1.ViewModels.MaturskiIspitStavkaInputVM
+
+
+<div class="row">
+    <h4>Evidencija rezultata</h4>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Uredi" method="post" ajax-poziv="da" ajax-replace-rezultat="da" ajax-rezultat="@(string.Concat("Polaganje_",Model.Id))">
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Ucenik"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Ucenik" readonly />
+                </div>
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Bodovi"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Bodovi"/>
+                </div>
+            </div>
+            <hr/>
+            <div class="row mt-10">
+                <button class="btn btn-primary" type="submit">Snimi</button>
+            </div>
+        </form>
+    </div>
+</div>

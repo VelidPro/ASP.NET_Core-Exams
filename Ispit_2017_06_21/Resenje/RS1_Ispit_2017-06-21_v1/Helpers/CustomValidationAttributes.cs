@@ -15,7 +15,7 @@ namespace RS1_Ispit_2017_06_21_v1.Helpers
 
                 DateTime.TryParse(value.ToString(), out var date);
 
-                if (date <= DateTime.Now)
+                if (date > DateTime.Now)
                     return true;
             }
 

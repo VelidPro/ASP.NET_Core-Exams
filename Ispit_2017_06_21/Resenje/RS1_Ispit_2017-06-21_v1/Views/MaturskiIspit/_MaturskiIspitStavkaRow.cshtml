@@ -1,0 +1,37 @@
+﻿@model RS1_Ispit_2017_06_21_v1.ViewModels.MaturskiIspitStavkaVM
+
+<tr class="text-center" id="@(string.Concat("Polaganje_",Model.Id))">
+    <td>@Model.Ucenik</td>
+    <td>@Model.OpstiUspjeh</td>
+    <td>
+        @if (!Model.Oslobodjen)
+        {
+            <div class="col-md-5" style="margin-left: 30%;">
+                <form ajax-poziv="da" asp-action="Bodovi" method="post">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <input ajax-change-trigger="da" class="form-control text-center" min="0" max="100" value="@Model.Bodovi" name="bodovi" />
+                </form>
+            </div>
+        }
+    </td>
+    <td>
+        <a asp-action="OslobodjenToggle" asp-route-maturskiIspitStavkaId="@Model.Id"
+           ajax-poziv="da" ajax-rezultat="@(string.Concat("Polaganje_", Model.Id))" ajax-replace-rezultat="da">
+
+            @if (Model.Oslobodjen)
+            {
+                <span class="text-green">DA</span>
+            }
+            else
+            {
+                <span class="text-danger">NE</span>
+            }
+        </a>
+    </td>
+    <td>
+        @if (!Model.Oslobodjen)
+        {
+            <a asp-action="Uredi" asp-route-Id="@Model.Id" ajax-poziv="da" ajax-rezultat="evidencijaRezultata">Uredi</a>
+        }
+    </td>
+</tr>

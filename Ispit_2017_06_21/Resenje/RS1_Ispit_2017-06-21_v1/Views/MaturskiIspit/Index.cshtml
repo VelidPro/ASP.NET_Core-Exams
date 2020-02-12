@@ -26,8 +26,13 @@
                 <td>@x.Datum.ToString("d")</td>
                 <td>@x.Odjeljenje</td>
                 <td>@x.Ispitivac</td>
-                <td>@x.ProsjecniBodovi.ToString("F")</td>
-                <td><a asp-action="Detalji" asp-route-Id="@x.Id">Detalji</a></td>
+                <td>@(x.Datum<DateTime.Now?x.ProsjecniBodovi.ToString("F"):string.Empty)</td>
+                <td>
+                    @if (Model.IspitivacId == x.IspitivacId)
+                    {
+                        <a asp-action="Detalji" asp-route-Id="@x.Id">Detalji</a>
+                    }
+                </td>
             </tr>
         }
         </tbody>

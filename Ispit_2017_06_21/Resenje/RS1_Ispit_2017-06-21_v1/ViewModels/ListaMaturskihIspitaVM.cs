@@ -7,6 +7,7 @@ namespace RS1_Ispit_2017_06_21_v1.ViewModels
 {
     public class ListaMaturskihIspitaVM
     {
+        public int IspitivacId { get; set; }
         public List<MaturskiIspitVM> MaturskiIspiti { get; set; }
     }
 
@@ -15,7 +16,7 @@ namespace RS1_Ispit_2017_06_21_v1.ViewModels
         public int Id { get; set; }
         public DateTime Datum { get; set; }
         public string Odjeljenje { get; set; }
-
+        public int IspitivacId { get; set; }
         public string Ispitivac { get; set; }
         public double ProsjecniBodovi { get; set; }
     }
