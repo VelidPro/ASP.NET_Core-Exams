@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ispit_2017_02_15.EF;
+using Ispit_2017_02_15.Interface;
+using Ispit_2017_02_15.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.AzureAppServices;
 
 
 namespace Ispit_2017_02_15
@@ -25,7 +28,11 @@ namespace Ispit_2017_02_15
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<MojContext>(options => options.UseSqlServer(Configuration.GetConnectionString("lokalni1")));
+            services.AddDbContext<MojContext>(options => options.UseSqlServer(Configuration.GetConnectionString("fahirCS")));
+
+            services.AddSession();
+
+            services.AddScoped<IOdrzaniCasService, OdrzaniCasService>();
             services.AddMvc();
         }
 
@@ -43,6 +50,7 @@ namespace Ispit_2017_02_15
             }
 
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

@@ -19,12 +19,28 @@ namespace Ispit_2017_02_15.EF
             context.AkademskaGodina.Add(AkademskaGodina1);
             context.AkademskaGodina.Add(AkademskaGodina2);
 
-            var Nastavnik1 = new Nastavnik() { Ime = "Denis", Prezime = "Music", Username = "denis"};
-            var Nastavnik2 = new Nastavnik() { Ime = "Emina", Prezime = "Junuz", Username = "emina"};
-            var Nastavnik3 = new Nastavnik() { Ime = "Jasmin", Prezime = "Azemovic", Username = "jasmin"};
-            var Nastavnik4 = new Nastavnik() { Ime = "Nina", Prezime = "Bijedic", Username = "nina"};
-            var Nastavnik5 = new Nastavnik() { Ime = "Zanin", Prezime = "Vejzovic", Username = "zanin"};
-            var Nastavnik6 = new Nastavnik() { Ime = "Elmir", Prezime = "Babović", Username = "elmir"};
+            var user1 = new User {Username="Nastavnik1", Password="1234"};
+            var user2 = new User { Username = "Nastavnik2", Password = "1234" };
+            var user3 = new User { Username = "Nastavnik3", Password = "1234" };
+            var user4 = new User { Username = "Nastavnik4", Password = "1234" };
+            var user5 = new User { Username = "Nastavnik5", Password = "1234" };
+            var user6 = new User { Username = "Nastavnik6", Password = "1234" };
+
+            context.Users.Add(user1);
+            context.Users.Add(user2);
+            context.Users.Add(user3);
+            context.Users.Add(user4);
+            context.Users.Add(user5);
+            context.Users.Add(user6);
+            context.SaveChanges();
+
+
+            var Nastavnik1 = new Nastavnik() { Ime = "Denis", Prezime = "Music",UserId=user1.Id};
+            var Nastavnik2 = new Nastavnik() { Ime = "Emina", Prezime = "Junuz",UserId=user2.Id};
+            var Nastavnik3 = new Nastavnik() { Ime = "Jasmin", Prezime = "Azemovic", UserId =user3.Id};
+            var Nastavnik4 = new Nastavnik() { Ime = "Nina", Prezime = "Bijedic", UserId = user4.Id};
+            var Nastavnik5 = new Nastavnik() { Ime = "Zanin", Prezime = "Vejzovic", UserId = user5.Id };
+            var Nastavnik6 = new Nastavnik() { Ime = "Elmir", Prezime = "Babović", UserId = user6.Id};
 
             context.Nastavnik.Add(Nastavnik1);
             context.Nastavnik.Add(Nastavnik2);

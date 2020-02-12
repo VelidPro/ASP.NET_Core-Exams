@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Ispit_2017_02_15.Migrations
 {
-    public partial class DB : Migration
+    public partial class InitDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,21 +20,6 @@ namespace Ispit_2017_02_15.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AkademskaGodina", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Nastavnik",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Ime = table.Column<string>(nullable: true),
-                    Prezime = table.Column<string>(nullable: true),
-                    Username = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Nastavnik", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,36 +54,17 @@ namespace Ispit_2017_02_15.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Angazovan",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AkademskaGodinaId = table.Column<int>(nullable: false),
-                    NastavnikId = table.Column<int>(nullable: false),
-                    PredmetId = table.Column<int>(nullable: false)
+                    Password = table.Column<string>(nullable: true),
+                    Username = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Angazovan", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Angazovan_AkademskaGodina_AkademskaGodinaId",
-                        column: x => x.AkademskaGodinaId,
-                        principalTable: "AkademskaGodina",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Angazovan_Nastavnik_NastavnikId",
-                        column: x => x.NastavnikId,
-                        principalTable: "Nastavnik",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Angazovan_Predmet_PredmetId",
-                        column: x => x.PredmetId,
-                        principalTable: "Predmet",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,6 +93,81 @@ namespace Ispit_2017_02_15.Migrations
                         name: "FK_UpisGodine_Student_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Student",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AuthorizationTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IpAddress = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
+                    Value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuthorizationTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AuthorizationTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Nastavnik",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Ime = table.Column<string>(nullable: true),
+                    Prezime = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Nastavnik", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Nastavnik_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Angazovan",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AkademskaGodinaId = table.Column<int>(nullable: false),
+                    NastavnikId = table.Column<int>(nullable: false),
+                    PredmetId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Angazovan", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Angazovan_AkademskaGodina_AkademskaGodinaId",
+                        column: x => x.AkademskaGodinaId,
+                        principalTable: "AkademskaGodina",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Angazovan_Nastavnik_NastavnikId",
+                        column: x => x.NastavnikId,
+                        principalTable: "Nastavnik",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Angazovan_Predmet_PredmetId",
+                        column: x => x.PredmetId,
+                        principalTable: "Predmet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -185,7 +226,7 @@ namespace Ispit_2017_02_15.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    BodoviNaCasu = table.Column<int>(nullable: false),
+                    BodoviNaCasu = table.Column<int>(nullable: true),
                     OdrzaniCasId = table.Column<int>(nullable: false),
                     Prisutan = table.Column<bool>(nullable: false),
                     SlusaPredmetId = table.Column<int>(nullable: false)
@@ -198,7 +239,7 @@ namespace Ispit_2017_02_15.Migrations
                         column: x => x.OdrzaniCasId,
                         principalTable: "OdrzaniCasovi",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OdrzaniCasDetalji_SlusaPredmet_SlusaPredmetId",
                         column: x => x.SlusaPredmetId,
@@ -221,6 +262,16 @@ namespace Ispit_2017_02_15.Migrations
                 name: "IX_Angazovan_PredmetId",
                 table: "Angazovan",
                 column: "PredmetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AuthorizationTokens_UserId",
+                table: "AuthorizationTokens",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Nastavnik_UserId",
+                table: "Nastavnik",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OdrzaniCasDetalji_OdrzaniCasId",
@@ -261,6 +312,9 @@ namespace Ispit_2017_02_15.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AuthorizationTokens");
+
+            migrationBuilder.DropTable(
                 name: "OdrzaniCasDetalji");
 
             migrationBuilder.DropTable(
@@ -286,6 +340,9 @@ namespace Ispit_2017_02_15.Migrations
 
             migrationBuilder.DropTable(
                 name: "Student");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

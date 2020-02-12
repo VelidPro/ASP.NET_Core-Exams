@@ -1,0 +1,59 @@
+﻿@model Ispit_2017_02_15.ViewModels.LoginInputVM
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+
+
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/"></script>
+    <script src="/js/site.js"></script>
+    <script src="/JFIT.js"></script>
+</head>
+<body class="login-body">
+    <div class="simple-login-container col-md-offset-4">
+        <h2 class="text-light">Login</h2>
+        <form asp-action="Login" method="post">
+            <div class="row mt-10">
+                <div class="col-md-12 form-group">
+                    <input type="text" class="form-control" placeholder="Username" asp-for="Username">
+                </div>
+                <div class="col-md-12"><span class="text-danger" asp-validation-for="Username"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <input type="password" placeholder="Enter your Password" asp-for="Password" class="form-control">
+                </div>
+                <div class="col-md-12"><span class="text-danger" asp-validation-for="Password"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <input type="submit" class="btn btn-primary btn-block">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label class="control-label text-light" asp-for="RememberMe"></label>
+                    <input type="checkbox" asp-for="RememberMe">
+                </div>
+            </div>
+        </form>
+        <hr />
+        <div class="row mt-10 text-light">
+            <div class="row">Username: <strong>Nastavnik1</strong></div>
+            <div class="row">Password: <strong>1234</strong></div>
+        </div>
+    </div>
+</body>
+</html>

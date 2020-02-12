@@ -1,0 +1,40 @@
+﻿@model Ispit_2017_02_15.ViewModels.OdrzaniCasoviListVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row mt-10">
+    <h3>Prikaz odrzanih casova za nastavnika <strong>@Model.Nastavnik</strong></h3>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-7">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">Datum odrzanog casa</th>
+                    <th class="text-center">Akademska godina</th>
+                    <th class="text-center">Predmet</th>
+                    <th class="text-center">Akcija</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var x in Model.OdrzaniCasovi)
+                {
+                    <tr class="text-center">
+                        <td>@x.Datum.ToString("d")</td>
+                        <td>@x.AkademskaGodina</td>
+                        <td>@x.Predmet</td>
+                        <td><a asp-action="Edit">Edit</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <hr />
+        <a class="btn btn-primary" asp-action="Dodaj">Dodaj</a>
+    </div>
+</div>
+

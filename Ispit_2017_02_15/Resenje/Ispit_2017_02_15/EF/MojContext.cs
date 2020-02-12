@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ispit_2017_02_15.Models;
+﻿using Ispit_2017_02_15.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ispit_2017_02_15.EF
 {
-    public class MojContext:DbContext
+    public class MojContext : DbContext
     {
-        public MojContext(DbContextOptions<MojContext> options):base(options)
+        public MojContext(DbContextOptions<MojContext> options) : base(options)
         {
-
         }
 
         public DbSet<AkademskaGodina> AkademskaGodina { get; set; }
@@ -24,16 +18,34 @@ namespace Ispit_2017_02_15.EF
         public DbSet<Student> Student { get; set; }
         public DbSet<OdrzaniCas> OdrzaniCasovi { get; set; }
         public DbSet<OdrzaniCasDetalji> OdrzaniCasDetalji { get; set; }
-
+        public DbSet<User> Users { get; set; }
+        public DbSet<AuthorizationToken> AuthorizationTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<SlusaPredmet>().HasOne(x => x.UpisGodine).WithMany().HasForeignKey(x => x.UpisGodineId).OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<OdrzaniCasDetalji>().HasOne(x => x.SlusaPredmet).WithMany().HasForeignKey(x => x.SlusaPredmetId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<SlusaPredmet>()
+                .HasOne(x => x.UpisGodine)
+                .WithMany()
+                .HasForeignKey(x => x.UpisGodineId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<OdrzaniCasDetalji>()
+                .HasOne(x => x.SlusaPredmet)
+                .WithMany(x=>x.Casovi)
+                .HasForeignKey(x => x.SlusaPredmetId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<SlusaPredmet>()
+                .HasOne(x => x.UpisGodine)
+                .WithMany(x => x.SlusaPredmete)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OdrzaniCasDetalji>()
+                .HasOne(x => x.OdrzaniCas)
+                .WithMany(x => x.OdrzaniCasDetaljii)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

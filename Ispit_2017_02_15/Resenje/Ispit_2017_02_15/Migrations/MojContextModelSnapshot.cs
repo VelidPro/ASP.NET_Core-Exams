@@ -54,6 +54,24 @@ namespace Ispit_2017_02_15.Migrations
                     b.ToTable("Angazovan");
                 });
 
+            modelBuilder.Entity("Ispit_2017_02_15.Models.AuthorizationToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("IpAddress");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AuthorizationTokens");
+                });
+
             modelBuilder.Entity("Ispit_2017_02_15.Models.Nastavnik", b =>
                 {
                     b.Property<int>("Id")
@@ -63,9 +81,11 @@ namespace Ispit_2017_02_15.Migrations
 
                     b.Property<string>("Prezime");
 
-                    b.Property<string>("Username");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Nastavnik");
                 });
@@ -91,7 +111,7 @@ namespace Ispit_2017_02_15.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("BodoviNaCasu");
+                    b.Property<int?>("BodoviNaCasu");
 
                     b.Property<int>("OdrzaniCasId");
 
@@ -190,6 +210,20 @@ namespace Ispit_2017_02_15.Migrations
                     b.ToTable("UpisGodine");
                 });
 
+            modelBuilder.Entity("Ispit_2017_02_15.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Password");
+
+                    b.Property<string>("Username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("Ispit_2017_02_15.Models.Angazovan", b =>
                 {
                     b.HasOne("Ispit_2017_02_15.Models.AkademskaGodina", "AkademskaGodina")
@@ -208,6 +242,22 @@ namespace Ispit_2017_02_15.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Ispit_2017_02_15.Models.AuthorizationToken", b =>
+                {
+                    b.HasOne("Ispit_2017_02_15.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Ispit_2017_02_15.Models.Nastavnik", b =>
+                {
+                    b.HasOne("Ispit_2017_02_15.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Ispit_2017_02_15.Models.OdrzaniCas", b =>
                 {
                     b.HasOne("Ispit_2017_02_15.Models.Angazovan", "Angazovan")
@@ -219,12 +269,12 @@ namespace Ispit_2017_02_15.Migrations
             modelBuilder.Entity("Ispit_2017_02_15.Models.OdrzaniCasDetalji", b =>
                 {
                     b.HasOne("Ispit_2017_02_15.Models.OdrzaniCas", "OdrzaniCas")
-                        .WithMany()
+                        .WithMany("OdrzaniCasDetaljii")
                         .HasForeignKey("OdrzaniCasId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Ispit_2017_02_15.Models.SlusaPredmet", "SlusaPredmet")
-                        .WithMany()
+                        .WithMany("Casovi")
                         .HasForeignKey("SlusaPredmetId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -237,7 +287,7 @@ namespace Ispit_2017_02_15.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Ispit_2017_02_15.Models.UpisGodine", "UpisGodine")
-                        .WithMany()
+                        .WithMany("SlusaPredmete")
                         .HasForeignKey("UpisGodineId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

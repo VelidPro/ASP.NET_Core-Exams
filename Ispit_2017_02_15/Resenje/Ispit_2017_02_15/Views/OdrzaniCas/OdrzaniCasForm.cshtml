@@ -1,0 +1,60 @@
+﻿@model Ispit_2017_02_15.ViewModels.OdrzaniCasInputVM
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Title = Model.Id.HasValue ? "Uredjivanje casa" : "Dodavanje novog casa";
+}
+
+<div class="row mt-10">
+    <h3>@Title</h3>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Snimi" method="post">
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Nastavnik"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Nastavnik" readonly />
+                </div>
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Datum"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Datum" type="date" />
+                </div>
+            </div>
+            <div class="row mt-10">
+                @if (string.IsNullOrEmpty(Model.Angazman))
+                {
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="AngazujeId"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control" asp-for="AngazujeId" asp-items="Model.AkademskeGodinePredmeti"></select>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-6">
+                        <label class="control-label" asp-for="Angazman"></label>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control" asp-for="Angazman" readonly />
+                    </div>
+                }
+
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-4"></div>
+                <div class="col-md-8 text-danger" asp-validation-summary="All"></div>
+            </div>
+            <hr/>
+            <button type="submit" class="btn btn-primary">Snimi</button>
+        </form>
+    </div>
+</div>
+

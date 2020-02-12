@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ispit_2017_02_15.Models
 {
@@ -12,10 +10,14 @@ namespace Ispit_2017_02_15.Models
         public DateTime? DatumOcjene { get; set; }
         public int? Ocjena { get; set; }
 
-        public virtual Angazovan Angazovan { get; set; }
+        [ForeignKey(nameof(Angazovan))]
         public int AngazovanId { get; set; }
+        public virtual Angazovan Angazovan { get; set; }
 
-        public virtual UpisGodine UpisGodine { get; set; }
+        [ForeignKey(nameof(UpisGodine))]
         public int UpisGodineId { get; set; }
+        public virtual UpisGodine UpisGodine { get; set; }
+
+        public virtual ICollection<OdrzaniCasDetalji> Casovi { get; set; }
     }
 }
