@@ -10,13 +10,15 @@
 </div>
 <hr/>
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-9">
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th class="text-center">Datum odrzanog casa</th>
                     <th class="text-center">Akademska godina</th>
+                    <th class="text-center">Broj prisutnih</th>
                     <th class="text-center">Predmet</th>
+                    <th class="text-center">Prosjecna ocjena na predmetu</th>
                     <th class="text-center">Akcija</th>
 
                 </tr>
@@ -27,8 +29,10 @@
                     <tr class="text-center">
                         <td>@x.Datum.ToString("d")</td>
                         <td>@x.AkademskaGodina</td>
+                        <td>@(x.Datum<DateTime.Now?x.BrojPrisutnih.ToString():string.Empty)</td>
                         <td>@x.Predmet</td>
-                        <td><a asp-action="Edit" asp-route-Id="@x.Id">Edit</a></td>
+                        <td>@x.ProsjecnaOcjena</td>
+                        <td><a asp-action="Uredi" asp-route-Id="@x.Id">Edit</a></td>
                     </tr>
                 }
             </tbody>

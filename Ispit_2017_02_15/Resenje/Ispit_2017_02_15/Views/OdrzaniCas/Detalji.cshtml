@@ -1,0 +1,94 @@
+﻿@model Ispit_2017_02_15.ViewModels.OdrzaniCasDetaljiVM
+@{
+    ViewData["Title"] = "Detalji";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-10">
+    <h3>Uredjivanje casa</h3>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post" ajax-poziv="da">
+
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Nastavnik"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Nastavnik" readonly />
+                </div>
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Datum"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Datum" type="date" />
+                </div>
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="AkademskaGodinaPredmet"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="AkademskaGodinaPredmet" readonly />
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <button class="btn btn-primary" type="submit">Snimi</button>
+            </div>
+            @Html.HiddenFor(x=>x.Id)
+        </form>
+        <hr/>
+        <div class="row mt-10">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Student</th>
+                    <th class="text-center">Bodovi</th>
+                    <th class="text-center">Prisutan</th>
+                    <th class="text-center">Akcija</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var x in Model.Prisustva)
+                {
+                    <tr id="@(string.Concat("Prisustvo_",x.Id))" class="text-center">
+                        <td class="text-left">@x.Student</td>
+                        <td>@(x.IsPrisutan && x.Bodovi.HasValue?x.Bodovi.Value.ToString():string.Empty)</td>
+                        <td>
+                            <a asp-action="Prisutan" asp-route-odrzaniCasDetaljId=@x.Id
+                               ajax-poziv="da" ajax-rezultat="@(string.Concat("Prisustvo_",x.Id))"
+                               ajax-replace-rezultat="da">
+                                @if (x.IsPrisutan)
+                                {
+                                    <span class="text-green">Prisutan</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Odsutan</span>
+                                }
+                            </a>
+                        </td>
+                        <td>
+                            @if (x.IsPrisutan)
+                            {
+                                <a ajax-poziv="da" asp-action="UrediPrisustvo" asp-route-odrzaniCasDetaljId=@x.Id
+                                   ajax-rezultat="editPrisustvo">Uredi</a>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <hr/>
+        <div class="row mt-10" id="editPrisustvo"></div>
+    </div>
+</div>
+
+

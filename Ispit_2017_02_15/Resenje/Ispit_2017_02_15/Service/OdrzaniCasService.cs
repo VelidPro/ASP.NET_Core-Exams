@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ispit_2017_02_15.EF;
+using Ispit_2017_02_15.Helpers;
 using Ispit_2017_02_15.Interface;
 using Ispit_2017_02_15.Models;
 
@@ -47,6 +48,14 @@ namespace Ispit_2017_02_15.Service
             {
                 return false;
             }
+        }
+
+        public double GetProsjecnuOcjenu(int angazovanId)
+        {
+            return _dbContext.SlusaPredmet
+                .Where(x => x.AngazovanId == angazovanId)
+                .AsEnumerable()
+                .AverageOrZero(x => x.Ocjena ?? 0);
         }
     }
 }

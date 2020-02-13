@@ -1,0 +1,26 @@
+﻿@model Ispit_2017_02_15.ViewModels.OdrzaniCasDetaljVM
+
+<tr id="@(string.Concat("Prisustvo_",Model.Id))" class="text-center">
+    <td class="text-left">@Model.Student</td>
+    <td>@(Model.IsPrisutan && Model.Bodovi.HasValue ? Model.Bodovi.Value.ToString() : string.Empty)</td>
+    <td>
+        <a asp-action="Prisutan" asp-route-odrzaniCasDetaljId=@Model.Id
+           ajax-poziv="da" ajax-rezultat="@(string.Concat("Prisustvo_",Model.Id))"
+           ajax-replace-rezultat="da">
+            @if (Model.IsPrisutan)
+            {
+                <span class="text-green">Prisutan</span>
+            }
+            else
+            {
+                <span class="text-danger">Odsutan</span>
+            }
+        </a>
+    </td>
+    <td>
+        @if (Model.IsPrisutan)
+        {
+            <a ajax-poziv="da" asp-action="UrediPrisustvo" ajax-rezultat="editPrisustvo">Uredi</a>
+        }
+    </td>
+</tr>

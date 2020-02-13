@@ -13,5 +13,8 @@ namespace Ispit_2017_02_15.Models
         public string Prezime { get; set; }
         public string BrojIndeksa { get; set; }
 
+        public string ImePrezime() => Ime + " " + Prezime;
+
+
     }
 }

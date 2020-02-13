@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Ispit_2017_02_15.Helpers
 {
@@ -43,6 +45,16 @@ namespace Ispit_2017_02_15.Helpers
             }
 
             return items;
+        }
+
+        public static double AverageOrZero<T>(this IEnumerable<T> enumerable, Func<T, double> keySelector)
+        {
+            return enumerable.Any() ? enumerable.Average(keySelector) : 0;
+        }
+
+        public static IEnumerable<T> DistintBy<T,TKey>(this IEnumerable<T> enumerable, Func<T,TKey> keySelector)
+        {
+            return enumerable.GroupBy(keySelector).Select(grp=>grp.First());
         }
     }
 }

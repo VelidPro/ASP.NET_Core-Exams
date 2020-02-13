@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ispit_2017_02_15.Interface;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Ispit_2017_02_15.Controllers
 {
@@ -48,10 +49,42 @@ namespace Ispit_2017_02_15.Controllers
             return View("OdrzaniCasForm",await BuildOdrzaniCasInputVM(nastavnik));
         }
 
-
-        public async Task<IActionResult> Edit(int Id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Dodaj(OdrzaniCasInputVM model)
         {
             var currentUser = await HttpContext.GetLoggedInUser();
+            var nastavnik = await _dbContext.Nastavnik.FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
+
+            if (nastavnik == null)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+            {
+                model.AkademskeGodinePredmeti = GetListPredmeta(nastavnik.Id);
+                return View("OdrzaniCasForm", model);
+            }
+
+            var noviCas = new OdrzaniCas
+            {
+                AngazovanId = model.AngazujeId,
+                Datum = model.Datum
+            };
+
+            if (await _odrzaniCasService.Dodaj(noviCas))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return BadRequest();
+
+
+        }
+
+        public async Task<IActionResult> Uredi(int Id)
+        {
+            var currentUser = await HttpContext.GetLoggedInUser();
+
             var nastavnik = await _dbContext.Nastavnik.FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
 
             if (nastavnik == null)
@@ -67,15 +100,46 @@ namespace Ispit_2017_02_15.Controllers
             if (odrzaniCas == null)
                 return NotFound();
 
-            var vModel = await BuildOdrzaniCasInputVM(nastavnik, odrzaniCas);
+            var vModel = await BuildOdrzaniCasDetaljiVM(odrzaniCas,nastavnik);
 
-            return View("OdrzaniCasForm", vModel);
+            return View("Detalji", vModel);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Snimi(OdrzaniCasInputVM model)
+        public async Task<IActionResult> Edit(OdrzaniCasDetaljiVM model)
+        {
+
+            var currentUser = await HttpContext.GetLoggedInUser();
+            var nastavnik = await _dbContext.Nastavnik.FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
+
+            if (nastavnik == null)
+                return NotFound();
+
+            var casFromDb = await _dbContext.OdrzaniCasovi
+                .Include(x => x.Angazovan)
+                .FirstOrDefaultAsync(x => x.Id == model.Id);
+
+            if (casFromDb == null)
+                return NotFound();
+
+            //Provera da li je trenutno prijavljeni nastavnik kreirao cas koji se namerava izmeniti
+            if (casFromDb.Angazovan.NastavnikId != nastavnik.Id)
+            {
+                return Unauthorized();
+            }
+
+            casFromDb.Datum = model.Datum;
+            _dbContext.Update(casFromDb);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("Uspjesno evidentiran datum odrzanog casa.");
+        }
+
+
+        [Route("/Prisustvo/Prisutan/{odrzaniCasDetaljId}")]
+        public async Task<IActionResult> Prisutan(int odrzaniCasDetaljId)
         {
             var currentUser = await HttpContext.GetLoggedInUser();
             var nastavnik = await _dbContext.Nastavnik.FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
@@ -83,54 +147,155 @@ namespace Ispit_2017_02_15.Controllers
             if (nastavnik == null)
                 return NotFound();
 
-            if (!ModelState.IsValid)
-            {
-                model.AkademskeGodinePredmeti = GetListPredmeta(nastavnik.Id);
-                return View("OdrzaniCasForm", model);
-            }
+            var prisustvo = await _dbContext.OdrzaniCasDetalji
+                .Include(x=>x.OdrzaniCas)
+                .ThenInclude(x=>x.Angazovan)
+                .Include(x=>x.SlusaPredmet)
+                .ThenInclude(x=>x.UpisGodine)
+                .ThenInclude(x=>x.Student)
+                .FirstOrDefaultAsync(x=>x.Id==odrzaniCasDetaljId);
 
-            if (!model.Id.HasValue && !model.AngazujeId.HasValue)
-            {
-                model.AkademskeGodinePredmeti = GetListPredmeta(nastavnik.Id);
+            if (prisustvo == null)
+                return NotFound();
 
-                ModelState.AddModelError(string.Empty,"Morate odabrati skolsku godinu i predmet.");
-                return View("OdrzaniCasForm", model);
-            }
-
-            if (!model.Id.HasValue && !await _dbContext.Angazovan.AnyAsync(x => x.NastavnikId == nastavnik.Id && model.AngazujeId == x.Id))
+            if (prisustvo.OdrzaniCas.Angazovan.NastavnikId != nastavnik.Id)
             {
                 return Unauthorized();
             }
 
-            if (!model.Id.HasValue)
-            {
-                var noviCas = new OdrzaniCas
-                {
-                    AngazovanId = model.AngazujeId.Value,
-                    Datum = model.Datum
-                };
-
-                if (await _odrzaniCasService.Dodaj(noviCas))
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
-                return BadRequest();
-            }
-
-            var casFromDb = await _dbContext.OdrzaniCasovi.FindAsync(model.Id.Value);
-
-            if(casFromDb==null)
-                return NotFound();
-
-            casFromDb.Datum = model.Datum;
-            _dbContext.Update(casFromDb);
+            prisustvo.Prisutan = !prisustvo.Prisutan;
+            _dbContext.Update(prisustvo);
             await _dbContext.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return PartialView("_OdrzaniCasDetaljRow",await BuildOdrzaniCasDetaljVM(prisustvo));
         }
 
 
+        [Route("/Prisustvo/Edit/{odrzaniCasDetaljId}")]
+        public async Task<IActionResult> UrediPrisustvo(int odrzaniCasDetaljId)
+        {
+            var currentUser = await HttpContext.GetLoggedInUser();
+            var nastavnik = await _dbContext.Nastavnik.FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
+
+            if (nastavnik == null)
+                return NotFound();
+
+            var prisustvo = await _dbContext.OdrzaniCasDetalji
+                .Include(x => x.OdrzaniCas)
+                .ThenInclude(x => x.Angazovan)
+                .Include(x => x.SlusaPredmet)
+                .ThenInclude(x => x.UpisGodine)
+                .ThenInclude(x => x.Student)
+                .FirstOrDefaultAsync(x => x.Id == odrzaniCasDetaljId);
+
+            if (prisustvo == null)
+                return NotFound();
+
+            if (prisustvo.OdrzaniCas.Angazovan.NastavnikId != nastavnik.Id)
+            {
+                return Unauthorized();
+            }
+
+            var vModel = new PrisustvoInputVM
+            {
+                Id=prisustvo.Id,
+                Student=prisustvo.SlusaPredmet?.UpisGodine?.Student?.ImePrezime()??NOT_FOUND
+            };
+
+            return PartialView("_PrisustvoEdit", vModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SnimiPrisustvo(PrisustvoInputVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Podaci nisu validni.");
+            }
+
+            var currentUser = await HttpContext.GetLoggedInUser();
+            var nastavnik = await _dbContext.Nastavnik.FirstOrDefaultAsync(x => x.UserId == currentUser.Id);
+
+            if (nastavnik == null)
+                return NotFound();
+
+            var prisustvo = await _dbContext.OdrzaniCasDetalji
+                .Include(x => x.OdrzaniCas)
+                .ThenInclude(x => x.Angazovan)
+                .Include(x=>x.SlusaPredmet)
+                .ThenInclude(x=>x.UpisGodine)
+                .ThenInclude(x=>x.Student)
+                .FirstOrDefaultAsync(x => x.Id == model.Id);
+
+            if (prisustvo == null)
+                return NotFound();
+
+            if (prisustvo.OdrzaniCas.Angazovan.NastavnikId != nastavnik.Id)
+            {
+                return Unauthorized();
+            }
+
+            prisustvo.BodoviNaCasu = model.Bodovi;
+            _dbContext.Update(prisustvo);
+            await _dbContext.SaveChangesAsync();
+
+
+            return PartialView("_OdrzaniCasDetaljRow", await BuildOdrzaniCasDetaljVM(prisustvo));
+        }
+
+
+
+
+
+
+        //VM Builders
+
+        private async Task<OdrzaniCasDetaljiVM> BuildOdrzaniCasDetaljiVM(OdrzaniCas cas, Nastavnik nastavnik)
+        {
+            var prisustva = _dbContext.OdrzaniCasDetalji
+                .Include(x=>x.SlusaPredmet)
+                .ThenInclude(x=>x.UpisGodine)
+                .ThenInclude(x=>x.Student)
+                .Where(x => x.OdrzaniCasId == cas.Id);
+
+
+            var prisustvaVM = new List<OdrzaniCasDetaljVM>();
+
+            if (await prisustva.AnyAsync())
+            {
+                prisustvaVM = await prisustva.Select(x => new OdrzaniCasDetaljVM
+                {
+                    Id=x.Id,
+                    Bodovi = x.BodoviNaCasu,
+                    IsPrisutan = x.Prisutan,
+                    Student = x.SlusaPredmet.UpisGodine.Student.ImePrezime()
+                }).ToListAsync();
+            }
+            return new OdrzaniCasDetaljiVM
+            {
+                Nastavnik = nastavnik.ImePrezime(),
+                AkademskaGodinaPredmet = cas.Angazovan?.AkademskaGodina?.Opis??NOT_FOUND,
+                Datum = cas.Datum,
+                Id = cas.Id,
+                Prisustva = prisustvaVM
+            };
+        }
+
+        private async Task<OdrzaniCasDetaljVM> BuildOdrzaniCasDetaljVM(OdrzaniCasDetalji prisustvo)
+        {
+            if(prisustvo==null)
+                return new OdrzaniCasDetaljVM();
+
+            return new OdrzaniCasDetaljVM
+            {
+                Id = prisustvo.Id,
+                Bodovi = prisustvo.BodoviNaCasu,
+                IsPrisutan = prisustvo.Prisutan,
+                Student = prisustvo.SlusaPredmet.UpisGodine.Student.ImePrezime()
+            };
+        }
         private async Task<OdrzaniCasoviListVM> BuildOdrzaniCasoviListVM(Nastavnik nastavnik)
         {
             if (nastavnik == null)
@@ -147,13 +312,19 @@ namespace Ispit_2017_02_15.Controllers
 
             if (await odrzaniCasovi.AnyAsync())
             {
-                odrzaniCasoviVM = await odrzaniCasovi.Select(x => new OdrzaniCasVM
+                foreach (var x in odrzaniCasovi)
                 {
-                    Id = x.Id,
-                    AkademskaGodina = x.Angazovan.AkademskaGodina.Opis,
-                    Datum = x.Datum,
-                    Predmet = x.Angazovan.Predmet.Naziv
-                }).ToListAsync();
+                    odrzaniCasoviVM.Add(new OdrzaniCasVM
+                    {
+                        Id = x.Id,
+                        AkademskaGodina = x.Angazovan.AkademskaGodina.Opis,
+                        BrojPrisutnih = _dbContext.OdrzaniCasDetalji.Count(z => z.OdrzaniCasId == z.Id),
+                        ProsjecnaOcjena = _odrzaniCasService.GetProsjecnuOcjenu(x.AngazovanId), 
+                        Datum = x.Datum,
+                        Predmet = x.Angazovan.Predmet.Naziv
+                    });
+                }
+               
             }
 
             return new OdrzaniCasoviListVM
@@ -163,28 +334,17 @@ namespace Ispit_2017_02_15.Controllers
             };
         }
 
-        private async Task<OdrzaniCasInputVM> BuildOdrzaniCasInputVM(Nastavnik nastavnik, OdrzaniCas odrzaniCas = null)
+        private async Task<OdrzaniCasInputVM> BuildOdrzaniCasInputVM(Nastavnik nastavnik)
         {
             if (nastavnik == null)
                 return new OdrzaniCasInputVM();
 
-            if (odrzaniCas == null)
-            {
                 return new OdrzaniCasInputVM
                 {
                     Nastavnik = nastavnik.ImePrezime(),
                     AkademskeGodinePredmeti = GetListPredmeta(nastavnik.Id),
                     Datum = DateTime.Now.AddDays(1)
                 };
-            }
-
-            return new OdrzaniCasInputVM
-            {
-                Id = odrzaniCas.Id,
-                Nastavnik = nastavnik.ImePrezime(),
-                Datum = DateTime.Now.AddDays(1),
-                Angazman = (odrzaniCas.Angazovan?.AkademskaGodina?.Opis ?? NOT_FOUND) + " / " + (odrzaniCas.Angazovan?.Predmet?.Naziv ?? NOT_FOUND)
-            };
         }
 
         private List<SelectListItem> GetListPredmeta(int nastavnikId)

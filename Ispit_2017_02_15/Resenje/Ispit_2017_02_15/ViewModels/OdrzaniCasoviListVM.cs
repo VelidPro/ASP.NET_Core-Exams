@@ -16,6 +16,8 @@ namespace Ispit_2017_02_15.ViewModels
         public int Id { get; set; }
         public DateTime Datum { get; set; }
         public string AkademskaGodina { get; set; }
+        public int BrojPrisutnih { get; set; }
+        public double ProsjecnaOcjena { get; set; }
         public string Predmet { get; set; }
     }
 }

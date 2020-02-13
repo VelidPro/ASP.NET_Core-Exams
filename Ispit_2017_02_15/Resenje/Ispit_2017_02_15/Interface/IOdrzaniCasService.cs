@@ -9,5 +9,6 @@ namespace Ispit_2017_02_15.Interface
     public interface IOdrzaniCasService
     {
         Task<bool> Dodaj(OdrzaniCas cas);
+        double GetProsjecnuOcjenu(int angazovanId);
     }
 }

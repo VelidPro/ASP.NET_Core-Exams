@@ -25,5 +25,7 @@ namespace Ispit_2017_02_15.Models
 
 
         public virtual ICollection<SlusaPredmet> SlusaPredmete { get; set; }
+
+
     }
 }

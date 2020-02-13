@@ -1,0 +1,32 @@
+﻿@model Ispit_2017_02_15.ViewModels.PrisustvoInputVM
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="SnimiPrisustvo"
+              ajax-poziv="da"
+              ajax-rezultat="@(string.Concat("Prisustvo_", Model.Id))"
+              ajax-replace-rezultat="da">
+
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Student"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Student" readonly/>
+                </div>
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-6">
+                    <label class="control-label" asp-for="Bodovi"></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" asp-for="Bodovi" min="0" max="100"/>
+                </div>
+            </div>
+            <div class="row mt-10">
+                <button type="submit" class="btn btn-primary">Snimi</button>
+            </div>
+            @Html.HiddenFor(x=>x.Id)
+        </form>
+    </div>
+</div>
